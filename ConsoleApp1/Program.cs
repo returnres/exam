@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -19,6 +20,23 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+
+            //programmazione parallela
+
+            #region async await
+
+            //await non puo essere usato su unsafe, lock, main
+            MetodoAsyn();
+            Console.WriteLine("codice prima fine await)");
+
+            Task<string> res = GetAsync();
+
+            List<string> files = new List<string>() { "pippo.txt", "pippo1.txt" };
+            files.ForEach(async file => await ReadFileAsync(file));
+
+
+            #endregion
+
             #region task
 
             //manca continuewhenall
@@ -34,7 +52,7 @@ namespace ConsoleApp1
             });
 
 
-            Task taskall = Task.WhenAll((new Task[] {tx,ty }));
+            Task taskall = Task.WhenAll((new Task[] { tx, ty }));
             //Task taskall = Task.WhenAny((new Task[] { t1, t2 }));
             taskall.Wait();
 
@@ -45,12 +63,12 @@ namespace ConsoleApp1
                 return wc.DownloadString(url);
             });
 
-            Task<String> headhtml =  webtask.ContinueWith<string>(x =>
-            {
-                var res = x.Result;
+            Task<String> headhtml = webtask.ContinueWith<string>(x =>
+           {
+               var res = x.Result;
                 //fai qualcosa con res
                 return res;
-            });
+           });
 
             var tokenSource = new CancellationTokenSource();
             CancellationToken token = tokenSource.Token;
@@ -190,9 +208,37 @@ namespace ConsoleApp1
             t.Join();//il codice si blocca e attende che t finisce
 
             #endregion
+
             Console.ReadLine();
 
         }
+
+        /// <summary>
+        ///  leggo file asincrono
+        /// </summary>
+        public static async Task ReadFileAsync(string path)
+        {
+            await Task.Delay(100);
+        }
+        public static async void MetodoAsyn()
+        {
+            await Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+            });
+            Console.WriteLine("codice dopo fine await)");
+        }
+
+        public static async Task<string> GetAsync()
+        {
+            await Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+            });
+
+            return "ciao";
+        }
+
         private static void LongOperation(object state)
         {
             Thread.Sleep(1000);
