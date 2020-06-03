@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -25,6 +26,15 @@ namespace ConsoleApp1
 
             #region async await
 
+            var res1 = DoCurlAsync();
+
+            //net 4.5
+            //await salva lo stato del contesto del caller e quando il metodo await si conclude
+            //il contesto ritorna allo stato del chimante che puo eseguire il codice successivo
+            //questo nel caso di ui permette di modiicare la ui che pè proprieta nella app gui del thread
+            //della ui e viene eseguito nel ui syncronization context (dispatchercontext nella ui)
+            //DAL C#7 TUTTO PUO ESSERE AWAITABLE ED ESEGUITO AINCRONO E NON  SOLO ISTANZA DI TASK
+            //QUALSIAIS OGGETTO CHE ESPONE METODO GETAWAITER INFATTI LA CLASSE TASK ESPONE METODO GETAWAITER
             //await non puo essere usato su unsafe, lock, main
             MetodoAsyn();
             Console.WriteLine("codice prima fine await)");
@@ -34,6 +44,11 @@ namespace ConsoleApp1
             List<string> files = new List<string>() { "pippo.txt", "pippo1.txt" };
             files.ForEach(async file => await ReadFileAsync(file));
 
+            //all block
+            //.Wait() 
+            //.Result 
+            //.GetAwaiter()
+            //.GetResult()
 
             #endregion
 
@@ -65,9 +80,9 @@ namespace ConsoleApp1
 
             Task<String> headhtml = webtask.ContinueWith<string>(x =>
            {
-               var res = x.Result;
+               var res2 = x.Result;
                 //fai qualcosa con res
-                return res;
+                return res2;
            });
 
             var tokenSource = new CancellationTokenSource();
@@ -211,6 +226,21 @@ namespace ConsoleApp1
 
             Console.ReadLine();
 
+        }
+
+        private static async void CallDoCurlAsync()
+        {
+            var res = await DoCurlAsync();//asyn 
+            //var resr = DoCurlAsync().Result; //sync
+        }
+
+        public static async Task<string> DoCurlAsync()
+        {
+            using (var httpClient = new HttpClient())
+            using (var httpResonse = await httpClient.GetAsync("https://www.google.com"))
+            {
+                return await httpResonse.Content.ReadAsStringAsync();
+            }
         }
 
         /// <summary>
