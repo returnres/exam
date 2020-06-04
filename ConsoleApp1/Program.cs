@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ClassLibrary1;
 
 namespace ConsoleApp1
 {
@@ -21,8 +22,35 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            Lista<string> lista = new Lista<string>(5);
+            lista[0] = "";
 
-            //programmazione parallela
+            #region programmazione parallela
+            //PLINQ solo linq to onject NO linq to sql
+            //prende base dati la divide in segmenti e fa query in parallelo su questi segmentie  pio unisce iriaultati
+            // se i lavori nonn sono complessi e la base dati è minima la programmazione parallela non da buoni risultati
+            var qy = from n in Enumerable.Range(1, 8).AsParallel()
+                select Math.Pow(2, n);
+
+            //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
+            Parallel.For(1, 10, i => Console.WriteLine("i-{0}", i));
+            var result = Parallel.For(0, 50, (i, parallelLoopState) =>
+             {
+                 if (i > 10)
+                 {
+                     parallelLoopState.Break();
+                 }
+             });
+
+            if (!result.IsCompleted)
+            {
+                var i = result.LowestBreakIteration;
+            }
+
+            //non è sequnziale
+            List<string> list = new List<string>() { "ciao", "come", "va?" };
+            Parallel.ForEach(list, word => Console.WriteLine("{0}", word, word.Length));
+            #endregion
 
             #region async await
 
@@ -52,7 +80,7 @@ namespace ConsoleApp1
 
             #endregion
 
-            #region task
+            #region task tpl
 
             //manca continuewhenall
             //continuewheany
@@ -81,8 +109,8 @@ namespace ConsoleApp1
             Task<String> headhtml = webtask.ContinueWith<string>(x =>
            {
                var res2 = x.Result;
-                //fai qualcosa con res
-                return res2;
+               //fai qualcosa con res
+               return res2;
            });
 
             var tokenSource = new CancellationTokenSource();
@@ -157,7 +185,7 @@ namespace ConsoleApp1
             {
                 Thread.Sleep(2000);
             }, TaskCreationOptions.LongRunning);
-            #endregion
+            #endregion tpl
 
             #region thread
             for (int i = 0; i < 5; i++)
@@ -228,6 +256,7 @@ namespace ConsoleApp1
 
         }
 
+        #region private
         private static async void CallDoCurlAsync()
         {
             var res = await DoCurlAsync();//asyn 
@@ -304,5 +333,6 @@ namespace ConsoleApp1
                 Console.WriteLine("lock non acquisito");
             }
         }
+        #endregion
     }
 }
