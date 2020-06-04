@@ -8,6 +8,15 @@ using System.Threading.Tasks;
 namespace ClassLibrary1
 {
 
+    public class miaclssa : Imiainterfaccia
+    {
+        
+    }
+
+    public interface Imiainterfaccia
+    {
+    }
+
     public class Generica<T, U, Y, Z>
     {
         private T campo1;
