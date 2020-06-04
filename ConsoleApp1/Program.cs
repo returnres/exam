@@ -22,8 +22,40 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            #region generics
+            //variabile statico è diverso per tipo
+            TestStaticGen<string>.Status = "rob";
+            TestStaticGen<int>.Status = 1;
+            Console.WriteLine(TestStaticGen<string>.Status);
+            Console.WriteLine(TestStaticGen<int>.Status);
+
+            TestStatic.Status = "ciao";
+            TestStatic.Status = "ciau";
+            Console.WriteLine(TestStatic.Status);
+            //
+
+            Generica<string, int, DateTime, bool> gen = new Generica<string, int, DateTime, bool>();
+
+
+            List<Lista<string>> genericiInnestati = new List<Lista<string>>();
+            genericiInnestati.Add(new Lista<string>(5));
+            genericiInnestati[0][0] = "ciao";
+            genericiInnestati[0][1] = "come ";
+            genericiInnestati[0][2] = "stai";
+            genericiInnestati[0][3] = "rob";
+            genericiInnestati[0][4] = "?";
+
+            foreach (var item in genericiInnestati)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Console.WriteLine(item[i]);
+                }
+            }
+
             Lista<string> lista = new Lista<string>(5);
             lista[0] = "";
+            #endregion
 
             #region programmazione parallela
             //PLINQ solo linq to onject NO linq to sql
