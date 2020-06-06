@@ -23,6 +23,35 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             #region generics
+
+            Task tx1 = Task.Run(() =>
+            {
+                Console.WriteLine("ciao");
+            });
+            Task[] tasksarr = new Task[1];
+            tasksarr[0] = tx1;
+
+            Gen1<Miaclasse1, Task> gen1 = new Gen1<Miaclasse1, Task>();
+            //per inferenza di tipo si puo omettere
+            //var mytask = gen1.ContinueTaskOrDefault<Task>(tx1);
+
+            if (gen1.GetDefault(tx1) != null)
+            {
+                gen1.ContinueTaskOrDefault(tx1, Console.WriteLine);
+                Console.WriteLine("start task generic");
+            }
+
+            var mytaskList = gen1.ContinueTasksOrDefault(tasksarr, Console.WriteLine);
+
+
+
+            if (mytaskList != null)
+                Console.WriteLine("starts tasks generic");
+
+            Gen2<Miaclasse> gen2 = new Gen2<Miaclasse>();
+            Gen2Figlia<Miaclasse> gen2figlia = new Gen2Figlia<Miaclasse>();
+            Gen1Figlia<Miaclasse, Task> tesFiglia = new Gen1Figlia<Miaclasse, Task>();
+
             //variabile statico è diverso per tipo
             TestStaticGen<string>.Status = "rob";
             TestStaticGen<int>.Status = 1;
@@ -62,7 +91,7 @@ namespace ConsoleApp1
             //prende base dati la divide in segmenti e fa query in parallelo su questi segmentie  pio unisce iriaultati
             // se i lavori nonn sono complessi e la base dati è minima la programmazione parallela non da buoni risultati
             var qy = from n in Enumerable.Range(1, 8).AsParallel()
-                select Math.Pow(2, n);
+                     select Math.Pow(2, n);
 
             //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
             Parallel.For(1, 10, i => Console.WriteLine("i-{0}", i));
