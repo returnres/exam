@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="TestDelegate.cs" />
     <Compile Include="Generics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

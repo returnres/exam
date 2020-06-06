@@ -9,6 +9,28 @@ namespace ClassLibrary1
 {
     //constraeint : class struct,new(), U
 
+    public interface ITest<T>
+    {
+        T GetDefault(T param);
+    }
+
+    public class Test<T> : ITest<T>
+    {
+        public T GetDefault(T param)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Test :ITest<string>
+    {
+        public string GetDefault(string param)
+        {
+            throw new NotImplementedException();
+        }
+    }
+   
+
     public class Gen2Figlia<T> : Gen2<T> where T : class
     {
 

@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 namespace ClassLibrary1
 {
 
+
+    public class TestClass
+    {
+        
+    }
+
+
     public class Miaclasse : Miaclasse1
     {
 

@@ -22,7 +22,24 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            #region delegate
+
+            Del d1 = new Del();
+            var res3 = d1.MyCon(Convert.ToInt32, "5");
+            var res4 = d1.MyCon1(Convert.ToInt32, "5");
+            Console.WriteLine(res3);
+            Console.WriteLine(res4);
+
+            d1.UseMulticast();
+
+            #endregion 
+
             #region generics
+
+
+
+
+
 
             Task tx1 = Task.Run(() =>
             {
@@ -42,7 +59,6 @@ namespace ConsoleApp1
             }
 
             var mytaskList = gen1.ContinueTasksOrDefault(tasksarr, Console.WriteLine);
-
 
 
             if (mytaskList != null)
