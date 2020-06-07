@@ -23,10 +23,41 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             #region delegate
+            //Event
+            Car car = new Car();
+            CarMonitor cm = new CarMonitor(car);
 
+            car.Decelerate();
+            car.Decelerate();
+            
+
+            //Expression Tree
+            TestExpres testExpres = new TestExpres();
+            Func<int, bool> isPari = testExpres.exp1.Compile();
+            if(isPari(4))
+                Console.WriteLine("pari");
+
+            //ti faccio assegnare sia metodo che ritorna stringa
+            //ma anche metodo che torna object perchè stringa deriva
+            //da object (è piu specifica)
             Del d1 = new Del();
+            Cov<string> cov = d1.Cov1;
+            Cov<object> cov1 = d1.Cov2;
+            Cov<object> cov3 = d1.Cov2;
+            //Cov<string> cov2 = d1.Cov2;//no object non deriva da stringa 
+
+            //ti faccio assegnare sia metodo che prende ingresso
+            //classe piu generica object  ma ache classe piu specifica string
+            Con<object> con = d1.Con1;
+            Con<string> con3 = d1.Con1;
+            Con<string> con1 = d1.Con2;
+            //Con<object> con2 = d1.Con2;//no
+
             var res3 = d1.MyCon(Convert.ToInt32, "5");
             var res4 = d1.MyCon1(Convert.ToInt32, "5");
+            var res5 = d1.MyConGen(Convert.ToInt32, "5");
+            var res6 = d1.MyConGen(Convert.ToBoolean,0);
+            var res7 = d1.MyConGen(Convert.ToString,5);
             Console.WriteLine(res3);
             Console.WriteLine(res4);
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
-    //constraeint : class struct,new(), U
+    //constraeint : class, class?, struct,new(), U,notnull
 
     public interface ITest<T>
     {
