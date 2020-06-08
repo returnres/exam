@@ -22,7 +22,7 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
-            #region delegate
+            #region delegate avent
             //Event
             Car car = new Car();
             CarMonitor cm = new CarMonitor(car);

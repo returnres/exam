@@ -142,14 +142,23 @@ namespace ClassLibrary1
 
     }
 
-    public delegate void EventHandler<GiritMotoreEventArgs>(Object sender, EventArgs e);
 
     //Event
     //puo essere anche anstarct seales static
     //PUBLISHER
-    public class Car
+    public interface IVehicle
     {
-        public event EventHandler MotoreSpento;
+         event Car.GiritMotoreEventHandler MotoreSpento;
+    }
+    public class Car : IVehicle
+    {
+        //Generic
+        //public delegate void EventHandler(Object obj, EventArgs e);
+        //public event EventHandler MotoreSpento;
+
+        public delegate void GiritMotoreEventHandler(Car car, GiritMotoreEventArgs e);
+        public event GiritMotoreEventHandler MotoreSpento;
+
         private int _numerogiri;
 
         public Car()
@@ -166,7 +175,7 @@ namespace ClassLibrary1
             }
         }
 
-        private void OnMotoreSpento()
+        protected virtual void OnMotoreSpento()
         {
             //if (MotoreSpento != null)
             //{
@@ -181,6 +190,8 @@ namespace ClassLibrary1
             });
         }
     }
+
+   
 
     public class CarMonitor
     {
@@ -201,6 +212,16 @@ namespace ClassLibrary1
             //gestisco evnto
             Car c = sender as Car;
             Console.WriteLine("numweo giri {0}", e.NumeroGiriRAggiunto);
+            c.MotoreSpento -= GestisciMororeSpento;
+        }
+    }
+
+    public class EletricCar :Car
+    {
+        protected override void OnMotoreSpento()
+        {
+            //codice personalizzato
+            base.OnMotoreSpento();
         }
     }
 
