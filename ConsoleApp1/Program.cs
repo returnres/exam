@@ -22,6 +22,32 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            int? nullable = null;
+            var cliente = new {nome = "rob"};
+            Mesi giorno = Mesi.febbraio; 
+            int a  =(int)Mesi.febbraio;
+            Mesi a  = (Mesi) 1;
+            Pippo pippo;
+            pippo.a = 1;
+
+            var sss = Convert.ToString(1);
+            TestClass tc = new TestClass();
+
+            //ARRAY
+            int[] vet = new[] {1, 2, 3};
+
+            //TIPI
+            Type t1 = tc.GetType();
+            Console.WriteLine(t1);
+            Type type = typeof(Type);
+
+
+            int i = 123;
+            object box = i;
+            int n = (int) box;//unbox
+            dynamic d = 1;
+            int inc = d + 1;
+
             #region delegate avent
             //Event
             Car car = new Car();
