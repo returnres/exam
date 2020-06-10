@@ -8,11 +8,11 @@ namespace ClassLibrary1
 {
     public enum Mesi
     {
-        gennaio =0,
-        febbraio=1
+        gennaio = 0,
+        febbraio = 1
     }
 
-public struct Pippo
+    public struct Pippo
     {
         public int a;
     }
@@ -59,4 +59,45 @@ public struct Pippo
 
     }
 
+    public class TestClass1
+    {
+        /*
+         * stack => vet
+         * heap 1
+         * heap 2
+         * heap 3
+         * 
+        ARRAY MULTID:
+        -array rettangoli
+        1234
+        1234
+        
+        -array jagged (irregolare)
+        123456
+        234
+        2343434343
+         */
+
+
+        private int[] vet = new[] { 1, 2, 3 };
+
+        public void MyMethod()
+        {
+            //ret
+            int[,] matrix = new int[3, 4];
+            matrix[0,0] = 1;
+
+            int[,] matrix1 =
+            {
+                {1, 2, 3, 4},
+                {5, 6, 7, 8}
+            };
+
+            //jagged
+            int[][] jagged = new int[3][];
+            jagged[0] = new int[2] {1, 2};
+            jagged[1] = new int[4] {1, 2,3,4};
+        }
+
+    }
 }
