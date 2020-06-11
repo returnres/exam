@@ -46,15 +46,17 @@ namespace ConsoleApp1
             //typeof
             Type type = typeof(Type);
 
-            //is
+            //is tipo
             string obj = "";
             bool b = obj is string;
 
 
-            //as
+            //as tipo o derivato  altrimenti torna null
             Miaclasse miaclasse = new Miaclasse();
             //object testtype = miaclasse as string;
 
+            //cast eccezione se non stesso tipo o derivato
+            var a = (Miaclasse1)miaclasse;
 
             #endregion
 
