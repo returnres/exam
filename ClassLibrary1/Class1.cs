@@ -28,6 +28,49 @@ namespace ClassLibrary1
         //filed
         public string hair;
 
+        public void MyMethod()
+        {
+
+
+            //espressione
+            int i = 1 + 2;
+
+            //blocco
+            unchecked
+            {
+                byte b1 = 200;
+                byte b2 = 100;
+                byte somma = (byte)(b1 + b2);
+            }
+
+            //underflowexception
+            byte min = Byte.MinValue;
+            //byte underflow = checked(min - 1);
+
+            /* & and
+             * | or
+             * ^ xor
+             *      
+             *      
+             */
+            object a = null;
+            object b = 123;
+
+            //miòò coalescing
+            //se è null gli metto un altea cosa altrimenti lascio valore
+            var x = a ?? 1;//1 perchè a è null
+            var y = b ?? 1;//123 perchè b non è null
+
+            //?. null conditional
+
+            //operatori
+            //unari
+            //binari
+            //ternari
+            //aritmetici
+        }
+
+
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -42,6 +85,8 @@ namespace ClassLibrary1
         {
             return base.ToString();
         }
+
+       
     }
 
 
@@ -59,45 +104,4 @@ namespace ClassLibrary1
 
     }
 
-    public class TestClass1
-    {
-        /*
-         * stack => vet
-         * heap 1
-         * heap 2
-         * heap 3
-         * 
-        ARRAY MULTID:
-        -array rettangoli
-        1234
-        1234
-        
-        -array jagged (irregolare)
-        123456
-        234
-        2343434343
-         */
-
-
-        private int[] vet = new[] { 1, 2, 3 };
-
-        public void MyMethod()
-        {
-            //ret
-            int[,] matrix = new int[3, 4];
-            matrix[0,0] = 1;
-
-            int[,] matrix1 =
-            {
-                {1, 2, 3, 4},
-                {5, 6, 7, 8}
-            };
-
-            //jagged
-            int[][] jagged = new int[3][];
-            jagged[0] = new int[2] {1, 2};
-            jagged[1] = new int[4] {1, 2,3,4};
-        }
-
-    }
 }

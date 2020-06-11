@@ -23,30 +23,106 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             int? nullable = null;
-            var cliente = new {nome = "rob"};
-            Mesi giorno = Mesi.febbraio; 
-            int a  =(int)Mesi.febbraio;
-            Mesi a  = (Mesi) 1;
+            var cliente = new { nome = "rob" };
+            Mesi giorno = Mesi.febbraio;
+            int mese = (int)Mesi.febbraio;
+            Mesi a = (Mesi)1;
             Pippo pippo;
             pippo.a = 1;
 
+            //cast
+            int i = 123;
+            object box = i;
+            int n = (int)box;//unbox
+            dynamic dd = 1;
+            int inc = dd + 1;
             var sss = Convert.ToString(1);
             TestClass tc = new TestClass();
 
-            //ARRAY
-            int[] vet = new[] {1, 2, 3};
+            #region type
+            //GetType
+            Type tipo = tc.GetType();
 
-            //TIPI
-            Type t1 = tc.GetType();
-            Console.WriteLine(t1);
+            //typeof
             Type type = typeof(Type);
 
+            //is
+            string obj = "";
+            bool b = obj is string;
 
-            int i = 123;
-            object box = i;
-            int n = (int) box;//unbox
-            dynamic d = 1;
-            int inc = d + 1;
+
+            //as
+            Miaclasse miaclasse = new Miaclasse();
+            //object testtype = miaclasse as string;
+
+
+            #endregion
+
+            #region array
+            Console.WriteLine($"metodo {nameof(Main)}");
+
+            /*
+           * stack => vet
+           * heap 1
+           * heap 2
+           * heap 3
+           * 
+          ARRAY MULTID:
+          -array rettangoli
+          1234
+          1234
+
+          -array jagged (irregolare)
+          123456
+          234
+          2343434343
+           */
+
+
+            int[] vet = new[] { 1, 2, 3 };
+
+            //ret
+            int[,] matrix = new int[3, 4];
+            matrix[0, 0] = 1;
+
+            int[,] matrix1 =
+            {
+                {1, 2, 3, 4},
+                {5, 6, 7, 8}
+            };
+
+            //jagged
+            int[][] jagged = new int[3][];
+            jagged[0] = new int[2] { 1, 2 };
+            jagged[1] = new int[4] { 1, 2, 3, 4 };
+            #endregion
+
+            #region c7 PATTERN MATCHING
+            /*
+             * type => espr is tipo v
+             * const => espr is constante
+             * var
+             * 
+             * */
+
+            //type
+            object obj1 = "";
+            if(obj1 is string str)
+                Console.WriteLine(str);
+
+            //invece che
+
+            if (obj1  is string)
+            {
+                string str1 = (string) obj;
+                Console.WriteLine(str1);
+            }
+
+            //const
+            Mesi giornomese = Mesi.febbraio;
+            bool feb = giornomese is Mesi.febbraio;//true se giorno di febbraio
+
+            #endregion
 
             #region delegate avent
             //Event
@@ -55,12 +131,12 @@ namespace ConsoleApp1
 
             car.Decelerate();
             car.Decelerate();
-            
+
 
             //Expression Tree
             TestExpres testExpres = new TestExpres();
             Func<int, bool> isPari = testExpres.exp1.Compile();
-            if(isPari(4))
+            if (isPari(4))
                 Console.WriteLine("pari");
 
             //ti faccio assegnare sia metodo che ritorna stringa
@@ -82,8 +158,8 @@ namespace ConsoleApp1
             var res3 = d1.MyCon(Convert.ToInt32, "5");
             var res4 = d1.MyCon1(Convert.ToInt32, "5");
             var res5 = d1.MyConGen(Convert.ToInt32, "5");
-            var res6 = d1.MyConGen(Convert.ToBoolean,0);
-            var res7 = d1.MyConGen(Convert.ToString,5);
+            var res6 = d1.MyConGen(Convert.ToBoolean, 0);
+            var res7 = d1.MyConGen(Convert.ToString, 5);
             Console.WriteLine(res3);
             Console.WriteLine(res4);
 
@@ -92,11 +168,6 @@ namespace ConsoleApp1
             #endregion 
 
             #region generics
-
-
-
-
-
 
             Task tx1 = Task.Run(() =>
             {
@@ -149,9 +220,9 @@ namespace ConsoleApp1
 
             foreach (var item in genericiInnestati)
             {
-                for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
                 {
-                    Console.WriteLine(item[i]);
+                    Console.WriteLine(item[j]);
                 }
             }
 
@@ -163,12 +234,12 @@ namespace ConsoleApp1
             //PLINQ solo linq to onject NO linq to sql
             //prende base dati la divide in segmenti e fa query in parallelo su questi segmentie  pio unisce iriaultati
             // se i lavori nonn sono complessi e la base dati è minima la programmazione parallela non da buoni risultati
-            var qy = from n in Enumerable.Range(1, 8).AsParallel()
-                     select Math.Pow(2, n);
+            var qy = from num in Enumerable.Range(1, 8).AsParallel()
+                     select Math.Pow(2, num);
 
             //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
-            Parallel.For(1, 10, i => Console.WriteLine("i-{0}", i));
-            var result = Parallel.For(0, 50, (i, parallelLoopState) =>
+            Parallel.For(1, 10, g => Console.WriteLine("g-{0}", g));
+            var result = Parallel.For(0, 50, (g, parallelLoopState) =>
              {
                  if (i > 10)
                  {
@@ -178,7 +249,7 @@ namespace ConsoleApp1
 
             if (!result.IsCompleted)
             {
-                var i = result.LowestBreakIteration;
+                var o = result.LowestBreakIteration;
             }
 
             //non è sequnziale
@@ -256,7 +327,7 @@ namespace ConsoleApp1
                 cancellabletask = Task.Run(() =>
                {
                    token.ThrowIfCancellationRequested();
-                   for (int i = 0; i < 2; i++)
+                   for (int d = 0; d < 2; d++)
                    {
                        Thread.Sleep(100);
                        if (token.IsCancellationRequested)
@@ -293,9 +364,9 @@ namespace ConsoleApp1
             var htmlUrl = task.Result;//blocco
 
             List<Task> tasks = new List<Task>();
-            for (int i = 0; i < 5; i++)
+            for (int r = 0; r < 5; r++)
             {
-                int number = i;
+                int number = r;
                 tasks.Add(
                    Task.Run(() =>
                     {
@@ -322,7 +393,7 @@ namespace ConsoleApp1
             #endregion tpl
 
             #region thread
-            for (int i = 0; i < 5; i++)
+            for (int w = 0; w < 5; w++)
             {
                 ThreadPool.QueueUserWorkItem(LongOperation);
             }
@@ -353,7 +424,7 @@ namespace ConsoleApp1
             Thread t1 = new Thread(() =>
             {
                 Console.WriteLine(Thread.CurrentThread.Name);
-                for (int i = 0; i < 10; i++)
+                for (int z = 0; z < 10; z++)
                 {
                     lock (lockobj)
                     {
@@ -366,7 +437,7 @@ namespace ConsoleApp1
             Thread t2 = new Thread(() =>
             {
                 Console.WriteLine(Thread.CurrentThread.Name);
-                for (int i = 0; i < 10; i++)
+                for (int x = 0; x < 10; x++)
                 {
                     lock (lockobj)
                     {
