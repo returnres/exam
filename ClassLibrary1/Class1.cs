@@ -6,6 +6,82 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
+    //astrazione
+    //incapsulamento
+    //ereditarietà
+    //polimorfismo
+
+    public class Babbo
+    {
+        /*memebri :
+         * field
+         * prop
+         * costruttore
+         * distruttore
+         * costante
+         * evento
+         * operatore
+         * indicizzatore
+         * tipo innestato
+         */
+        private const string pianeta = "terra";
+
+        private readonly DateTime datanascrita;
+        protected string nome { get; set; }
+        protected internal int anni { get; set; }
+
+        public Babbo()
+        {
+                datanascrita = DateTime.Now;
+        }
+
+        //OVERLOAD FIRMA = NOME +ARGOMENTI INGERSSO
+        public int ripetiNumero(int a)
+        {
+            return a;
+        }
+        public int ripetiNumero(int a, int b)
+        {
+            return a;
+        }
+
+       
+    }
+
+    public class Figlio : Babbo
+    {
+        
+    }
+
+
+    public class Miaclasse : Miaclasse1
+    {
+        //membri
+        public string pippo { get; set; }
+
+        public string pluto
+        {
+            get { return pluto; }
+
+            set { pluto = value; }
+        }
+
+        public string papaperino
+        {
+            get => papaperino;
+            set => papaperino = value;
+        }
+    }
+
+    public interface Imiainterfaccia
+    {
+    }
+
+    public class Miaclasse1 : Imiainterfaccia
+    {
+
+    }
+
     public enum Mesi
     {
         gennaio = 0,
@@ -87,21 +163,6 @@ namespace ClassLibrary1
         }
 
        
-    }
-
-
-    public class Miaclasse : Miaclasse1
-    {
-
-    }
-
-    public interface Imiainterfaccia
-    {
-    }
-
-    public class Miaclasse1 : Imiainterfaccia
-    {
-
     }
 
 }

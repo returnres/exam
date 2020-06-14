@@ -22,6 +22,18 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            
+
+
+            int x1 = 0;
+
+            //block
+            if (x1 == 0)//expression
+            {
+               //codice 
+            }
+
+
             int? nullable = null;
             var cliente = new { nome = "rob" };
             Mesi giorno = Mesi.febbraio;
@@ -30,6 +42,7 @@ namespace ConsoleApp1
             Pippo pippo;
             pippo.a = 1;
 
+            #region cast box unbox 
             //cast
             int i = 123;
             object box = i;
@@ -39,6 +52,8 @@ namespace ConsoleApp1
             var sss = Convert.ToString(1);
             TestClass tc = new TestClass();
 
+            #endregion
+
             #region type
             //GetType
             Type tipo = tc.GetType();
@@ -46,17 +61,15 @@ namespace ConsoleApp1
             //typeof
             Type type = typeof(Type);
 
-            //is tipo
+            //is tipo | as tipo
             string obj = "";
-            bool b = obj is string;
+            if (obj is string)
+            {
+                //cast ()
+                string a = (string)obj;//se obj non è compatibile con string cast exception
+                string a1 = obj as string;//se obj non compatobole con string ritorna null
+            }
 
-
-            //as tipo o derivato  altrimenti torna null
-            Miaclasse miaclasse = new Miaclasse();
-            //object testtype = miaclasse as string;
-
-            //cast eccezione se non stesso tipo o derivato
-            var a = (Miaclasse1)miaclasse;
 
             #endregion
 
