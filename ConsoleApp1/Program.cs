@@ -22,6 +22,10 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            SmartPhone.Battery battery = new SmartPhone.Battery();
+            MiaclasseStatic miaclasseStatic = new MiaclasseStatic();
+            MiaclasseStatic miaclasse2 = new MiaclasseStatic();
+            Console.WriteLine(MiaclasseStatic.contatore);
             ClassTest1 babbo = new ClassTest1();
             var testref = 0;
             babbo.cambiaNumero(ref testref);
@@ -202,7 +206,7 @@ namespace ConsoleApp1
             Task[] tasksarr = new Task[1];
             tasksarr[0] = tx1;
 
-            Gen1<Miaclasse1, Task> gen1 = new Gen1<Miaclasse1, Task>();
+            Gen1<MiaclasseStatic, Task> gen1 = new Gen1<MiaclasseStatic, Task>();
             //per inferenza di tipo si puo omettere
             //var mytask = gen1.ContinueTaskOrDefault<Task>(tx1);
 

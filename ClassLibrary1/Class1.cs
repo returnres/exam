@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,12 @@ using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     //astrazione
-    //incapsulamento
+    //incapsulamento prop
     //ereditarietà
     //polimorfismo
-    public class Miaclasse : Miaclasse1
+
+    //C#7 expression body per metodi
+    public class Miaclasse : MiaclasseStatic
     {
         /*memebri :
         * field
@@ -26,16 +29,9 @@ namespace ClassLibrary1
         * tipo innestato
         */
         private const string pianeta = "terra";
-
         private readonly DateTime datanascrita;
-        protected string nome { get; set; }
+        protected string _nome { get; set; }
         protected internal int anni { get; set; }
-
-        public Miaclasse()
-        {
-            datanascrita = DateTime.Now;
-        }
-        //membri
         public string pippo { get; set; }
 
         public string pluto
@@ -45,7 +41,15 @@ namespace ClassLibrary1
             set { pluto = value; }
         }
 
+        public Miaclasse()
+        {
+            datanascrita = DateTime.Now;
+        }
+
         //expression body
+        public Miaclasse(string nome) => _nome = nome;
+
+        //expression body C#7
         public string papaperino
         {
             get => papaperino;
@@ -101,21 +105,94 @@ namespace ClassLibrary1
         }
     }
 
-    public class Babbo
+    public class Veicolo
     {
+        protected string _name; 
 
+        public Veicolo(string name)
+        {
+            _name = name;
+        }
+
+        protected void Accelera()
+        {
+            
+        }
+
+        protected void Decelerea()
+        {
+
+        }
     }
 
-    public class Figlio : Babbo
+    public sealed class Macchina : Veicolo
     {
+        private string _surname;
 
+        public Macchina(string name, string surname) : base(name)
+        {
+            _surname = surname;
+        }
+
+        //HIDING
+        protected void Accelera()
+        {
+            base.Decelerea();
+        }
     }
 
     public interface Imiainterfaccia
     {
     }
 
-    public class Miaclasse1 : Imiainterfaccia
+    public class MiaclasseStatic : Imiainterfaccia
+    {
+        public static int contatore { get; internal set; }
+
+        static MiaclasseStatic()
+        {
+            contatore++;
+        }
+    }
+
+    //indicizzatori
+
+    //operator
+    //public class OperatorCalss
+    //{
+    //    public OperatorCalss(OperatorCalss oc1, OperatorCalss oc2)
+    //    {
+
+    //    }
+    //    public int pippo;
+    //    public static OperatorCalss operator +(OperatorCalss oc1, OperatorCalss oc2)
+    //    {
+
+    //        return new OperatorCalss(oc1.pippo + oc2.pippo);
+    //    }
+
+    //    public static explicit operator OperatorCalss(int i)
+    //    {
+    //        return new OperatorCalss(i, 0);
+    //    }
+    //}
+
+    public class SmartPhone
+    {
+        public class Battery
+        {
+            
+        }
+    }
+
+    //file MyClass.cs
+    partial class MyClass
+    {
+        
+    }
+
+    //secondMyClass.cs
+    partial class MyClass
     {
 
     }
@@ -200,7 +277,7 @@ namespace ClassLibrary1
             return base.ToString();
         }
 
-       
+
     }
 
 }

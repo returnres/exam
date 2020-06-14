@@ -42,14 +42,14 @@ namespace ClassLibrary1
 
     }
 
-    public class Gen1Figlia<T, T1> where T : Miaclasse1
+    public class Gen1Figlia<T, T1> where T : MiaclasseStatic
                                     where T1 : class
     {
 
     }
 
 
-    public class Gen1<T, T1> where T : Miaclasse1, Imiainterfaccia
+    public class Gen1<T, T1> where T : MiaclasseStatic, Imiainterfaccia
                             where T1 : Task
     {
         public T2 ContinueTaskOrDefault<T2>(T2 param,Action callBack)
