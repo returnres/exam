@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,30 +12,54 @@ namespace ClassLibrary1
     //incapsulamento
     //ereditarietà
     //polimorfismo
-
-    public class Babbo
+    public class Miaclasse : Miaclasse1
     {
         /*memebri :
-         * field
-         * prop
-         * costruttore
-         * distruttore
-         * costante
-         * evento
-         * operatore
-         * indicizzatore
-         * tipo innestato
-         */
+        * field
+        * prop
+        * costruttore
+        * distruttore
+        * costante
+        * evento
+        * operatore
+        * indicizzatore
+        * tipo innestato
+        */
         private const string pianeta = "terra";
 
         private readonly DateTime datanascrita;
         protected string nome { get; set; }
         protected internal int anni { get; set; }
 
-        public Babbo()
+        public Miaclasse()
         {
-                datanascrita = DateTime.Now;
+            datanascrita = DateTime.Now;
         }
+        //membri
+        public string pippo { get; set; }
+
+        public string pluto
+        {
+            get { return pluto; }
+
+            set { pluto = value; }
+        }
+
+        //expression body
+        public string papaperino
+        {
+            get => papaperino;
+            set => papaperino = value;
+        }
+    }
+
+    public class ClassTest1
+    {
+        //expression body
+        //
+        public int Somma(int a, int b) => a + b;
+
+        public void Stampa(string str) => Console.WriteLine(str);
 
         //OVERLOAD FIRMA = NOME +ARGOMENTI INGERSSO
         public int ripetiNumero(int a)
@@ -45,32 +71,44 @@ namespace ClassLibrary1
             return a;
         }
 
-       
+        //passare parametri per rif
+        public int cambiaNumero(ref int a)
+        {
+            return a;
+        }
+
+        //passare + parametri in uscita c#6
+        public void potenza(int val, out double p2, out double p3)
+        {
+            p2 = Math.Pow(val, 2);
+            p3 = Math.Pow(val, 3);
+        }
+        //passare + parametri in uscita c#7
+        public void potenza1(int val, out double p2, out double p3)
+        {
+            p2 = Math.Pow(val, 2);
+            p3 = Math.Pow(val, 3);
+        }
+
+        public double CalcolaMedia(params double[] array)
+        {
+            return array.Average();
+        }
+
+        public void ParametriNome(string nome, int anni, string nazione = null)
+        {
+
+        }
+    }
+
+    public class Babbo
+    {
+
     }
 
     public class Figlio : Babbo
     {
-        
-    }
 
-
-    public class Miaclasse : Miaclasse1
-    {
-        //membri
-        public string pippo { get; set; }
-
-        public string pluto
-        {
-            get { return pluto; }
-
-            set { pluto = value; }
-        }
-
-        public string papaperino
-        {
-            get => papaperino;
-            set => papaperino = value;
-        }
     }
 
     public interface Imiainterfaccia

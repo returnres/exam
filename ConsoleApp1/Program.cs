@@ -22,11 +22,22 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
-            
+            ClassTest1 babbo = new ClassTest1();
+            var testref = 0;
+            babbo.cambiaNumero(ref testref);
+            double resp2;
+            double resp3 ;
+            //scarta valore resp3
+            babbo.potenza(2, out resp2,out _);
+            var media = babbo.CalcolaMedia(18, 27, 27, 27);
+            babbo.ParametriNome(nome:"rob", anni:43);
 
+            //c#7
+            //double xresp2;
+            //double xresp3;
+            //babbo.potenza1(2,  xresp2,  xresp3);
 
             int x1 = 0;
-
             //block
             if (x1 == 0)//expression
             {
