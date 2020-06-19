@@ -22,6 +22,9 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            Figlio figlio = new Figlio("as");
+            Macchina macchina = new Macchina("320","bmw");
+            macchina.Parti();
             SmartPhone.Battery battery = new SmartPhone.Battery();
             MiaclasseStatic miaclasseStatic = new MiaclasseStatic();
             MiaclasseStatic miaclasse2 = new MiaclasseStatic();
@@ -53,7 +56,7 @@ namespace ConsoleApp1
             var cliente = new { nome = "rob" };
             Mesi giorno = Mesi.febbraio;
             int mese = (int)Mesi.febbraio;
-            Mesi a = (Mesi)1;
+            Mesi mese1 = (Mesi)1;
             Pippo pippo;
             pippo.a = 1;
 

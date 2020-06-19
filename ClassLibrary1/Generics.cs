@@ -102,7 +102,7 @@ namespace ClassLibrary1
         /// <summary>
         /// è necessario solo se non metto il cstruttore di defult
         /// </summary>
-        /// <param name="len"></param>
+        /// <param modello="len"></param>
         public Lista1(int len) : base(len)
         {
         }
@@ -114,7 +114,7 @@ namespace ClassLibrary1
         /// <summary>
         /// è necessario solo se non metto il cstruttore di defult
         /// </summary>
-        /// <param name="len"></param>
+        /// <param modello="len"></param>
         public Lista2(int len) : base(len)
         {
         }
@@ -136,7 +136,7 @@ namespace ClassLibrary1
         /// <summary>
         /// crea array di n elelementi
         /// </summary>
-        /// <param name="len"></param>
+        /// <param modello="len"></param>
         public Lista(int len)
         {
             el = new T[len];

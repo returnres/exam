@@ -13,6 +13,100 @@ namespace ClassLibrary1
     //incapsulamento prop
     //ereditarietà
     //polimorfismo
+    //CLASSE ASTRATTA RAGGRUPPA FUNZIONALITA
+    //INTERFACCIA DEFINISCE UN CONTRATTO
+
+        //deve avere almeno un metodo abstract e
+        //la classe che la eredita deve avere override del metodo astratto
+        //e implementarlo altrimenti diventa astratta
+    public abstract class AMyclass
+    {
+        public void Validopertutti()
+        {
+            Console.WriteLine("Validopertutti");
+        }
+        public abstract void mymethod();
+    }
+
+    public class Babbo
+    {
+        public Babbo(string pippo)
+        {
+
+        }
+        //public Babbo()
+        //{
+
+        //}
+    }
+
+    public class Figlio :Babbo
+    {
+        //se il babbo ha un costruttore con parametro 
+        //allora devo mettere esplicitamente al babbo costruttore  
+        //senza parametri
+        //errore compilazione cerca il costruttore
+        //base senza parametri e non  lo trova !!!!
+        //public Figlio()
+        //{
+        //    Console.WriteLine("ctor Figlio");
+        //}
+
+        //devo mettere questo oppure creare un costruttore con 0 parametri
+        //al babbo
+        public Figlio(string pippo) : base(pippo)
+        {
+        }
+    }
+
+    public class Veicolo
+    {
+        protected string Modello;
+        protected int vel;
+        public Veicolo(string modello)
+        {
+            Console.WriteLine("ctor babbo");
+
+            Modello = modello;
+        }
+
+        public void Parti()
+        {
+            vel = 1;
+        }
+
+        protected void Accelera()
+        {
+            
+        }
+
+       public virtual void Decelerea()
+        {
+
+        }
+    }
+
+    public sealed class Macchina : Veicolo
+    {
+        private string _marca;
+
+        public Macchina(string modello, string marca) : base(modello)
+        {
+            Console.WriteLine("ctor figlio");
+            _marca = marca;
+        }
+
+        //HIDING
+        protected void Accelera()
+        {
+            base.Parti();
+        }
+
+        public override void Decelerea()
+        {
+            //faccio codice diverso dal veicolo
+        }
+    }
 
     //C#7 expression body per metodi
     public class Miaclasse : MiaclasseStatic
@@ -104,43 +198,6 @@ namespace ClassLibrary1
 
         }
     }
-
-    public class Veicolo
-    {
-        protected string _name; 
-
-        public Veicolo(string name)
-        {
-            _name = name;
-        }
-
-        protected void Accelera()
-        {
-            
-        }
-
-        protected void Decelerea()
-        {
-
-        }
-    }
-
-    public sealed class Macchina : Veicolo
-    {
-        private string _surname;
-
-        public Macchina(string name, string surname) : base(name)
-        {
-            _surname = surname;
-        }
-
-        //HIDING
-        protected void Accelera()
-        {
-            base.Decelerea();
-        }
-    }
-
     public interface Imiainterfaccia
     {
     }
