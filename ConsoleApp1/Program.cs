@@ -22,8 +22,20 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            //confrontare oggetti
+            ComparableMoto comparableMoto = new ComparableMoto();
+            ComparableMoto comparableMoto1 = new ComparableMoto();
+            int ord = comparableMoto.CompareTo(comparableMoto1);
+
+            List<ComparableMoto> comparableMotos = new List<ComparableMoto>();
+            comparableMotos.Add(new ComparableMoto(){Targa = "A"});
+            comparableMotos.Add(new ComparableMoto(){Targa = "B"});
+            comparableMotos.Add(new ComparableMoto(){Targa = "C"});
+            comparableMotos.Sort();
+
+            #region ref out static class
             Figlio figlio = new Figlio("as");
-            Macchina macchina = new Macchina("320","bmw");
+            Macchina macchina = new Macchina("320", "bmw");
             macchina.Parti();
             SmartPhone.Battery battery = new SmartPhone.Battery();
             MiaclasseStatic miaclasseStatic = new MiaclasseStatic();
@@ -33,11 +45,11 @@ namespace ConsoleApp1
             var testref = 0;
             babbo.cambiaNumero(ref testref);
             double resp2;
-            double resp3 ;
+            double resp3;
             //scarta valore resp3
-            babbo.potenza(2, out resp2,out _);
+            babbo.potenza(2, out resp2, out _);
             var media = babbo.CalcolaMedia(18, 27, 27, 27);
-            babbo.ParametriNome(nome:"rob", anni:43);
+            babbo.ParametriNome(nome: "rob", anni: 43);
 
             //c#7
             //double xresp2;
@@ -48,7 +60,7 @@ namespace ConsoleApp1
             //block
             if (x1 == 0)//expression
             {
-               //codice 
+                //codice 
             }
 
 
@@ -59,6 +71,9 @@ namespace ConsoleApp1
             Mesi mese1 = (Mesi)1;
             Pippo pippo;
             pippo.a = 1;
+
+
+            #endregion
 
             #region cast box unbox 
             //cast
@@ -491,7 +506,6 @@ namespace ConsoleApp1
             #endregion
 
             Console.ReadLine();
-
         }
 
         #region private

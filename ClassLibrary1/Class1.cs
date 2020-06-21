@@ -13,19 +13,39 @@ namespace ClassLibrary1
     //incapsulamento prop
     //ereditarietà
     //polimorfismo
-    //CLASSE ASTRATTA RAGGRUPPA FUNZIONALITA
-    //INTERFACCIA DEFINISCE UN CONTRATTO
 
-        //deve avere almeno un metodo abstract e
-        //la classe che la eredita deve avere override del metodo astratto
-        //e implementarlo altrimenti diventa astratta
-    public abstract class AMyclass
+
+    //INTERFACCIA DEFINISCE UN CONTRATTO
+    public interface IInterface 
+    {
+        void Metodo();
+        int Prop { get; set; }
+    }
+
+    public interface IInterface1
+    {
+        void Metodo();
+       
+    }
+    //CLASSE ASTRATTA RAGGRUPPA FUNZIONALITA
+    //deve avere almeno un metodo abstract e
+    //la classe che la eredita deve avere override del metodo astratto
+    //e implementarlo altrimenti diventa astratta
+    public abstract class AMyclass : IInterface 
     {
         public void Validopertutti()
         {
             Console.WriteLine("Validopertutti");
         }
         public abstract void mymethod();
+
+         void IInterface.Metodo()
+         {
+             this.mymethod();
+         }
+
+        public int Prop { get; set; }
+        
     }
 
     public class Babbo
@@ -336,5 +356,11 @@ namespace ClassLibrary1
 
 
     }
-
+    public class MyClass1 : AMyclass
+    {
+        public override void mymethod()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }
