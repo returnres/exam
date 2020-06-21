@@ -1,9 +1,11 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -28,16 +30,80 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+
+            Console.WriteLine(typeof(MiaclasseProva).AssemblyQualifiedName);
             //REFLECTION System.Assembly
+            //assembly (IL codice compilato) exe/dll
+            //carico in memoria assembly
+
+            //PLUGIN
+            //caricamento dinamico  assembly da path
+            var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
+            Type[] tips = assm.GetTypes();
+            foreach (var item in tips)
+            {
+                //var objectType = Type.GetType(objectToInstantiate);
+                Type objectType = assm.GetType(item.FullName);
+                var instantiatedObject = Activator.CreateInstance(objectType);
+            }
+            //PLUGIN
+
+            //carica solo metadati dei tipi SENZA instanziare i tipi
+            var ass2 = Assembly.ReflectionOnlyLoadFrom("ClassLibrary1.dll");
+
+            //var instantiatedObject1 = Activator.CreateInstance(typeof(Tipo));
+            //var instantiatedObject2 = Activator.CreateInstance<Tipo>;
+
+            //assembly attualmente in esecuzione
+            var ass = Assembly.GetExecutingAssembly();
+            var ass1 = Assembly.GetAssembly(typeof(string));
+            var mytype = ass.GetType("ConsoleApp1.Program");
+            var fullname = ass.FullName;
+            var nome = mytype.Name;
+            var mytypeNamespace = mytype.Namespace;
+
+            var typeinfo = typeof(MiaclasseProva).GetTypeInfo();
+            var name = typeinfo.FullName;
+
+            //ottengo tipo classe
+            MiaclasseProva miaclasseProva = new MiaclasseProva();
+
+            var typeinfo1 = miaclasseProva.GetType().GetTypeInfo();
+            
+            //ottengo interafccia
+            var interfaccie = typeinfo1.GetInterfaces();
+
+            //ottengo metodi e parametri
+            MethodInfo[] metodi = typeinfo1.GetMethods(BindingFlags.Instance);
+            foreach (var metodo in metodi)
+            {
+                var pi = metodo.GetParameters();
+                foreach (var parinfo in pi)
+                {
+                    Console.WriteLine($" parametro : {parinfo.ParameterType.Name}");
+                }
+            }
+
+            //ottengo membri
+            MemberInfo[] membri = typeinfo1.GetMembers(BindingFlags.Public| BindingFlags.NonPublic);
+            foreach (var mambro in membri)
+            {
+                var mi = mambro.MemberType;
+            }
+
+
             //confrontare oggetti
             ComparableMoto comparableMoto = new ComparableMoto();
+            comparableMoto.Targa = "pippo";
             ComparableMoto comparableMoto1 = new ComparableMoto();
+            comparableMoto1.Targa = "pluto";
+
             int ord = comparableMoto.CompareTo(comparableMoto1);
 
             List<ComparableMoto> comparableMotos = new List<ComparableMoto>();
-            comparableMotos.Add(new ComparableMoto(){Targa = "A"});
-            comparableMotos.Add(new ComparableMoto(){Targa = "B"});
-            comparableMotos.Add(new ComparableMoto(){Targa = "C"});
+            comparableMotos.Add(new ComparableMoto() { Targa = "A" });
+            comparableMotos.Add(new ComparableMoto() { Targa = "B" });
+            comparableMotos.Add(new ComparableMoto() { Targa = "C" });
             comparableMotos.Sort();
 
             AppDomain.CurrentDomain.UnhandledException += OnUnhandleException;
@@ -102,7 +168,7 @@ namespace ConsoleApp1
 
 
             //GetType
-
+            var ti = typeof(string).GetTypeInfo();
             Type ts = Type.GetType("System.String");//se si trova in Mscorelib.dll
 
             TestClass tc = new TestClass();
@@ -111,7 +177,7 @@ namespace ConsoleApp1
             //typeof
             Type type = typeof(Type);
 
-           
+
             //is tipo | as tipo
             string obj = "";
             if (obj is string)
@@ -173,14 +239,14 @@ namespace ConsoleApp1
 
             //type
             object obj1 = "";
-            if(obj1 is string str)
+            if (obj1 is string str)
                 Console.WriteLine(str);
 
             //invece che
 
-            if (obj1  is string)
+            if (obj1 is string)
             {
-                string str1 = (string) obj;
+                string str1 = (string)obj;
                 Console.WriteLine(str1);
             }
 
