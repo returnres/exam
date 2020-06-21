@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="ManageException.cs" />
     <Compile Include="StudyInterface.cs" />
     <Compile Include="TestDelegate.cs" />
     <Compile Include="Generics.cs" />

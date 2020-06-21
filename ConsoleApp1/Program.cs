@@ -12,6 +12,12 @@ using ClassLibrary1;
 
 namespace ConsoleApp1
 {
+    /// <summary>
+    /// exam 
+    /// C#6
+    /// c#7
+    /// C#8 (è supportato in .NET Core 3.x e .NET standard 2.1)
+    /// </summary>
     class Program
     {
         private static object lockobj = new object();
