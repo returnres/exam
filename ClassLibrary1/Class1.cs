@@ -280,7 +280,7 @@ namespace ClassLibrary1
         febbraio = 1
     }
 
-    public struct Pippo
+    public struct Pippolo
     {
         public int a;
     }
