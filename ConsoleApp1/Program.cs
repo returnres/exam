@@ -28,6 +28,7 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            //REFLECTION System.Assembly
             //confrontare oggetti
             ComparableMoto comparableMoto = new ComparableMoto();
             ComparableMoto comparableMoto1 = new ComparableMoto();
@@ -38,6 +39,11 @@ namespace ConsoleApp1
             comparableMotos.Add(new ComparableMoto(){Targa = "B"});
             comparableMotos.Add(new ComparableMoto(){Targa = "C"});
             comparableMotos.Sort();
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandleException;
+            ManageException manage = new ManageException();
+            manage.GeneroEccezioneNonGestita();
+
 
             #region ref out static class
             Figlio figlio = new Figlio("as");
@@ -89,17 +95,23 @@ namespace ConsoleApp1
             dynamic dd = 1;
             int inc = dd + 1;
             var sss = Convert.ToString(1);
-            TestClass tc = new TestClass();
 
             #endregion
 
             #region type
+
+
             //GetType
+
+            Type ts = Type.GetType("System.String");//se si trova in Mscorelib.dll
+
+            TestClass tc = new TestClass();
             Type tipo = tc.GetType();
 
             //typeof
             Type type = typeof(Type);
 
+           
             //is tipo | as tipo
             string obj = "";
             if (obj is string)
@@ -514,7 +526,13 @@ namespace ConsoleApp1
             Console.ReadLine();
         }
 
+
         #region private
+        private static void OnUnhandleException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine("eccezione non gstita");
+        }
+
         private static async void CallDoCurlAsync()
         {
             var res = await DoCurlAsync();//asyn 
