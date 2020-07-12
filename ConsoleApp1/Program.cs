@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,14 +32,99 @@ namespace ConsoleApp1
         static int n1 = 0;
         static int n2 = 0;
 
+        private static TraceSource mySource =
+            new TraceSource("MyService");
+
+        private static TraceSource mySource1 =
+            new TraceSource("MyService1");
+
+
+
         static void Main(string[] args)
         {
+            string main = "Main";
+            Trace.Write("trace");
+            Debug.Write("debug");
+            Debug.Assert(main == "Main");
+
+            #region TraceSource
+
+            Stream outfile = File.Create("log.txt");
+            TextWriterTraceListener textWriterTraceListener = new TextWriterTraceListener(outfile);
+
+            TraceSource trace  = new TraceSource("myT",SourceLevels.All);
+
+            trace.Listeners.Clear();
+            trace.Listeners.Add(textWriterTraceListener);
+
+            trace.TraceInformation("");
+            trace.TraceEvent(TraceEventType.Critical,0,"");
+            trace.TraceData(TraceEventType.Information,1,"");
+            trace.Flush();
+            trace.Close();
+
+            mySource.TraceEvent(TraceEventType.Error, 1,
+                "Error message.");
+            mySource.TraceEvent(TraceEventType.Warning, 2,
+                "Warning message.");
+
+            #endregion
+
+            #region EventLog
+            if (!EventLog.SourceExists("Mysource"))
+            {
+                EventLog.CreateEventSource("MySource", "MyLog");
+            }
+
+            EventLog eventLog = new EventLog();
+            eventLog.Source = "MySource";
+            eventLog.WriteEntry("Ciao J0n");
+            #endregion
+            
+            #region TraceSwitch
+            ////Define this in the web config
+            //TraceSwitch generalSwitch = new TraceSwitch("General",
+            //    "Entire Application");
+
+            //string msgText = "1";
+
+            //// Write INFO type message, if switch is set to Verbose, type 4
+            //Trace.WriteIf(generalSwitch.TraceVerbose, msgText);
+
+            // msgText = "A2MC";
+
+            //// Write INFO type message, if switch is set to Verbose or Warning 4 0r 2
+            ////Trace.WriteIf(generalSwitch.TraceWarning, msgText);
+
+            //// Write ERROR type message, if switch is set to Verbose, Warning, info or Error
+            //// 0 (off), 1 (error), 2 (warning), 3 (info), OR 4 (verbose)
+            ////If General switch in WEB CONFIG = 0 then it will not get into the if below
+            //if (generalSwitch.TraceError)
+            //{
+            //    //Trace type, inthis case error will define how it will appear in the event log
+            //    //Trace.TraceError("Error");
+            //    //Use your imagination to switch it on and off properly.
+            //    //You can really imagine and apply.
+            //}
+            #endregion
+
+            Ciccio c = new Ciccio();
+            c.Prova();
+            ICiccio s = (ICiccio)c;
+            s.Prova();
+            ICiccio1 s1 = (ICiccio1)c;
+            s1.Prova();
+            c.Nano();
+
+            double xxx = 0.0;
+            double yyy = 0.0;
+            //var reszzzz = xxx / yyy;NAN
             IIbabbo babbo11 = new Figliolo();
             babbo11.MioMetodo();
 
             Mio("ciao");
-            Mio("ciao",paperino:1);
-            Mio("ciao",pluto:true,paperino:1);
+            Mio("ciao", paperino: 1);
+            Mio("ciao", pluto: true, paperino: 1);
             //Mio("ciao",pluto:false,1);ERRORE
             //Pippo pippos = new Pippo();
             //pippos.DoSOmething();
@@ -105,7 +191,7 @@ namespace ConsoleApp1
 
             //salva codice sorgente
             CSharpCodeProvider provider = new CSharpCodeProvider();
-            
+
             string pathSource = @"../../bin/Debug/Pippo.cs";
             string pathOut = @"../../bin/Debug/Pippos.dll";
 
@@ -684,7 +770,7 @@ namespace ConsoleApp1
 
         public static void Mio(string pippo, bool pluto = false, int paperino = 1)
         {
-            
+
         }
         public static bool CompileCSharpCode(string sourceFile, string exeFile)
         {
@@ -700,7 +786,7 @@ namespace ConsoleApp1
             // a class library.
             //cp.GenerateExecutable = true;
             cp.GenerateExecutable = false;
-            
+
             // Set the assembly file name to generate.
             cp.OutputAssembly = exeFile;
 
