@@ -39,7 +39,6 @@ namespace ConsoleApp1
             new TraceSource("MyService1");
 
 
-
         static void Main(string[] args)
         {
             string main = "Main";
@@ -80,7 +79,7 @@ namespace ConsoleApp1
             eventLog.Source = "MySource";
             eventLog.WriteEntry("Ciao J0n");
             #endregion
-            
+
             #region TraceSwitch
             ////Define this in the web config
             //TraceSwitch generalSwitch = new TraceSwitch("General",
@@ -107,6 +106,35 @@ namespace ConsoleApp1
             //    //You can really imagine and apply.
             //}
             #endregion
+
+
+            PerformanceCounter avgCounter64Sample = new PerformanceCounter("AverageCounter64SampleCategory",
+                "AverageCounter64Sample",
+                false);
+
+            if (!PerformanceCounterCategory.Exists("AverageCounter64SampleCategory"))
+            {
+                CounterCreationDataCollection counterDataCollection = new CounterCreationDataCollection();
+
+                // Add the counter.
+                CounterCreationData averageCount64 = new CounterCreationData();
+                averageCount64.CounterType = PerformanceCounterType.AverageCount64;
+                averageCount64.CounterName = "AverageCounter64Sample";
+                counterDataCollection.Add(averageCount64);
+
+                // Add the base counter.
+                CounterCreationData averageCount64Base = new CounterCreationData();
+                averageCount64Base.CounterType = PerformanceCounterType.AverageBase;
+                averageCount64Base.CounterName = "AverageCounter64SampleBase";
+                counterDataCollection.Add(averageCount64Base);
+
+                // Create the category.
+                PerformanceCounterCategory.Create("AverageCounter64SampleCategory",
+                    "Demonstrates usage of the AverageCounter64 performance counter type.",
+                    PerformanceCounterCategoryType.SingleInstance, counterDataCollection);
+                avgCounter64Sample.IncrementBy(12);
+            }
+
 
             Ciccio c = new Ciccio();
             c.Prova();
@@ -316,7 +344,6 @@ namespace ConsoleApp1
             {
                 //codice 
             }
-
 
             int? nullable = null;
             var cliente = new { nome = "rob" };
@@ -767,7 +794,7 @@ namespace ConsoleApp1
 
             Console.ReadLine();
         }
-
+      
         public static void Mio(string pippo, bool pluto = false, int paperino = 1)
         {
 
