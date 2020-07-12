@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ClassLibrary1;
-using CodeDOM;
 using Microsoft.CSharp;
 
 namespace ConsoleApp1
@@ -34,8 +33,15 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
-            Pippo pippos = new Pippo();
-            pippos.DoSOmething();
+            IIbabbo babbo11 = new Figliolo();
+            babbo11.MioMetodo();
+
+            Mio("ciao");
+            Mio("ciao",paperino:1);
+            Mio("ciao",pluto:true,paperino:1);
+            //Mio("ciao",pluto:false,1);ERRORE
+            //Pippo pippos = new Pippo();
+            //pippos.DoSOmething();
             /*
             #region  GENERZIONE DINAMICA CODICE
             //System.Reflection.Emit 
@@ -121,14 +127,14 @@ namespace ConsoleApp1
 
             //PLUGIN
             //caricamento dinamico  assembly da path
-            var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
-            Type[] tips = assm.GetTypes();
-            foreach (var item in tips)
-            {
-                //var objectType = Type.GetType(objectToInstantiate);
-                Type objectType = assm.GetType(item.FullName);
-                var instantiatedObject = Activator.CreateInstance(objectType);
-            }
+            //var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
+            //Type[] tips = assm.GetTypes();
+            //foreach (var item in tips)
+            //{
+            //    //var objectType = Type.GetType(objectToInstantiate);
+            //    Type objectType = assm.GetType(item.FullName);
+            //    var instantiatedObject = Activator.CreateInstance(objectType);
+            //}
             //PLUGIN
 
             //carica solo metadati dei tipi SENZA instanziare i tipi
@@ -674,6 +680,11 @@ namespace ConsoleApp1
             #endregion
 
             Console.ReadLine();
+        }
+
+        public static void Mio(string pippo, bool pluto = false, int paperino = 1)
+        {
+            
         }
         public static bool CompileCSharpCode(string sourceFile, string exeFile)
         {
