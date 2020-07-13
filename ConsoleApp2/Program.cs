@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ConsoleApp2
 {
@@ -108,11 +109,11 @@ namespace ConsoleApp2
                 fs.Write(info, 0, info.Length);
 
                 byte[] info1 = new UTF8Encoding(true).GetBytes("This is some more text,");
-                fs.Write(info, 0, info1.Length);
+                fs.Write(info1, 0, info1.Length);
 
 
                 byte[] info2 = new UTF8Encoding(true).GetBytes("\r\nand this is on a new line");
-                fs.Write(info, 0, info2.Length);
+                fs.Write(info2, 0, info2.Length);
             }
 
             //Open the stream and read it back.
@@ -149,7 +150,54 @@ namespace ConsoleApp2
             Console.WriteLine(ReadAll(path));
             #endregion
 
+            #region xml
 
+            /*
+             * <?xml version="1.0" encoding="utf-16"?>
+              <People>
+                <Person firstname="J0n" lastname="izzo">
+                  <Details>
+                   <EmailAddress>j0n@ciccio.it</EmailAddress>
+                  </Details>
+                </Person>
+             </People>
+             *
+             */
+            StringWriter mioxml = new StringWriter();
+            using (XmlWriter xmlWriter = XmlWriter.Create(mioxml, new XmlWriterSettings() {Indent = true}))
+            {
+                xmlWriter.WriteStartDocument();
+                xmlWriter.WriteStartElement("People");
+                xmlWriter.WriteStartElement("Person");
+                xmlWriter.WriteAttributeString("firstname","J0n");
+                xmlWriter.WriteAttributeString("lastname", "izzo");
+                xmlWriter.WriteStartElement("Details");
+                xmlWriter.WriteElementString("EmailAddress","j0n@ciccio.it");
+                //xmlWriter.WriteEndElement();non servono ad un cazzo li chiude da se
+                //xmlWriter.WriteEndElement();
+                xmlWriter.Flush();
+            }
+
+            using (StringReader stringReader = new StringReader(mioxml.ToString()))
+            {
+                using (XmlReader xmlReader =
+                    XmlReader.Create(stringReader, new XmlReaderSettings() {IgnoreWhitespace = true}))
+                {
+                    xmlReader.MoveToContent();
+                    xmlReader.ReadStartElement("People");
+
+                    string firstname = xmlReader.GetAttribute("firstname");
+                    string lastname = xmlReader.GetAttribute("lastname");
+                    Console.WriteLine($"{firstname}, {lastname}");
+
+                    xmlReader.ReadStartElement("Person");
+                    xmlReader.ReadStartElement("Details");
+
+                    string email = xmlReader.ReadString();
+                    Console.WriteLine($"{email}");
+                }
+            }
+            #endregion
         }
 
         public static string ReadAll(string path)
