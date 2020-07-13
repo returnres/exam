@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -31,6 +32,7 @@ namespace ConsoleApp1
         static int n = 0;
         static int n1 = 0;
         static int n2 = 0;
+        public delegate int myDelegate(string str);
 
         private static TraceSource mySource =
             new TraceSource("MyService");
@@ -108,33 +110,34 @@ namespace ConsoleApp1
             #endregion
 
 
-            PerformanceCounter avgCounter64Sample = new PerformanceCounter("AverageCounter64SampleCategory",
-                "AverageCounter64Sample",
-                false);
+            #region PerformanceCounter
+            //PerformanceCounter avgCounter64Sample = new PerformanceCounter("AverageCounter64SampleCategory",
+            //    "AverageCounter64Sample",
+            //    false);
 
-            if (!PerformanceCounterCategory.Exists("AverageCounter64SampleCategory"))
-            {
-                CounterCreationDataCollection counterDataCollection = new CounterCreationDataCollection();
+            //if (!PerformanceCounterCategory.Exists("AverageCounter64SampleCategory"))
+            //{
+            //    CounterCreationDataCollection counterDataCollection = new CounterCreationDataCollection();
 
-                // Add the counter.
-                CounterCreationData averageCount64 = new CounterCreationData();
-                averageCount64.CounterType = PerformanceCounterType.AverageCount64;
-                averageCount64.CounterName = "AverageCounter64Sample";
-                counterDataCollection.Add(averageCount64);
+            //    // Add the counter.
+            //    CounterCreationData averageCount64 = new CounterCreationData();
+            //    averageCount64.CounterType = PerformanceCounterType.AverageCount64;
+            //    averageCount64.CounterName = "AverageCounter64Sample";
+            //    counterDataCollection.Add(averageCount64);
 
-                // Add the base counter.
-                CounterCreationData averageCount64Base = new CounterCreationData();
-                averageCount64Base.CounterType = PerformanceCounterType.AverageBase;
-                averageCount64Base.CounterName = "AverageCounter64SampleBase";
-                counterDataCollection.Add(averageCount64Base);
+            //    // Add the base counter.
+            //    CounterCreationData averageCount64Base = new CounterCreationData();
+            //    averageCount64Base.CounterType = PerformanceCounterType.AverageBase;
+            //    averageCount64Base.CounterName = "AverageCounter64SampleBase";
+            //    counterDataCollection.Add(averageCount64Base);
 
-                // Create the category.
-                PerformanceCounterCategory.Create("AverageCounter64SampleCategory",
-                    "Demonstrates usage of the AverageCounter64 performance counter type.",
-                    PerformanceCounterCategoryType.SingleInstance, counterDataCollection);
-                avgCounter64Sample.IncrementBy(12);
-            }
-
+            //    // Create the category.
+            //    PerformanceCounterCategory.Create("AverageCounter64SampleCategory",
+            //        "Demonstrates usage of the AverageCounter64 performance counter type.",
+            //        PerformanceCounterCategoryType.SingleInstance, counterDataCollection);
+            //    avgCounter64Sample.IncrementBy(12);
+            //}
+            #endregion
 
             Ciccio c = new Ciccio();
             c.Prova();
@@ -156,8 +159,11 @@ namespace ConsoleApp1
             //Mio("ciao",pluto:false,1);ERRORE
             //Pippo pippos = new Pippo();
             //pippos.DoSOmething();
-            /*
+
+
             #region  GENERZIONE DINAMICA CODICE
+            /*
+            
             //System.Reflection.Emit 
             //creazione , lancio e salvataggoi IL a runtime
             AssemblyName nameAss = new AssemblyName("DynamicAss");
@@ -233,6 +239,8 @@ namespace ConsoleApp1
             }
 
             CompileCSharpCode(pathSource, pathOut);
+
+            #endregion
 
             #region reflection
             //REFLECTION System.Assembly
@@ -459,20 +467,48 @@ namespace ConsoleApp1
 
             #endregion
 
-            #region delegate avent
+            #region  avent
             //Event
+            Pub pub = new Pub();
+            pub.OnChange += () => Console.WriteLine("");
+            pub.Raise();
+
+            Pub1 p1 = new Pub1();
+            p1.Raise();
+
+            Pub2 p2 = new Pub2();
+            p2.CreateAndRaise();
+
             Car car = new Car();
             CarMonitor cm = new CarMonitor(car);
 
             car.Decelerate();
             car.Decelerate();
 
+            #endregion
 
+            #region Expression Tree
             //Expression Tree
             TestExpres testExpres = new TestExpres();
             Func<int, bool> isPari = testExpres.exp1.Compile();
             if (isPari(4))
                 Console.WriteLine("pari");
+            #endregion
+
+            #region delegate 
+
+            //assegno lambda (anonyous method)
+            myDelegate myd = (x) => 1;
+            Console.WriteLine(myd("0ciao"));
+
+            //assegno metodo
+            myDelegate myd1 = MethodForDel;
+            Console.WriteLine(myd1("1ciao"));
+
+            //assegno delegate vuoto
+            myDelegate myd2 = delegate { return 1; };
+            Console.WriteLine(myd2("2ciao"));
+
 
             //ti faccio assegnare sia metodo che ritorna stringa
             //ma anche metodo che torna object perchè stringa deriva
@@ -794,7 +830,11 @@ namespace ConsoleApp1
 
             Console.ReadLine();
         }
-      
+
+        static int MethodForDel(string ss)
+        {
+            return 1;
+        }
         public static void Mio(string pippo, bool pluto = false, int paperino = 1)
         {
 
@@ -935,4 +975,19 @@ namespace ConsoleApp1
         }
         #endregion
     }
+
+    //Expression Tree
+    //il codice rappresentato da un albero di espressione
+    //puo essere compilato in codice IL ed eseguito
+    //oppure nel caso di un db convertitot in SQL
+    public class TestExpres
+    {
+        //Expression Tree
+        //il codice rappresentato da un albero di espressione
+        //puo essere compilato in codice IL ed eseguito
+        //oppure nel caso di un db convertitot in SQL
+        public Expression<Func<int, bool>> exp1 = x => x % 2 == 0;
+
+    }
+
 }
