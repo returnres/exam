@@ -80,8 +80,8 @@ namespace ConsoleApp2
             int[] datay = { 1, 6, 3, 5 };
 
             IEnumerable<int> rr = from x in datax
-                join s in datay
-                    on x equals s
+                join s2 in datay
+                    on x equals s2
                 select x;
 
             Console.WriteLine(string.Join(",", rr));// 1, 3
@@ -108,10 +108,10 @@ namespace ConsoleApp2
             // Open the file to read from.
             using (StreamReader sr = fi1.OpenText())
             {
-                var s = "";
-                while ((s = sr.ReadLine()) != null)
+                var s2 = "";
+                while ((s2 = sr.ReadLine()) != null)
                 {
-                    Console.WriteLine(s);
+                    Console.WriteLine(s2);
                 }
             }
 
@@ -169,44 +169,44 @@ namespace ConsoleApp2
             }
 
             //Create the file.
-            using (FileStream fs = File.Create(path))
+            using (FileStream fs1 = File.Create(path))
             {
                 //byte che servono , da dove , lungo
                 byte[] info = new UTF8Encoding(true).GetBytes("This is some text");
-                fs.Write(info, 0, info.Length);
+                fs1.Write(info, 0, info.Length);
 
                 byte[] info1 = new UTF8Encoding(true).GetBytes("This is some more text,");
-                fs.Write(info1, 0, info1.Length);
+                fs1.Write(info1, 0, info1.Length);
 
 
                 byte[] info2 = new UTF8Encoding(true).GetBytes("\r\nand this is on a new line");
-                fs.Write(info2, 0, info2.Length);
+                fs1.Write(info2, 0, info2.Length);
             }
 
             //Open the stream and read it back.
-            using (FileStream fs = File.OpenRead(path))
+            using (FileStream fs1 = File.OpenRead(path))
             {
-                byte[] b = new byte[1024];
+                byte[] b1 = new byte[1024];
                 UTF8Encoding temp = new UTF8Encoding(true);
 
                 //byte che servono , da dove , lungo
-                while (fs.Read(b, 0, b.Length) > 0)
+                while (fs1.Read(b1, 0, b1.Length) > 0)
                 {
-                    Console.WriteLine(temp.GetString(b));
+                    Console.WriteLine(temp.GetString(b1));
                 }
             }
 
 
             //LEGGO FILE E SCRIVO SU CONSOLE
-            using (FileStream fs = File.OpenRead(path))
+            using (FileStream fs2 = File.OpenRead(path))
             {
                 //creo array byte per contenere grandezza file
-                byte[] data = new byte[fs.Length];
+                byte[] data = new byte[fs2.Length];
 
                 //per tutta la grandezza del file alimento array di byte con i byte del file
-                for (int i = 0; i < fs.Length; i++)
+                for (int j = 0; j < fs2.Length; j++)
                 {
-                    data[i] = (byte)fs.ReadByte();
+                    data[j] = (byte)fs2.ReadByte();
                 }
 
                 //alla fine devo fare ENCODING da byte a stringa con il formato utf8
@@ -401,75 +401,104 @@ namespace ConsoleApp2
                 Console.WriteLine(o.secure);
             }
 
+
+            #endregion
            
+
+            #region xml serialize override
+            //serialize start
+            XmlAttributes attrs = new XmlAttributes();
+
+            XmlElementAttribute attr = new XmlElementAttribute();
+            attr.ElementName = "Brass";
+            attr.Type = typeof(Brass);
+
+            attrs.XmlElements.Add(attr);
+
+            XmlAttributeOverrides attrOverrides = new XmlAttributeOverrides();
+
+            attrOverrides.Add(typeof(Orchestra), "Instruments", attrs);
+
+            XmlSerializer s =
+                new XmlSerializer(typeof(Orchestra), attrOverrides);
+
+            TextWriter writer2 = new StreamWriter("override.xml");
+            Orchestra band = new Orchestra();
+            Brass i = new Brass();
+            i.Name = "Trumpet";
+            i.IsValved = true;
+            Instrument[] myInstruments = { i };
+            band.Instruments = myInstruments;
+            s.Serialize(writer2, band);
+            writer2.Close();
+            //serialize end
+
+
+            //deserialize start
+            XmlAttributeOverrides attover =
+                new XmlAttributeOverrides();
+            XmlAttributes attrs1 = new XmlAttributes();
+
+            XmlElementAttribute attr1 = new XmlElementAttribute();
+            attr1.ElementName = "Brass";
+            attr1.Type = typeof(Brass);
+
+            attrs1.XmlElements.Add(attr1);
+
+            attover.Add(typeof(Orchestra), "Instruments", attrs1);
+
+            XmlSerializer s1 =
+                new XmlSerializer(typeof(Orchestra), attover);
+
+            FileStream fs = new FileStream("override.xml", FileMode.Open);
+            Orchestra band1 = (Orchestra)s1.Deserialize(fs);
+            Console.WriteLine("Brass:");
+
+            Brass b;
+            foreach (Instrument z in band1.Instruments)
+            {
+                b = (Brass)z;
+                Console.WriteLine(
+                    b.Name + "\n" +
+                    b.IsValved);
+            }
+            //deserialize end
             #endregion
 
-            #region xmlserialize override
-            XmlSerializer mySerializer;
-            TextWriter writer;
 
-            // Create the XmlAttributeOverrides and XmlAttributes objects.
-            XmlAttributeOverrides myXmlAttributeOverrides =
-                                                           new XmlAttributeOverrides();
-            XmlAttributes myXmlAttributes = new XmlAttributes();
+            #region xmlserialize override XmlAttributeAttribute
+            XmlSerializer mySerializer1;
+            TextWriter writer1;
 
-            /* Create an XmlAttributeAttribute set it to 
-            the XmlAttribute property of the XmlAttributes object.*/
-            XmlAttributeAttribute myXmlAttributeAttribute =
-                                                      new XmlAttributeAttribute();
-            myXmlAttributeAttribute.AttributeName = "Name";
-            myXmlAttributes.XmlAttribute = myXmlAttributeAttribute;
+            XmlAttributeOverrides myXmlAttributeOverrides1 =
+                new XmlAttributeOverrides();
+            XmlAttributes myXmlAttributes1 = new XmlAttributes();
 
-            // Add to the XmlAttributeOverrides. Specify the member name.
-            myXmlAttributeOverrides.Add(typeof(Student), "StudentName",
-                                                            myXmlAttributes);
+          
+            XmlAttributeAttribute myXmlAttributeAttribute1 =
+                new XmlAttributeAttribute();
+            myXmlAttributeAttribute1.AttributeName = "Name";
+            myXmlAttributes1.XmlAttribute = myXmlAttributeAttribute1;
+
+            myXmlAttributeOverrides1.Add(typeof(Student), "StudentName",
+                myXmlAttributes1);
 
             // Create the XmlSerializer.
-            mySerializer = new XmlSerializer(typeof(Student),
-                                                      myXmlAttributeOverrides);
+            mySerializer1 = new XmlSerializer(typeof(Student),
+                myXmlAttributeOverrides1);
 
-            writer = new StreamWriter("student.xml");
+            writer1 = new StreamWriter("student.xml");
 
-            //// Create an instance of the class that will be serialized.
-            //Student myStudent = new Student();
+            // Create an instance of the class that will be serialized.
+            Student myStudent = new Student();
 
-            //// Set the Name property, which will be generated as an XML attribute. 
-            //myStudent.StudentName = "James";
-            //myStudent.StudentNumber = 1;
-            //// Serialize the class, and close the TextWriter.
-            //mySerializer.Serialize(writer, myStudent);
-            //writer.Close();
+            // Set the Name property, which will be generated as an XML attribute. 
+            myStudent.StudentName = "James";
+            myStudent.StudentNumber = 1;
+            // Serialize the class, and close the TextWriter.
+            mySerializer1.Serialize(writer1, myStudent);
+            writer1.Close();
 
-            //// Create the XmlAttributeOverrides and XmlAttributes objects.
-            //XmlAttributeOverrides myXmlBookAttributeOverrides =
-            //                                          new XmlAttributeOverrides();
-            //XmlAttributes myXmlBookAttributes = new XmlAttributes();
-
-            ///* Create an XmlAttributeAttribute set it to 
-            //the XmlAttribute property of the XmlAttributes object.*/
-            //XmlAttributeAttribute myXmlBookAttributeAttribute =
-            //                                     new XmlAttributeAttribute("Name");
-            //myXmlBookAttributes.XmlAttribute = myXmlBookAttributeAttribute;
-
-            //// Add to the XmlAttributeOverrides. Specify the member name.
-            //myXmlBookAttributeOverrides.Add(typeof(Book), "BookName",
-            //                                       myXmlBookAttributes);
-
-            //// Create the XmlSerializer.
-            //mySerializer = new XmlSerializer(typeof(Book),
-            //                                 myXmlBookAttributeOverrides);
-
-            //writer = new StreamWriter("book.xml");
-
-            //// Create an instance of the class that will be serialized.
-            //Book myBook = new Book();
-
-            //// Set the Name property, which will be generated as an XML attribute. 
-            //myBook.BookName = ".NET";
-            //myBook.BookNumber = 10;
-            //// Serialize the class, and close the TextWriter.
-            //mySerializer.Serialize(writer, myBook);
-            writer.Close();
             #endregion
         }
 
@@ -518,13 +547,28 @@ namespace ConsoleApp2
       
     }
 
+    public class Orchestra
+    {
+        public Instrument[] Instruments;
+    }
+
+    public class Instrument
+    {
+        public string Name;
+    }
+
+    public class Brass : Instrument
+    {
+        public bool IsValved;
+    }
+
     [Serializable]
     public class PersonSer
     {
         public int ID;
         public String Name;
 
-        //[NonSerialized]
+        [NonSerialized]
         public int age;
 
         public PersonSer()
