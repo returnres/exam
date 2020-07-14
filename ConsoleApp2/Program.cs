@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ConsoleApp2
 {
@@ -336,8 +339,172 @@ namespace ConsoleApp2
             #endregion
 
             #region serialization
+            PersonSer obj = new PersonSer();
 
+            //BINARIO
+            //scrivo binario
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(@"testbin.bin", FileMode.Create);
+            formatter.Serialize(stream, obj);
+            stream.Close();
+
+            //leggo binario
+            stream = new FileStream(@"testbin.bin", FileMode.Open);
+            PersonSer objnew = (PersonSer)formatter.Deserialize(stream);
+
+            Console.WriteLine("BINARY");
+            Console.WriteLine(objnew.ID);
+            Console.WriteLine(objnew.Name);
+            Console.WriteLine(objnew.age);
+
+            //XML
+            Console.WriteLine("   SERIALIZATION XML  ");
+
+            XmlSerializer serializer = new XmlSerializer(typeof(PersonSer1));
+            String xml1;
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                PersonSer1 p = new PersonSer1();
+                p.ID = 1;
+                p.Name = "j0n";
+                p.age = 43;
+                serializer.Serialize(stringWriter, p);
+                xml1 = stringWriter.ToString();
+            }
+            Console.WriteLine(xml1);
+
+            //deserializzo
+            using (StringReader streamReader = new StringReader(xml1))
+            {
+                PersonSer1 p = (PersonSer1)serializer.Deserialize(streamReader);
+                Console.WriteLine(p.Name);
+            }
+
+            //serializzo
+            XmlSerializer serializer1 = new XmlSerializer(typeof(OrderSer), new Type[] { typeof(VipOrderSer) });
+            String xml;
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                var order = CreateOrder();
+                serializer1.Serialize(stringWriter, order);
+                xml = stringWriter.ToString();
+            }
+            Console.WriteLine("ESEMPIO ORDINE");
+            Console.WriteLine("");
+            Console.WriteLine(xml);
+
+            //deserializzo
+            using (StringReader streamReader = new StringReader(xml))
+            {
+                OrderSer o = (OrderSer)serializer1.Deserialize(streamReader);
+                Console.WriteLine("SECURE");
+                Console.WriteLine(o.secure);
+            }
+
+           
             #endregion
+
+            #region xmlserialize override
+            XmlSerializer mySerializer;
+            TextWriter writer;
+
+            // Create the XmlAttributeOverrides and XmlAttributes objects.
+            XmlAttributeOverrides myXmlAttributeOverrides =
+                                                           new XmlAttributeOverrides();
+            XmlAttributes myXmlAttributes = new XmlAttributes();
+
+            /* Create an XmlAttributeAttribute set it to 
+            the XmlAttribute property of the XmlAttributes object.*/
+            XmlAttributeAttribute myXmlAttributeAttribute =
+                                                      new XmlAttributeAttribute();
+            myXmlAttributeAttribute.AttributeName = "Name";
+            myXmlAttributes.XmlAttribute = myXmlAttributeAttribute;
+
+            // Add to the XmlAttributeOverrides. Specify the member name.
+            myXmlAttributeOverrides.Add(typeof(Student), "StudentName",
+                                                            myXmlAttributes);
+
+            // Create the XmlSerializer.
+            mySerializer = new XmlSerializer(typeof(Student),
+                                                      myXmlAttributeOverrides);
+
+            writer = new StreamWriter("student.xml");
+
+            //// Create an instance of the class that will be serialized.
+            //Student myStudent = new Student();
+
+            //// Set the Name property, which will be generated as an XML attribute. 
+            //myStudent.StudentName = "James";
+            //myStudent.StudentNumber = 1;
+            //// Serialize the class, and close the TextWriter.
+            //mySerializer.Serialize(writer, myStudent);
+            //writer.Close();
+
+            //// Create the XmlAttributeOverrides and XmlAttributes objects.
+            //XmlAttributeOverrides myXmlBookAttributeOverrides =
+            //                                          new XmlAttributeOverrides();
+            //XmlAttributes myXmlBookAttributes = new XmlAttributes();
+
+            ///* Create an XmlAttributeAttribute set it to 
+            //the XmlAttribute property of the XmlAttributes object.*/
+            //XmlAttributeAttribute myXmlBookAttributeAttribute =
+            //                                     new XmlAttributeAttribute("Name");
+            //myXmlBookAttributes.XmlAttribute = myXmlBookAttributeAttribute;
+
+            //// Add to the XmlAttributeOverrides. Specify the member name.
+            //myXmlBookAttributeOverrides.Add(typeof(Book), "BookName",
+            //                                       myXmlBookAttributes);
+
+            //// Create the XmlSerializer.
+            //mySerializer = new XmlSerializer(typeof(Book),
+            //                                 myXmlBookAttributeOverrides);
+
+            //writer = new StreamWriter("book.xml");
+
+            //// Create an instance of the class that will be serialized.
+            //Book myBook = new Book();
+
+            //// Set the Name property, which will be generated as an XML attribute. 
+            //myBook.BookName = ".NET";
+            //myBook.BookNumber = 10;
+            //// Serialize the class, and close the TextWriter.
+            //mySerializer.Serialize(writer, myBook);
+            writer.Close();
+            #endregion
+        }
+
+        public static OrderSer CreateOrder()
+        {
+            Product p = new Product()
+            {
+                Des = "des",
+                Price = 50
+            };
+            Product p1 = new Product()
+            {
+                Des = "des1",
+                Price = 40
+            };
+            OrderSer order = new VipOrderSer()
+            {
+                decs = "viporde",
+                secure = 111111111,
+                code = "XXXXYYYYYY",
+                OrderLines = new List<OrderLineSer>()
+                {
+                    new OrderLineSer()
+                    {
+                        Product = p,
+                        Amount = 11
+                    },
+                    new OrderLineSer()
+                    {
+                        Product = p1,
+                        Amount = 10
+                    }
+                }
+            };
+            return order;
         }
 
         public static string ReadAll(string path)
@@ -351,6 +518,80 @@ namespace ConsoleApp2
       
     }
 
+    [Serializable]
+    public class PersonSer
+    {
+        public int ID;
+        public String Name;
+
+        //[NonSerialized]
+        public int age;
+
+        public PersonSer()
+        {
+            ID = 1;
+            Name = "Roby";
+            age = 43;
+        }
+       
+
+        [OnSerializing()]
+        internal void OnSerializingMethod(StreamingContext con)
+        {
+            Console.WriteLine("OnSerializingMethod");
+        }
+    }
+
+    [Serializable]
+    public class PersonSer1
+    {
+        public int ID;
+        public String Name;
+
+        [NonSerialized]
+        public int age;
+    }
+
+
+    [Serializable]
+    public class OrderSer
+    {
+        [XmlIgnore]
+        public String code { get; set; }
+
+        public int secure;
+
+        [XmlArray("Lines")]
+        [XmlArrayItem("OrderLine")]
+        public List<OrderLineSer> OrderLines { get; set; }
+    }
+
+    [Serializable]
+    public class VipOrderSer :OrderSer
+    {
+        public String decs { get; set; }
+       
+    }
+
+    [Serializable]
+    public class OrderLineSer
+    {
+        [XmlAttribute]
+        public int Amount { get; set; }
+
+        [XmlAttribute]
+        public int ID { get; set; }
+
+        [XmlElement("Orderproduct")]
+        public Product Product { get; set; }
+    }
+
+    [Serializable]
+    public class ProductSer
+    {
+        [XmlAttribute]
+        public decimal Price { get; set; }
+    }
 
 
     public class Product
@@ -370,5 +611,15 @@ namespace ConsoleApp2
         public Product Product { get; set; }
     }
 
-   
+    public class Student
+    {
+        public string StudentName;
+        public int StudentNumber;
+    }
+
+    public class Book
+    {
+        public string BookName;
+        public int BookNumber;
+    }
 }
