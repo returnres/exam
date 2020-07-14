@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ConsoleApp2
 {
@@ -20,6 +21,69 @@ namespace ConsoleApp2
     {
         public static void Main()
         {
+
+            #region linq
+            int[] data1 = {1, 2, 3, 4};
+            IEnumerable<int> res = from d in data1
+                select d;
+            Console.WriteLine(string.Join(",",res));
+
+            List<Order> orders = new  List<Order>();
+            orders.Add(new Order()
+            {
+                OrderLines = new List<OrderLine>()
+                {
+                   new OrderLine()
+                   {
+                       Amount = 1,
+                       Product = new Product()
+                       {
+                           Des = "pippo",
+                           Price = 10
+                           
+                       }
+                   }
+                }
+            });
+            orders.Add(new Order()
+            {
+                OrderLines = new List<OrderLine>()
+                {
+                    new OrderLine()
+                    {
+                        Amount = 2,
+                        Product = new Product()
+                        {
+                            Des = "pluto",
+                            Price = 20
+
+                        }
+                    }
+                }
+            });
+
+            //grouping and projectons
+            var res1 = from o in orders
+                from l in o.OrderLines
+                group l by l.Product
+                into p
+                select new
+                {
+                    Product = p.Key,
+                    Amount = p.Sum(x => x.Amount)
+                };
+
+            int[] datax = { 1, 2, 3, 4 };
+            int[] datay = { 1, 6, 3, 5 };
+
+            IEnumerable<int> rr = from x in datax
+                join s in datay
+                    on x equals s
+                select x;
+
+            Console.WriteLine(string.Join(",", rr));// 1, 3
+            #endregion
+
             #region file
             // Get the current directory.
             //C:\Users\rob\source\repos\Exam\ConsoleApp2\bin\Debug
@@ -198,6 +262,82 @@ namespace ConsoleApp2
                 }
             }
             #endregion
+
+            #region xmldocument
+            XmlDocument doc = new XmlDocument();
+            doc.Load("test.xml");
+            //doc.Load(mioxml.ToString());
+
+            XmlNodeList nodeList;
+            XmlNode root = doc.DocumentElement;
+
+            //nodeList = root.SelectNodes("descendant::book[author/last-name='Austen']");
+            nodeList = doc.GetElementsByTagName("Person", "");
+            //Change the price on the books.
+            foreach (XmlNode node in nodeList)
+            {
+                //node.LastChild.InnerText = "15.95";
+                var first = node.Attributes["firstname"].Value;
+                Console.WriteLine(first);
+            }
+
+            //Creo
+            XmlNode newnode = doc.CreateNode(XmlNodeType.Element, "Person", "");
+            XmlAttribute fAttribute = doc.CreateAttribute("lastname");
+            fAttribute.Value = "izzooo";
+            newnode.Attributes.Append(fAttribute);
+            doc.DocumentElement.AppendChild(newnode);
+
+            doc.Save(Console.Out);
+
+            #endregion
+
+            #region xdocument
+            XDocument srcTree = new XDocument(
+                new XComment("This is a comment"),
+                new XElement("Root",
+                    new XElement("Child1", "data1"),
+                    new XElement("Child2", "data2"),
+                    new XElement("Child3", "data3"),
+                    new XElement("Child2", "data4"),
+                    new XElement("Info5", "info5"),
+                    new XElement("Info6", "info6"),
+                    new XElement("Info7", "info7"),
+                    new XElement("Info8", "info8")
+                )
+                //,new XAttribute("MyAtt",42)
+            );
+            srcTree.Save("test1.xml");
+
+            string strXML =
+                @"<?xml version=""1.0"" encoding=""utf-16"" ?>
+                <People>
+                  <Person firstname=""J0n"" lastname=""izzo"">
+                   <Details>
+                       <EmailAddress>j0n@ciccio.it</EmailAddress>
+                   </Details>
+                  </Person>
+                  <Person firstname=""pippo"" lastname=""pluto"">
+                   <Details>
+                       <EmailAddress>pippo@pluto.it</EmailAddress>
+                   </Details>
+                  </Person>
+                </People>";
+
+            XDocument docxml = XDocument.Parse(strXML);
+            var persons = from p in docxml.Descendants("Person")
+                select (string)p.Attribute("firstname") +
+                                            " " + (string) p.Attribute("lastname");
+            foreach (string item in persons)
+            {
+               Console.WriteLine(item);
+            }
+
+            #endregion
+
+            #region serialization
+
+            #endregion
         }
 
         public static string ReadAll(string path)
@@ -210,4 +350,25 @@ namespace ConsoleApp2
         }
       
     }
+
+
+
+    public class Product
+    {
+        public string Des { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    public class Order
+    {
+        public List<OrderLine> OrderLines { get; set; }
+    }
+
+    public class OrderLine
+    {
+        public int Amount { get; set; }
+        public Product Product { get; set; }
+    }
+
+   
 }

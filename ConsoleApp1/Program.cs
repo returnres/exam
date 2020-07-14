@@ -470,7 +470,8 @@ namespace ConsoleApp1
             #region  avent
             //Event
             Pub pub = new Pub();
-            pub.OnChange += () => Console.WriteLine("");
+            pub.OnChange += () => Console.WriteLine("lambda");
+            pub.OnChange += delegate { Console.WriteLine("delegate"); };
             pub.Raise();
 
             Pub1 p1 = new Pub1();
