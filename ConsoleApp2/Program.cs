@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -338,10 +340,15 @@ namespace ConsoleApp2
 
             #endregion
 
+            //basically WCF supports 3 types of serialization:
+            //XmlSerializer
+            //DataContractSerializer
+            //NetDataContractSerializer
+
             #region serialization
             PersonSer obj = new PersonSer();
 
-            //BINARIO
+            //BINARIO    field privati vengono serializzati di default va messo nonserialized
             //scrivo binario
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(@"testbin.bin", FileMode.Create);
@@ -355,9 +362,8 @@ namespace ConsoleApp2
             Console.WriteLine("BINARY");
             Console.WriteLine(objnew.ID);
             Console.WriteLine(objnew.Name);
-            Console.WriteLine(objnew.age);
 
-            //XML
+            //XML NON SERIALIZZA PRIVATI E VA MESSO XMLIGNRE PER NON SERIALIZZARE , (NON NOTSERILIZED NON FUNZIONA
             Console.WriteLine("   SERIALIZATION XML  ");
 
             XmlSerializer serializer = new XmlSerializer(typeof(PersonSer1));
@@ -367,7 +373,6 @@ namespace ConsoleApp2
                 PersonSer1 p = new PersonSer1();
                 p.ID = 1;
                 p.Name = "j0n";
-                p.age = 43;
                 serializer.Serialize(stringWriter, p);
                 xml1 = stringWriter.ToString();
             }
@@ -403,7 +408,6 @@ namespace ConsoleApp2
 
 
             #endregion
-           
 
             #region xml serialize override
             //serialize start
@@ -465,7 +469,6 @@ namespace ConsoleApp2
             //deserialize end
             #endregion
 
-
             #region xmlserialize override XmlAttributeAttribute
             XmlSerializer mySerializer1;
             TextWriter writer1;
@@ -499,6 +502,42 @@ namespace ConsoleApp2
             mySerializer1.Serialize(writer1, myStudent);
             writer1.Close();
 
+            #endregion
+
+            #region DATA CONTRACT
+            Film film = new Film("memento",123);
+            using (Stream stream1 = new FileStream("data.xml", FileMode.Create))
+            {
+                DataContractSerializer dcs = new DataContractSerializer(typeof(Film));
+                dcs.WriteObject(stream1,film);
+            }
+
+            using (Stream stream1 = new FileStream("data.xml", FileMode.Open))
+            {
+                DataContractSerializer dcs = new DataContractSerializer(typeof(Film));
+                var resf = (Film)dcs.ReadObject(stream1);
+            }
+
+            #endregion
+
+            #region jsonserialize
+            var user = new Film("rambo", 42);
+
+            var ms = new MemoryStream();
+
+            // scrivo
+            var ser = new DataContractJsonSerializer(typeof(Film));
+            ser.WriteObject(ms, user);
+            byte[] json = ms.ToArray();
+            ms.Close();
+
+            //leggo
+            Film deserializedUser = new Film();
+            var miojson =Encoding.UTF8.GetString(json, 0, json.Length);
+            var ms1 = new MemoryStream(Encoding.UTF8.GetBytes(miojson));
+            var ser1 = new DataContractJsonSerializer(deserializedUser.GetType());
+             deserializedUser = ser1.ReadObject(ms1) as Film;
+            ms.Close();
             #endregion
         }
 
@@ -547,6 +586,27 @@ namespace ConsoleApp2
       
     }
 
+
+    [DataContract(Name = "Movie", Namespace = "http://www.contoso.com")]
+    public class Film 
+    {
+        [DataMember(Name = "CustName")]
+        internal string Name;
+
+        [DataMember(Name = "CustID")]
+        internal int ID;
+
+        public Film()
+        {
+                
+        }
+        public Film(string newName, int newID)
+        {
+            Name = newName;
+            ID = newID;
+        }
+    }
+
     public class Orchestra
     {
         public Instrument[] Instruments;
@@ -569,13 +629,15 @@ namespace ConsoleApp2
         public String Name;
 
         [NonSerialized]
-        public int age;
+        private int age;
 
+        private int nonsicuro;
         public PersonSer()
         {
             ID = 1;
             Name = "Roby";
             age = 43;
+            nonsicuro = 2;
         }
        
 
@@ -592,8 +654,16 @@ namespace ConsoleApp2
         public int ID;
         public String Name;
 
-        [NonSerialized]
-        public int age;
+        [XmlIgnore]
+        private int age;
+
+        private string insicuro;
+
+        public PersonSer1()
+        {
+            age = 43;
+            insicuro = "insicuro";
+        }
     }
 
 
