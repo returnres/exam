@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin1", "Plugin1\Plugin1.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{CECB48CA-EE06-4162-A37E-14CD36A017BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debug", "Debug\Debug.csproj", "{DEAA2C99-8A8F-4CBF-8F62-35EAB01C33E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crypto", "Crypto\Crypto.csproj", "{92384DA7-BD03-49B3-9318-48488DE28139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,14 @@ Global
 		{CECB48CA-EE06-4162-A37E-14CD36A017BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CECB48CA-EE06-4162-A37E-14CD36A017BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CECB48CA-EE06-4162-A37E-14CD36A017BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEAA2C99-8A8F-4CBF-8F62-35EAB01C33E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEAA2C99-8A8F-4CBF-8F62-35EAB01C33E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEAA2C99-8A8F-4CBF-8F62-35EAB01C33E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEAA2C99-8A8F-4CBF-8F62-35EAB01C33E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92384DA7-BD03-49B3-9318-48488DE28139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92384DA7-BD03-49B3-9318-48488DE28139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92384DA7-BD03-49B3-9318-48488DE28139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92384DA7-BD03-49B3-9318-48488DE28139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

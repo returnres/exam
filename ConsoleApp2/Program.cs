@@ -8,10 +8,10 @@ using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-
 namespace ConsoleApp2
 {
     /// <summary>
@@ -505,39 +505,59 @@ namespace ConsoleApp2
             #endregion
 
             #region DATA CONTRACT
-            Film film = new Film("memento",123);
+            FilmOrror filmOrror = new FilmOrror("memento",123);
             using (Stream stream1 = new FileStream("data.xml", FileMode.Create))
             {
-                DataContractSerializer dcs = new DataContractSerializer(typeof(Film));
-                dcs.WriteObject(stream1,film);
+                DataContractSerializer dcs = new DataContractSerializer(typeof(FilmOrror));
+                dcs.WriteObject(stream1,filmOrror);
             }
 
             using (Stream stream1 = new FileStream("data.xml", FileMode.Open))
             {
-                DataContractSerializer dcs = new DataContractSerializer(typeof(Film));
-                var resf = (Film)dcs.ReadObject(stream1);
+                DataContractSerializer dcs = new DataContractSerializer(typeof(FilmOrror));
+                var resf = (FilmOrror)dcs.ReadObject(stream1);
             }
 
             #endregion
 
             #region jsonserialize
-            var user = new Film("rambo", 42);
+            var films = new FilmOrror("rambo", 42);
+            films.success = "ok";
 
             var ms = new MemoryStream();
 
             // scrivo
-            var ser = new DataContractJsonSerializer(typeof(Film));
-            ser.WriteObject(ms, user);
+            var ser = new DataContractJsonSerializer(typeof(FilmOrror));
+            ser.WriteObject(ms, films);
             byte[] json = ms.ToArray();
             ms.Close();
 
             //leggo
-            Film deserializedUser = new Film();
+            FilmOrror deserializedUser = new FilmOrror();
             var miojson =Encoding.UTF8.GetString(json, 0, json.Length);
             var ms1 = new MemoryStream(Encoding.UTF8.GetBytes(miojson));
             var ser1 = new DataContractJsonSerializer(deserializedUser.GetType());
-             deserializedUser = ser1.ReadObject(ms1) as Film;
+             deserializedUser = ser1.ReadObject(ms1) as FilmOrror;
             ms.Close();
+            #endregion
+
+            #region javascriptserialize
+            var RegisteredUsers = new List<Uomo>();
+            RegisteredUsers.Add(new Uomo("rambo",1));
+            RegisteredUsers.Add(new Uomo("pippo",1));
+
+            var sssss = new JavaScriptSerializer();
+            var serializedResult1 = sssss.Serialize(RegisteredUsers);
+            // Produces string value of:
+            // [
+            //     {"PersonID":1,"Name":"Bryon Hetrick","Registered":true},
+            //     {"PersonID":2,"Name":"Nicole Wilcox","Registered":true},
+            //     {"PersonID":3,"Name":"Adrian Martinson","Registered":false},
+            //     {"PersonID":4,"Name":"Nora Osborn","Registered":false}
+            // ]
+
+            var deserializedResult = sssss.Deserialize<List<Uomo>>(serializedResult1);
+            // Produces List with 4 Person objects
             #endregion
         }
 
@@ -586,26 +606,58 @@ namespace ConsoleApp2
       
     }
 
-
     [DataContract(Name = "Movie", Namespace = "http://www.contoso.com")]
-    public class Film 
+    public class Film
     {
-        [DataMember(Name = "CustName")]
-        internal string Name;
-
-        [DataMember(Name = "CustID")]
-        internal int ID;
+        [DataMember(Name = "Money")]
+        internal decimal Money;
 
         public Film()
         {
                 
         }
-        public Film(string newName, int newID)
+    }
+
+    [DataContract(Name = "MovieOrror", Namespace = "http://www.contoso.com")]
+    public class FilmOrror : Film
+    {
+        [DataMember(Name = "CustName",Order = 2)]
+        internal string Name;
+
+        [DataMember(Name = "CustID",Order = 1)]
+        internal int ID;
+
+        [DataMember(Name = "IE", Order = 1)]
+        internal int IE;
+
+        [DataMember(Name = "Success")]
+        internal string success;
+
+        public FilmOrror()
+        {
+                
+        }
+        public FilmOrror(string newName, int newID)
         {
             Name = newName;
             ID = newID;
         }
     }
+
+    public class   Uomo
+    {
+        public Uomo()
+        {
+                
+        }
+        public Uomo(string name1 ,int eta1)
+        {
+            name = name1;
+            eta = eta1;
+        }
+    public int eta { get; set; }
+    public string name { get; set; }
+}
 
     public class Orchestra
     {
