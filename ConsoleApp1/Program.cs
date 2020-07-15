@@ -122,35 +122,36 @@ namespace ConsoleApp1
 
 
             #region PerformanceCounter
-            //PerformanceCounter avgCounter64Sample = new PerformanceCounter("AverageCounter64SampleCategory",
-            //    "AverageCounter64Sample",
-            //    false);
 
-            //if (!PerformanceCounterCategory.Exists("AverageCounter64SampleCategory"))
+            //string cat = "Contatore";
+            //string catdsc = "Contatori vari";
+            //string cpnt = "Click";
+            //string contdesc = "Contatore Di Click";
+            //if (!PerformanceCounterCategory.Exists(cat))
             //{
-            //    CounterCreationDataCollection counterDataCollection = new CounterCreationDataCollection();
-
-            //    // Add the counter.
-            //    CounterCreationData averageCount64 = new CounterCreationData();
-            //    averageCount64.CounterType = PerformanceCounterType.AverageCount64;
-            //    averageCount64.CounterName = "AverageCounter64Sample";
-            //    counterDataCollection.Add(averageCount64);
-
-            //    // Add the base counter.
-            //    CounterCreationData averageCount64Base = new CounterCreationData();
-            //    averageCount64Base.CounterType = PerformanceCounterType.AverageBase;
-            //    averageCount64Base.CounterName = "AverageCounter64SampleBase";
-            //    counterDataCollection.Add(averageCount64Base);
-
-            //    // Create the category.
-            //    PerformanceCounterCategory.Create("AverageCounter64SampleCategory",
-            //        "Demonstrates usage of the AverageCounter64 performance counter type.",
-            //        PerformanceCounterCategoryType.SingleInstance, counterDataCollection);
-            //    avgCounter64Sample.IncrementBy(12);
+            //    PerformanceCounterCategory.Create(
+            //        cat,
+            //        catdsc,
+            //        PerformanceCounterCategoryType.SingleInstance,
+            //        new CounterCreationDataCollection(
+            //            new[]
+            //            {
+            //                new CounterCreationData(
+            //                    cpnt,
+            //                    contdesc,
+            //                    PerformanceCounterType.NumberOfItems32)
+            //            })
+            //    );
             //}
-            #endregion
+            //using (var counter = new PerformanceCounter(cat, catdsc, false))
+            //    {
+            //        counter.IncrementBy(-25);
+            //    }
 
-            Ciccio c = new Ciccio();
+         
+                #endregion
+
+                Ciccio c = new Ciccio();
             c.Prova();
             ICiccio s = (ICiccio)c;
             s.Prova();

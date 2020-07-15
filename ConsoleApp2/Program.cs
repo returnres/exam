@@ -28,6 +28,56 @@ namespace ConsoleApp2
         public static void Main()
         {
 
+            #region STREAM 
+
+
+            /*
+             * Streams
+Uno stream è utile per leggere o scrivere poco alla volta, 
+senza dover caricare tutto in memoria. 
+Ha 3 funzioni principali: reading, writing e seeking. Non tutti gli streams sono seekable, però.
+Un FileStream è quello che ti ritorna quando invochi File.Open o File.Create. 
+Potrebbe non essere quello che vuoi, perché il FileStream lavora solo con dati binari.
+
+Allora forse ti conviene usare File.OpenText o File.CreateText, che restituiscono uno StreamWriter,
+che ti permette di scrivere stringhe in formato UTF8.
+
+using (StreamWriter streamWriter = File.CreateText(path))
+{
+	string myValue = "MyValue";
+	streamWriter.Write(myValue);
+}
+
+Se vuoi scrivere file in altri encoding, arrangiati col FileStream. 
+Gli passerai i bytes frutto della conversione con Encoding.GetEncoding(“iso-8859-1”).GetBytes.
+                                                    DECORATOR PATTERN
+
+Gli stream possono essere combinati secondo il  
+Ad esempio, usare un FileStream da solo è certamente fattibile ma se lo usi per scrivere un byte alla volta 
+non avrai ottime prestazioni perché i disci sono più abili a scrivere grosse quantità di dati alla volta.
+
+Allora puoi aggiungere una funzionalità passandolo come argomento al costruttore di un altro stream, 
+che adatta lo stream base a supportare nuove funzionalità, come il buffering. 
+Lo StreamWriter, per esempio, permette di scrivere facilmente stringhe su 
+un FileStream di base che usa internamente (o che passi nel costruttore).
+ * 
+             * 
+             */
+            // filestream base
+            using (FileStream fileStream = File.Create("ciccio1.txt")) {
+	       // aggiungo la capacità di accumulare bytes in un buffer
+	             using (BufferedStream bufferedStream = new BufferedStream(fileStream)) {
+		   // creo un writer per scrivere (non è esso stesso uno stream)
+		    // magari potevo aggiungere un ulteriore Stream per zippare
+		            using (StreamWriter streamWriter = new StreamWriter(bufferedStream)) {
+			           streamWriter.WriteLine("A line of text.");
+		             }
+	              }
+              }
+
+            
+            #endregion
+
             #region linq
             int[] data1 = {1, 2, 3, 4};
             IEnumerable<int> res = from d in data1

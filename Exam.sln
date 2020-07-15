@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semaphore_Example", "Semaph
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp3", "ConsoleApp3\ConsoleApp3.csproj", "{0A788929-AA46-4B52-B4A7-26719132A89E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong", "Strong\Strong.csproj", "{30B81292-6E51-4854-BE7D-E16792F3D2D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{0A788929-AA46-4B52-B4A7-26719132A89E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A788929-AA46-4B52-B4A7-26719132A89E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A788929-AA46-4B52-B4A7-26719132A89E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
