@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp3", "ConsoleApp3\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong", "Strong\Strong.csproj", "{30B81292-6E51-4854-BE7D-E16792F3D2D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumeData", "ConsumeData\ConsumeData.csproj", "{F5050226-F08C-448F-98BB-3446AAEF6CBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trans", "Trans\Trans.csproj", "{70103A08-20E3-4E9B-A396-B480B5E0B74A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30B81292-6E51-4854-BE7D-E16792F3D2D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5050226-F08C-448F-98BB-3446AAEF6CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5050226-F08C-448F-98BB-3446AAEF6CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5050226-F08C-448F-98BB-3446AAEF6CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5050226-F08C-448F-98BB-3446AAEF6CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70103A08-20E3-4E9B-A396-B480B5E0B74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70103A08-20E3-4E9B-A396-B480B5E0B74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70103A08-20E3-4E9B-A396-B480B5E0B74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70103A08-20E3-4E9B-A396-B480B5E0B74A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

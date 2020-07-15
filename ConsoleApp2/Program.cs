@@ -27,6 +27,41 @@ namespace ConsoleApp2
     {
         public static void Main()
         {
+            //XmlSerializer xmlignore serialize
+            /*
+             * Ricorda che non riesce a serializzare i campi privati. 
+             * Ma neanche le proprietà pubbliche, se manca un setter 
+             * (non riusciresti a deserializzare il membro).
+             */
+            //DataContractSerializer
+            /*
+             * Si usa in WCF. Ha un approccio opt-in: nulla viene serializzato a meno che non decori 
+             * la classe con DataContract e i membri con DataMember.
+             * 
+             * 
+            //BYnaryFormatter   NonSerialized serialize
+            /*
+             * Il BinaryFormatter riesce a serializzare tutto lo stato interno dell'oggetto, 
+             * compresi i campi privati (è sostanzialmente un dump della memoria con dei metadati).
+             * E' veloce e produce un file piccolo.
+             */
+            /*
+            BinaryFormatter
+            Serialize
+            (File)Stream
+
+            XmlSerializer
+            Serialize
+            StreamWriter, StringWriter
+
+            DataContractSerializer
+            WriteObject
+            (File)Stream
+
+            JavascriptSerializer
+            Serialize
+            string, StringBuilder
+              */
 
             #region STREAM 
 
@@ -84,6 +119,48 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                 select d;
             Console.WriteLine(string.Join(",",res));
 
+           
+
+            //Cross - Join
+            int[] data2 = { 1, 2, 3, 4 };
+            int[] data3 = { 1, 2, 3, 4 };
+
+            var joinres = from c in data2
+            join o in data3 on c equals o
+                where c == 2
+                select new
+                {
+                    c,
+                    o
+                };
+
+           //var rtt =  data2
+           //     .Where(c => c == 2)
+           //     .Join(data3,
+           //         c => new { c },
+           //         o => new { o },
+           //         (c, o) => new { c, o  });
+
+
+            var qCross1 = from em in data2
+            from sh in data3
+            select new { em, sh };
+
+            var qCross2 = data2.Join(
+                data3,
+                em => true,
+                sh => true,
+                (em, sh) => new { em, sh }
+            );
+           
+            var qCross3 = data2.Join(
+                data3,
+                em => new { Dummy = 1 },
+                sh => new { Dummy = 1 },
+                (em, sh) => new { em, sh }
+            );
+
+
             List<Order> orders = new  List<Order>();
             orders.Add(new Order()
             {
@@ -103,6 +180,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             });
             orders.Add(new Order()
             {
+
                 OrderLines = new List<OrderLine>()
                 {
                     new OrderLine()
@@ -118,6 +196,9 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                 }
             });
 
+           var tt =  from c in orders
+            group c by c.name;
+
             //grouping and projectons
             var res1 = from o in orders
                 from l in o.OrderLines
@@ -128,6 +209,17 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                     Product = p.Key,
                     Amount = p.Sum(x => x.Amount)
                 };
+
+
+            var regroupres = from ordine in orders
+            group ordine by ordine.name into grouped
+                where grouped.Count() > 2
+                select new
+                {
+                    Country = grouped.Key,
+                    Conto = grouped.Count()
+                };
+
 
             int[] datax = { 1, 2, 3, 4 };
             int[] datay = { 1, 6, 3, 5 };
@@ -399,11 +491,6 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             }
 
             #endregion
-
-            //basically WCF supports 3 types of serialization:
-            //XmlSerializer
-            //DataContractSerializer
-            //NetDataContractSerializer
 
             #region serialization
             PersonSer obj = new PersonSer();
@@ -764,13 +851,29 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             age = 43;
             nonsicuro = 2;
         }
-       
+
 
         [OnSerializing()]
-        internal void OnSerializingMethod(StreamingContext con)
+        internal void OnSerializingMethod(StreamingContext context)
         {
             Console.WriteLine("OnSerializingMethod");
         }
+        [OnSerialized()]
+        internal void OnSerializedMethod(StreamingContext context)
+        {
+            Console.WriteLine("OnSerializedMethod");
+        }
+        [OnDeserializing()]
+        internal void OnDeserializingMethod(StreamingContext context)
+        {
+            Console.WriteLine("OnDeserializingMethod");
+        }
+        [OnDeserialized()]
+        internal void OnDeserializedMethod(StreamingContext context)
+        {
+            Console.WriteLine("OnDeserializedMethod");
+        }
+
     }
 
     [Serializable]
@@ -841,6 +944,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
 
     public class Order
     {
+        public string name { get; set; }
         public List<OrderLine> OrderLines { get; set; }
     }
 
