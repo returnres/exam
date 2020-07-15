@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Debug", "Debug\Debug.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crypto", "Crypto\Crypto.csproj", "{92384DA7-BD03-49B3-9318-48488DE28139}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutex_Example", "Mutex_Example\Mutex_Example.csproj", "{EBEC5239-2F18-4F3D-88CE-68D37B7B4F7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Semaphore_Example", "Semaphore_Example\Semaphore_Example.csproj", "{35CCA5E1-0F3F-4E40-8ACF-5C2EFE832536}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{92384DA7-BD03-49B3-9318-48488DE28139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92384DA7-BD03-49B3-9318-48488DE28139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92384DA7-BD03-49B3-9318-48488DE28139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBEC5239-2F18-4F3D-88CE-68D37B7B4F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBEC5239-2F18-4F3D-88CE-68D37B7B4F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBEC5239-2F18-4F3D-88CE-68D37B7B4F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBEC5239-2F18-4F3D-88CE-68D37B7B4F7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35CCA5E1-0F3F-4E40-8ACF-5C2EFE832536}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35CCA5E1-0F3F-4E40-8ACF-5C2EFE832536}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35CCA5E1-0F3F-4E40-8ACF-5C2EFE832536}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35CCA5E1-0F3F-4E40-8ACF-5C2EFE832536}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

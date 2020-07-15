@@ -43,6 +43,12 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            PippoTest pippoTest = new PippoTest(1);
+            PippoTest pippoTest1 = new PippoTest(2);
+            PippoTest pippoTest2 = new PippoTest(2);
+            int testt = (int) pippoTest2;
+            var rrrr = pippoTest1 + pippoTest;
+
             string main = "Main";
             Trace.Write("trace");
             Debug.Write("debug");
@@ -609,6 +615,7 @@ namespace ConsoleApp1
             var qy = from num in Enumerable.Range(1, 8).AsParallel()
                      select Math.Pow(2, num);
 
+            //stampa da 1 a 9 (10 numeri)
             //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
             Parallel.For(1, 10, g => Console.WriteLine("g-{0}", g));
             var result = Parallel.For(0, 50, (g, parallelLoopState) =>
@@ -770,7 +777,7 @@ namespace ConsoleApp1
                 ThreadPool.QueueUserWorkItem(LongOperation);
             }
 
-            //manca il mutex
+          
             Thread threada = new Thread(IncrMon);
             Thread threadb = new Thread(IncrMon);
             threada.Start();
@@ -990,5 +997,6 @@ namespace ConsoleApp1
         public Expression<Func<int, bool>> exp1 = x => x % 2 == 0;
 
     }
+
 
 }

@@ -279,7 +279,23 @@ namespace ClassLibrary1
         gennaio = 0,
         febbraio = 1
     }
-
+    /*
+     * 
+     *- Struct cannot have a default constructor (a constructor without parameters) or a destructor.
+-Structs are value types and are copied on assignment.
+-Structs can be instantiated without using a new operator.
+-A struct cannot inherit from another struct or class, and it cannot be the base of a class. All structs inherit directly from System.ValueType, which inherits from System.Object.
+-Struct cannot be a base class. So, Struct types cannot abstract and are always implicitly sealed.
+-Abstract and sealed modifiers are not allowed and struct member cannot be protected or protected internals.
+--Function members in a struct cannot be abstract or virtual, and the override modifier is allowed only to the override methods inherited from System.ValueType.
+-Struct does not allow the instance field declarations to include variable initializers. But, static fields of a struct are allowed to include variable initializers.
+--A struct can implement interfaces.
+-A struct can be used as a nullable type and can be assigned a null value.
+                use when...
+1it logically represents a single value, like primitive types (int, double, etc.).
+2It is immutable.
+3It should not be boxed and un-boxed frequently.
+     */
     public struct Pippolo
     {
         public int a;

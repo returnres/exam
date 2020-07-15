@@ -35,6 +35,17 @@ namespace ClassLibrary1
         }
     }
 
+    public class Pub3
+    {
+        public delegate void Miodelegate();
+        public event Miodelegate OnChange = delegate { };
+
+        public void Raise()
+        {
+            OnChange();
+        }
+    }
+
     public class MyArgs : EventArgs
     {
         public MyArgs(int value)

@@ -11,9 +11,17 @@ namespace Crypto
 {
     class Program
     {
+        /*
+         * -For data privacy, use Aes.
+– For data integrity, use HMACSHA256 or HMACSHA512.
+– For digital signatures, use RSA or ECDsa.
+– For key exchange, use RSA or ECDiffieHellman.
+– For random number generation, use RNGCryptoServiceProvider.
+– For generating a key from a password, use Rfc2898DeriveBytes.
+         */
         public static void Main()
         {
-            #region sha
+            #region sha data integrity
             using (SHA256 mySHA256 = SHA256.Create())
             {
                 string plain = "j0n";
@@ -23,7 +31,7 @@ namespace Crypto
             }
             #endregion
 
-            #region rsa
+            #region rsa digital signatures/key exchange asymmetric
 
             using (RSACryptoServiceProvider RSA1 = new RSACryptoServiceProvider())
             {
@@ -75,7 +83,7 @@ namespace Crypto
             }
             #endregion
 
-            #region aes
+            #region aes data privacy symmetric
             string original = "Here is some data to encrypt!";
 
             // Create a new instance of the Aes
@@ -111,6 +119,7 @@ namespace Crypto
             Console.WriteLine(" SHA ");
             Console.WriteLine();
         }
+
         public static byte[] RSAEncrypt(byte[] DataToEncrypt, RSAParameters RSAKeyInfo, bool DoOAEPPadding)
         {
             try
