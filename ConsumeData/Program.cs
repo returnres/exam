@@ -11,6 +11,30 @@ namespace ConsumeData
         static void Main(string[] args)
         {
             /*
+             * ADO.NET è il componente per l'accesso ai dati di Microsoft .NET Framework
+
+Il termine ADO.NET designa un insieme di classi che fornisce tutte le funzionalità 
+necessarie per l’accesso ai dati e la loro elaborazione in memoria.
+
+ADO.NET è composto da due componenti fondamentali il Data Provider ( che mantiene la 
+connessione con la sorgente dati fisica) e il DataSet (che rappresenta i dati 
+attuali, ovvero i dati su cui si sta lavorando). 
+             * 
+             * Il modello implementato da ADO.NET è suddiviso in due parti:
+1) Oggetti Connessi consentono di eseguire le operazioni di lettura e aggiornamento 
+   sul  DataBase
+2) Oggetti Disconnessi consentono la memorizzazione e l’elaborazione dei dati 
+   nella  memoria del programma client.
+             * 
+             *                    DataReader
+             * 
+Il DataReader consente di accedere al result set una riga alla volta e non fornisce la
+possibilità di ritornare alla riga precedente. In quegli scenari in cui si desidera 
+svolgere determinate elaborazioni sui dati, l’uso di un DataReader è probabilmente 
+insufficiente. In questi casi è appropriato l’uso di un DataAdapter e di uno o più 
+oggetti disconnessi.
+             * 
+             * 
              * DataSet e DataTable sono due classi che si trovano dentro il namespace System.Data. 
              * Sono dei contenitori di dati in memoria. 
              *                                              DataTable
@@ -38,10 +62,22 @@ Se vuoi fare qualcosa di significativo con i dati in memoria bisogna che leghi l
 
              * 
              * 
-             */
+            
+            il DataAdapter si trova al centro del
+                modello di elaborazione disconnessa dei dati implementato in ADO.NET.Questo prevede
+            che i dati da elaborare siano completamente caricati in memoria, in uno o più
+            DataTable.Il vantaggio di un simile approccio risiede nel fatto che l’elaborazione
+                può essere eseguita off - line e cioè senza tenere aperta una connessione e occupare
+                risorse del database. Successivamente, se previsto dall’applicazione, sarà possibile
+            aprire una nuova connesione ed inviare le modifiche al database.
+
+            Ridotto alla sostanza, comunque, il suo duplice ruolo è quello di:
+   ° ottenere i dati dal database e caricarli in uno o più DataTable;
+   ° inviare al database le eventuali modifiche effettuate in uno o più DataTable.
 
 
-
+            db => dataadapter => datatable(disconnesso) il datatable è memorizzato in un Dataset
+     */
         }
     }
 }
