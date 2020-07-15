@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -43,6 +44,10 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+
+
+            MyMethodCond();
+
             PippoTest pippoTest = new PippoTest(1);
             PippoTest pippoTest1 = new PippoTest(2);
             PippoTest pippoTest2 = new PippoTest(2);
@@ -378,7 +383,7 @@ namespace ConsoleApp1
             dynamic dd = 1;
             int inc = dd + 1;
             var sss = Convert.ToString(1);
-
+            dynamic dy = new ExpandoObject();
             #endregion
 
             #region type
@@ -897,6 +902,12 @@ namespace ConsoleApp1
             {
                 return true;
             }
+        }
+
+        [Conditional("DEBUG")]
+        static void MyMethodCond()
+        {
+
         }
 
         #region private

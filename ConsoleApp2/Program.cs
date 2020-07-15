@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 namespace ConsoleApp2
 {
@@ -220,6 +221,15 @@ namespace ConsoleApp2
             #endregion
 
             #region xml
+
+            string xsdPath = "pippo.xsd";
+            string xmlPath = "test.xml";
+            XmlReader reader = XmlReader.Create(xmlPath);
+            XmlDocument document = new XmlDocument();
+            document.Schemas.Add("", xsdPath);
+            document.Load(reader);
+            var eventHandler = new ValidationEventHandler(ValidationEventHandler);
+            document.Validate(eventHandler);
 
             /*
              * <?xml version="1.0" encoding="utf-16"?>
@@ -559,6 +569,19 @@ namespace ConsoleApp2
             var deserializedResult = sssss.Deserialize<List<Uomo>>(serializedResult1);
             // Produces List with 4 Person objects
             #endregion
+        }
+
+        static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            switch (e.Severity)
+            {
+                case XmlSeverityType.Error:
+                    Console.WriteLine("Error:{0}", e.Message);
+                    break;
+                case XmlSeverityType.Warning:
+                    Console.WriteLine("Warning {0}", e.Message);
+                    break;
+            }
         }
 
         public static OrderSer CreateOrder()
