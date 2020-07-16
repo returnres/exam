@@ -127,7 +127,4 @@ namespace ClassLibrary1
             return txt.ToLower();
         }
     }
-    
-   
-    
 }

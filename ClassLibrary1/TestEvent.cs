@@ -69,13 +69,6 @@ namespace ClassLibrary1
             car.MotoreSpento += GestisciMororeSpento;
         }
 
-        //private void GestisciMororeSpento(object sender, EventArgs e)
-        //{
-        //    //gestisco evnto
-        //    Car c = sender as Car;
-        //    Console.WriteLine("numweo giri {0}",e.);
-        //}
-
         private void GestisciMororeSpento(object sender, GiritMotoreEventArgs e)
         {
             //gestisco evnto

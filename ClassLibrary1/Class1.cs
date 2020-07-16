@@ -14,6 +14,9 @@ namespace ClassLibrary1
     //ereditarietà
     //polimorfismo
 
+    //tipi rif class int dele arr obj string dyna
+    //tipi val struct enum
+    //tipi primitivi sono struct byte short int long bool float double decimal
 
     //INTERFACCIA DEFINISCE UN CONTRATTO
     public interface IInterface 
@@ -54,23 +57,23 @@ namespace ClassLibrary1
         {
 
         }
-        //public Babbo()
-        //{
+        public Babbo()
+        {
 
-        //}
+        }
     }
 
     public class Figlio :Babbo
     {
-        //se il babbo ha un costruttore con parametro 
+        //se il figlio ha un costruttore con parametro 
         //allora devo mettere esplicitamente al babbo costruttore  
         //senza parametri
         //errore compilazione cerca il costruttore
         //base senza parametri e non  lo trova !!!!
-        //public Figlio()
-        //{
-        //    Console.WriteLine("ctor Figlio");
-        //}
+        public Figlio()
+        {
+            Console.WriteLine("ctor Figlio");
+        }
 
         //devo mettere questo oppure creare un costruttore con 0 parametri
         //al babbo
@@ -234,25 +237,7 @@ namespace ClassLibrary1
 
     //indicizzatori
 
-    //operator
-    //public class OperatorCalss
-    //{
-    //    public OperatorCalss(OperatorCalss oc1, OperatorCalss oc2)
-    //    {
-
-    //    }
-    //    public int pippo;
-    //    public static OperatorCalss operator +(OperatorCalss oc1, OperatorCalss oc2)
-    //    {
-
-    //        return new OperatorCalss(oc1.pippo + oc2.pippo);
-    //    }
-
-    //    public static explicit operator OperatorCalss(int i)
-    //    {
-    //        return new OperatorCalss(i, 0);
-    //    }
-    //}
+   
 
     public class SmartPhone
     {
@@ -296,14 +281,26 @@ namespace ClassLibrary1
 2It is immutable.
 3It should not be boxed and un-boxed frequently.
      */
+    public struct ImmutableStruct
+    {
+        public ImmutableStruct(int f1, string f2, object f3)
+        {
+            Field1 = f1;
+            Field2 = f2;
+            Field3 = f3;
+        }
+
+        public int Field1 { get; }
+        public string Field2 { get; }
+        public object Field3 { get; }
+    }
+
     public struct Pippolo
     {
         public int a;
     }
 
-    //tipi rif class int dele arr obj string dyna
-    //tipi val struct enum
-    //tipi primitivi sono struct byte short int long bool float double decimal
+   
     public class TestClass
     {
         //props
@@ -314,7 +311,6 @@ namespace ClassLibrary1
 
         public void MyMethod()
         {
-
 
             //espressione
             int i = 1 + 2;
@@ -353,7 +349,13 @@ namespace ClassLibrary1
             //ternari
             //aritmetici
         }
-
+    }
+    public class MyClass1 : AMyclass
+    {
+        public override void mymethod()
+        {
+            throw new System.NotImplementedException();
+        }
 
         public override bool Equals(object obj)
         {
@@ -370,13 +372,5 @@ namespace ClassLibrary1
             return base.ToString();
         }
 
-
-    }
-    public class MyClass1 : AMyclass
-    {
-        public override void mymethod()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -38,32 +38,48 @@ namespace ConsoleApp1
         private static TraceSource mySource =
             new TraceSource("MyService");
 
-        private static TraceSource mySource1 =
-            new TraceSource("MyService1");
+        //private static TraceSource mySource1 =
+        //    new TraceSource("MyService1");
 
 
         static void Main(string[] args)
         {
-
-
             MyMethodCond();
-
-            PippoTest pippoTest = new PippoTest(1);
-            PippoTest pippoTest1 = new PippoTest(2);
-            PippoTest pippoTest2 = new PippoTest(2);
-            int testt = (int) pippoTest2;
-            var rrrr = pippoTest1 + pippoTest;
-
+          
             string main = "Main";
             Trace.Write("trace");
             Debug.Write("debug");
             Debug.Assert(main == "Main");
 
-            #region TraceSource
+            #region opertori
+            PippoTest pippoTest = new PippoTest(1);
+            PippoTest pippoTest1 = new PippoTest(2);
+            PippoTest pippoTest2 = new PippoTest(2);
+            //implicit
+            int testt = pippoTest2;
 
+            //somma tra pippotest
+            var rrrr = pippoTest1 + pippoTest;
+
+
+            //explicit
+            PippoTest testtt = (PippoTest)3;
+            //somma tra int e pippotest
+            var ressss = 3 + testtt;
+            #endregion
+
+            #region TraceSource
+            /*
+             * ConsoleTraceListener	Standard output or error stream
+DelimitedListTraceListener	TextWriter
+EventLogTraceListener	EventLog
+EventSchemaTraceListener	XML-encoded, schema-compliant log file
+TextWriterTraceListener	TextWriter
+XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
+             */
+            //configuro da codice
             Stream outfile = File.Create("log.txt");
             TextWriterTraceListener textWriterTraceListener = new TextWriterTraceListener(outfile);
-
             TraceSource trace  = new TraceSource("myT",SourceLevels.All);
 
             trace.Listeners.Clear();
@@ -75,11 +91,46 @@ namespace ConsoleApp1
             trace.Flush();
             trace.Close();
 
+            //TraceSource configuro da appsetting
             mySource.TraceEvent(TraceEventType.Error, 1,
                 "Error message.");
             mySource.TraceEvent(TraceEventType.Warning, 2,
                 "Warning message.");
 
+            #endregion
+          
+
+            #region TraceSwitch
+            /*
+             * SourceSwitch e TraceSwitch sono altri due tipi di switch che servono a controllare
+             * la verbosità del trace e la “sorgente” del trace. 
+             * Ovvero, se usi il tracing in maniera seria puoi, grazie al SourceSwitch, 
+             * definire varie sorgenti di tracing e regolarle a tua discrezione con il TraceSwitch.
+             */
+            ////Define this in the web config
+            TraceSwitch generalSwitch = new TraceSwitch("General",
+                "Entire Application");
+
+            string msgText = "1";
+
+            // Write INFO type message, if switch is set to Verbose, type 4
+            Trace.WriteIf(generalSwitch.TraceVerbose, msgText);
+
+            msgText = "A2MC";
+
+            // Write INFO type message, if switch is set to Verbose or Warning 4 0r 2
+            Trace.WriteIf(generalSwitch.TraceWarning, msgText);
+
+            // Write ERROR type message, if switch is set to Verbose, Warning, info or Error
+            // 0 (off), 1 (error), 2 (warning), 3 (info), OR 4 (verbose)
+            //If General switch in WEB CONFIG = 0 then it will not get into the if below
+            if (generalSwitch.TraceError)
+            {
+                //Trace type, inthis case error will define how it will appear in the event log
+                Trace.TraceError("Error");
+                //Use your imagination to switch it on and off properly.
+                //You can really imagine and apply.
+            }
             #endregion
 
             #region EventLog
@@ -92,34 +143,6 @@ namespace ConsoleApp1
             eventLog.Source = "MySource";
             eventLog.WriteEntry("Ciao J0n");
             #endregion
-
-            #region TraceSwitch
-            ////Define this in the web config
-            //TraceSwitch generalSwitch = new TraceSwitch("General",
-            //    "Entire Application");
-
-            //string msgText = "1";
-
-            //// Write INFO type message, if switch is set to Verbose, type 4
-            //Trace.WriteIf(generalSwitch.TraceVerbose, msgText);
-
-            // msgText = "A2MC";
-
-            //// Write INFO type message, if switch is set to Verbose or Warning 4 0r 2
-            ////Trace.WriteIf(generalSwitch.TraceWarning, msgText);
-
-            //// Write ERROR type message, if switch is set to Verbose, Warning, info or Error
-            //// 0 (off), 1 (error), 2 (warning), 3 (info), OR 4 (verbose)
-            ////If General switch in WEB CONFIG = 0 then it will not get into the if below
-            //if (generalSwitch.TraceError)
-            //{
-            //    //Trace type, inthis case error will define how it will appear in the event log
-            //    //Trace.TraceError("Error");
-            //    //Use your imagination to switch it on and off properly.
-            //    //You can really imagine and apply.
-            //}
-            #endregion
-
 
             #region PerformanceCounter
 
@@ -148,10 +171,10 @@ namespace ConsoleApp1
             //        counter.IncrementBy(-25);
             //    }
 
-         
-                #endregion
 
-                Ciccio c = new Ciccio();
+            #endregion
+
+            Ciccio c = new Ciccio();
             c.Prova();
             ICiccio s = (ICiccio)c;
             s.Prova();
@@ -336,6 +359,7 @@ namespace ConsoleApp1
             #endregion
 
             #region ref out static class
+            Figlio figlio1 = new Figlio();
             Figlio figlio = new Figlio("as");
             Macchina macchina = new Macchina("320", "bmw");
             macchina.Parti();
@@ -487,6 +511,7 @@ namespace ConsoleApp1
             pub.Raise();
 
             Pub1 p1 = new Pub1();
+            p1.OnChange += () => Console.WriteLine("lambda");
             p1.Raise();
 
             Pub2 p2 = new Pub2();
@@ -908,7 +933,7 @@ namespace ConsoleApp1
         [Conditional("DEBUG")]
         static void MyMethodCond()
         {
-
+            Console.WriteLine("CHIAMATO PERCHE SONO IN DEBUGGGG!!!!!!!!!!!!!!!!");
         }
 
         #region private

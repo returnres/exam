@@ -11,22 +11,17 @@ namespace ClassLibrary1
 {
 
     [DebuggerDisplay("name ={" + nameof(name) + "}")]
-    public class Money : IComparable,IEquatable<Money>, IFormattable, IFormatProvider, ISerializable,IEnumerable<Money>,IDisposable
+    public class Money : IComparable,IEquatable<Money>, IFormattable, IFormatProvider, ISerializable,IEnumerable<Money>
     {
         public string name  { get; set; }
         public int CompareTo(object obj)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool Equals(Money other)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            throw new NotImplementedException();
+            if (obj is Money)
+            {
+                Money other = obj as Money;
+                return String.Compare(this.name, other.name, StringComparison.Ordinal);
+            }
+            return -1;
         }
 
         public object GetFormat(Type formatType)
@@ -49,13 +44,33 @@ namespace ClassLibrary1
             return GetEnumerator();
         }
 
-        public void Dispose()
+        public bool Equals(Money other)
         {
+            throw new NotImplementedException();
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return $"name = {name}";
         }
     }
 
-
-
+    public class Moto
+    {
+        public string Targa { get; set; }
+    }
+    public class ComparableMoto : Moto, IComparable
+    {
+        public int CompareTo(object obj)
+        {
+            if (obj is ComparableMoto)
+            {
+                ComparableMoto other = obj as ComparableMoto;
+                return this.Targa.CompareTo(other.Targa);
+            }
+            return -1;
+        }
+    }
     public struct PippoTest
     {
         public int Valore;
@@ -69,7 +84,7 @@ namespace ClassLibrary1
         }
 
         //indietro
-        public static implicit operator PippoTest(int i)
+        public static explicit operator PippoTest(int i)
         {
             return new PippoTest(i);
         }
@@ -83,7 +98,7 @@ namespace ClassLibrary1
         //unario: il valore di ritorno deve essere lo stesso
         public static PippoTest operator ++(PippoTest p)
         {
-            return p.Valore++;
+            return (PippoTest)p.Valore++;
         }
     }
 }
