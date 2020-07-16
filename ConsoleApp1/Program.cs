@@ -98,7 +98,14 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
                 "Warning message.");
 
             #endregion
-          
+
+            #region BooleanSwitch
+            var sw = new System.Diagnostics.BooleanSwitch("QueryLogger", "QueryLogger");
+            if (sw.Enabled)
+            {
+                Console.WriteLine("Booleanswitchenabled");
+            }
+            #endregion
 
             #region TraceSwitch
             /*
