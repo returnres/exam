@@ -162,9 +162,6 @@ namespace Crypto
                 //not succeed.
                 Console.WriteLine("Encryption failed.");
             }
-         
-
-           
 
             // create the hash code of the text to sign 
             SHA1 sha = SHA1.Create();

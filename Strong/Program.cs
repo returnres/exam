@@ -73,29 +73,7 @@ devi usare codebase ma l'assembly deve essere obbligatoriamente strongly signed.
     {
         static void Main(string[] args)
         {
-#warning This code is obsolete
 
-#pragma warning disable
-#pragma warning restore
-
-#line 200 "OtherFileName"
-            int a; // line 200
-#line default
-            int b; // line 4
-#line hidden
-            int c; // hidden
-            int d; // line 7
-
-#if !DEBUG
-		Console.WriteLine("Not debug");
-#elif !WINRT
-            Console.WriteLine("Not WINRT");
-#else
-		  Console.WriteLine(" debug");
-#endif
-
-
-            var drives = DriveInfo.GetDrives();
         }
     }
 }

@@ -38,18 +38,8 @@ namespace ConsoleApp1
         private static TraceSource mySource =
             new TraceSource("MyService");
 
-        //private static TraceSource mySource1 =
-        //    new TraceSource("MyService1");
-
-
         static void Main(string[] args)
         {
-            MyMethodCond();
-          
-            string main = "Main";
-            Trace.Write("trace");
-            Debug.Write("debug");
-            Debug.Assert(main == "Main");
 
             #region opertori
             PippoTest pippoTest = new PippoTest(1);
@@ -181,6 +171,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             #endregion
 
+            MyMethodCond();
+
+            string main = "Main";
+            Trace.Write("trace");
+            Debug.Write("debug");
+            Debug.Assert(main == "Main");
+
             Ciccio c = new Ciccio();
             c.Prova();
             ICiccio s = (ICiccio)c;
@@ -291,14 +288,14 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             //PLUGIN
             //caricamento dinamico  assembly da path
-            //var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
-            //Type[] tips = assm.GetTypes();
-            //foreach (var item in tips)
-            //{
-            //    //var objectType = Type.GetType(objectToInstantiate);
-            //    Type objectType = assm.GetType(item.FullName);
-            //    var instantiatedObject = Activator.CreateInstance(objectType);
-            //}
+            var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
+            Type[] tips = assm.GetTypes();
+            foreach (var item in tips)
+            {
+                //var objectType = Type.GetType(objectToInstantiate);
+                Type objectType = assm.GetType(item.FullName);
+                var instantiatedObject = Activator.CreateInstance(objectType);
+            }
             //PLUGIN
 
             //carica solo metadati dei tipi SENZA instanziare i tipi
@@ -306,10 +303,11 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             //var instantiatedObject1 = Activator.CreateInstance(typeof(Tipo));
             //var instantiatedObject2 = Activator.CreateInstance<Tipo>;
-
+            string sss = new String(new char[3]);
             //assembly attualmente in esecuzione
             var ass = Assembly.GetExecutingAssembly();
             var ass1 = Assembly.GetAssembly(typeof(string));
+            var ass12 = Assembly.GetAssembly(sss.GetType());
             var mytype = ass.GetType("ConsoleApp1.Program");
             var fullname = ass.FullName;
             var nome = mytype.Name;
@@ -371,15 +369,17 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             Macchina macchina = new Macchina("320", "bmw");
             macchina.Parti();
             SmartPhone.Battery battery = new SmartPhone.Battery();
-            MiaclasseStatic miaclasseStatic = new MiaclasseStatic();
-            MiaclasseStatic miaclasse2 = new MiaclasseStatic();
-            Console.WriteLine(MiaclasseStatic.contatore);
+            ConstructorStaticClass constructorStaticClass = new ConstructorStaticClass();
+            ConstructorStaticClass miaclasse2 = new ConstructorStaticClass();
+            Console.WriteLine(ConstructorStaticClass.contatore);
             ClassTest1 babbo = new ClassTest1();
             var testref = 0;
-            babbo.cambiaNumero(ref testref);
             double resp2;
             double resp3;
-            //scarta valore resp3
+
+            //ref
+            babbo.cambiaNumero(ref testref);
+            //out scarta valore resp3
             babbo.potenza(2, out resp2, out _);
             var media = babbo.CalcolaMedia(18, 27, 27, 27);
             babbo.ParametriNome(nome: "rob", anni: 43);
@@ -414,13 +414,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             int n = (int)box;//unbox
             dynamic dd = 1;
             int inc = dd + 1;
-            var sss = Convert.ToString(1);
+            var ssss = Convert.ToString(1);
             dynamic dy = new ExpandoObject();
             #endregion
 
             #region type
 
-
+            //OTTENGO IL TIPO
             //GetType
             var ti = typeof(string).GetTypeInfo();
             Type ts = Type.GetType("System.String");//se si trova in Mscorelib.dll
@@ -431,7 +431,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             //typeof
             Type type = typeof(Type);
 
-
+            //CONTROLLO IL TIPO
             //is tipo | as tipo
             string obj = "";
             if (obj is string)
@@ -464,10 +464,10 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
           2343434343
            */
 
-
+            //array
             int[] vet = new[] { 1, 2, 3 };
 
-            //ret
+            //array regolari matrici
             int[,] matrix = new int[3, 4];
             matrix[0, 0] = 1;
 
@@ -477,7 +477,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
                 {5, 6, 7, 8}
             };
 
-            //jagged
+            //jagged array irregolari
             int[][] jagged = new int[3][];
             jagged[0] = new int[2] { 1, 2 };
             jagged[1] = new int[4] { 1, 2, 3, 4 };
@@ -510,7 +510,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             #endregion
 
-            #region  avent
+            #region  Event
             //Event
             Pub pub = new Pub();
             pub.OnChange += () => Console.WriteLine("lambda");
@@ -550,11 +550,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             myDelegate myd1 = MethodForDel;
             Console.WriteLine(myd1("1ciao"));
 
-            //assegno delegate vuoto
+            //assegno delegate 
             myDelegate myd2 = delegate { return 1; };
             Console.WriteLine(myd2("2ciao"));
+            #endregion
 
-
+            #region VARIANZA 
+            //COVARIANZA OUT
             //ti faccio assegnare sia metodo che ritorna stringa
             //ma anche metodo che torna object perchè stringa deriva
             //da object (è piu specifica)
@@ -564,6 +566,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             Cov<object> cov3 = d1.Cov2;
             //Cov<string> cov2 = d1.Cov2;//no object non deriva da stringa 
 
+            //CONTROVARIANZA IN
             //ti faccio assegnare sia metodo che prende ingresso
             //classe piu generica object  ma ache classe piu specifica string
             Con<object> con = d1.Con1;
@@ -581,10 +584,10 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             d1.UseMulticast();
 
-            #endregion 
+            #endregion
+
 
             #region generics
-
             Task tx1 = Task.Run(() =>
             {
                 Console.WriteLine("ciao");
@@ -592,9 +595,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             Task[] tasksarr = new Task[1];
             tasksarr[0] = tx1;
 
-            Gen1<MiaclasseStatic, Task> gen1 = new Gen1<MiaclasseStatic, Task>();
-            //per inferenza di tipo si puo omettere
-            //var mytask = gen1.ContinueTaskOrDefault<Task>(tx1);
+            Gen1<ConstructorStaticClass, Task> gen1 = new Gen1<ConstructorStaticClass, Task>();
 
             if (gen1.GetDefault(tx1) != null)
             {
@@ -608,9 +609,10 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             if (mytaskList != null)
                 Console.WriteLine("starts tasks generic");
 
-            Gen2<Miaclasse> gen2 = new Gen2<Miaclasse>();
-            Gen2Figlia<Miaclasse> gen2figlia = new Gen2Figlia<Miaclasse>();
-            Gen1Figlia<Miaclasse, Task> tesFiglia = new Gen1Figlia<Miaclasse, Task>();
+          
+            Gen2<Constructor> gen2 = new Gen2<Constructor>();
+            Gen2Figlia<Constructor> gen2figlia = new Gen2Figlia<Constructor>();
+            Gen1Figlia<Constructor, Task> tesFiglia = new Gen1Figlia<Constructor, Task>();
 
             //variabile statico è diverso per tipo
             TestStaticGen<string>.Status = "rob";
@@ -653,12 +655,12 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             var qy = from num in Enumerable.Range(1, 8).AsParallel()
                      select Math.Pow(2, num);
 
-            //stampa da 1 a 9 (10 numeri)
+            //stampa da 1 a 9 (9 numeri NON in ordine)
             //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
             Parallel.For(1, 10, g => Console.WriteLine("g-{0}", g));
             var result = Parallel.For(0, 50, (g, parallelLoopState) =>
              {
-                 if (i > 10)
+                 if (g > 5)
                  {
                      parallelLoopState.Break();
                  }
@@ -707,6 +709,19 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             //manca continuewhenall
             //continuewheany
             //task figli innestati
+
+            //Task.WaitAll blocks the current thread until everything has completed.
+            //Task.WhenAll returns a task which represents the action of waiting until everything has completed.
+            //That means that from an async method, you can use:
+            // A DIFFERENZA DI WAIT ALL TORNA SOLO LA PRIMA ECCEZIONE NON AGGREGATE
+            Task[] tasksArray = new Task[3];
+            tasksArray[0] = Task.Run(() => { Thread.Sleep(4000); });
+            tasksArray[1] = Task.Run(() => { Thread.Sleep(4000); });
+            tasksArray[2] = Task.Run(() => { Thread.Sleep(4000); });
+            var ry = MyAsyncWhenAll(tasksArray);
+            Console.WriteLine("tornato da MyAsyncWhenAll");
+
+
             Task tx = Task.Run(() =>
             {
                 Thread.Sleep(1000);
@@ -715,9 +730,9 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             {
                 Thread.Sleep(1000);
             });
-
-
+           
             Task taskall = Task.WhenAll((new Task[] { tx, ty }));
+            
             //Task taskall = Task.WhenAny((new Task[] { t1, t2 }));
             taskall.Wait();
 
@@ -941,6 +956,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
         static void MyMethodCond()
         {
             Console.WriteLine("CHIAMATO PERCHE SONO IN DEBUGGGG!!!!!!!!!!!!!!!!");
+        }
+
+
+        static async Task MyAsyncWhenAll(Task[] tasks)
+        {
+            await Task.WhenAll(tasks);
+            Console.WriteLine("USCITO DAL WAIT");
         }
 
         #region private

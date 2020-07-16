@@ -27,44 +27,8 @@ namespace ConsoleApp2
     {
         public static void Main()
         {
-            //XmlSerializer xmlignore serialize
-            /*
-             * Ricorda che non riesce a serializzare i campi privati. 
-             * Ma neanche le proprietà pubbliche, se manca un setter 
-             * (non riusciresti a deserializzare il membro).
-             */
-            //DataContractSerializer
-            /*
-             * Si usa in WCF. Ha un approccio opt-in: nulla viene serializzato a meno che non decori 
-             * la classe con DataContract e i membri con DataMember.
-             * 
-             * 
-            //BYnaryFormatter   NonSerialized serialize
-            /*
-             * Il BinaryFormatter riesce a serializzare tutto lo stato interno dell'oggetto, 
-             * compresi i campi privati (è sostanzialmente un dump della memoria con dei metadati).
-             * E' veloce e produce un file piccolo.
-             */
-            /*
-            BinaryFormatter
-            Serialize
-            (File)Stream
-
-            XmlSerializer
-            Serialize
-            StreamWriter, StringWriter
-
-            DataContractSerializer
-            WriteObject
-            (File)Stream
-
-            JavascriptSerializer
-            Serialize
-            string, StringBuilder
-              */
 
             #region STREAM 
-
 
             /*
              * Streams
@@ -72,7 +36,8 @@ Uno stream è utile per leggere o scrivere poco alla volta,
 senza dover caricare tutto in memoria. 
 Ha 3 funzioni principali: reading, writing e seeking. Non tutti gli streams sono seekable, però.
 Un FileStream è quello che ti ritorna quando invochi File.Open o File.Create. 
-Potrebbe non essere quello che vuoi, perché il FileStream lavora solo con dati binari.
+Potrebbe non essere quello che vuoi, perché il FileStream lavora solo con dati binari.ED è necessario usare 
+encoding 
 
 Allora forse ti conviene usare File.OpenText o File.CreateText, che restituiscono uno StreamWriter,
 che ti permette di scrivere stringhe in formato UTF8.
@@ -87,7 +52,7 @@ Se vuoi scrivere file in altri encoding, arrangiati col FileStream.
 Gli passerai i bytes frutto della conversione con Encoding.GetEncoding(“iso-8859-1”).GetBytes.
                                                     DECORATOR PATTERN
 
-Gli stream possono essere combinati secondo il  
+Gli stream possono essere combinati secondo il  DECORATOR PATTERN
 Ad esempio, usare un FileStream da solo è certamente fattibile ma se lo usi per scrivere un byte alla volta 
 non avrai ottime prestazioni perché i disci sono più abili a scrivere grosse quantità di dati alla volta.
 
@@ -111,125 +76,6 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
               }
 
             
-            #endregion
-
-            #region linq
-            int[] data1 = {1, 2, 3, 4};
-            IEnumerable<int> res = from d in data1
-                select d;
-            Console.WriteLine(string.Join(",",res));
-
-           
-
-            //Cross - Join
-            int[] data2 = { 1, 2, 3, 4 };
-            int[] data3 = { 1, 2, 3, 4 };
-
-            var joinres = from c in data2
-            join o in data3 on c equals o
-                where c == 2
-                select new
-                {
-                    c,
-                    o
-                };
-
-           //var rtt =  data2
-           //     .Where(c => c == 2)
-           //     .Join(data3,
-           //         c => new { c },
-           //         o => new { o },
-           //         (c, o) => new { c, o  });
-
-
-            var qCross1 = from em in data2
-            from sh in data3
-            select new { em, sh };
-
-            var qCross2 = data2.Join(
-                data3,
-                em => true,
-                sh => true,
-                (em, sh) => new { em, sh }
-            );
-           
-            var qCross3 = data2.Join(
-                data3,
-                em => new { Dummy = 1 },
-                sh => new { Dummy = 1 },
-                (em, sh) => new { em, sh }
-            );
-
-
-            List<Order> orders = new  List<Order>();
-            orders.Add(new Order()
-            {
-                OrderLines = new List<OrderLine>()
-                {
-                   new OrderLine()
-                   {
-                       Amount = 1,
-                       Product = new Product()
-                       {
-                           Des = "pippo",
-                           Price = 10
-                           
-                       }
-                   }
-                }
-            });
-            orders.Add(new Order()
-            {
-
-                OrderLines = new List<OrderLine>()
-                {
-                    new OrderLine()
-                    {
-                        Amount = 2,
-                        Product = new Product()
-                        {
-                            Des = "pluto",
-                            Price = 20
-
-                        }
-                    }
-                }
-            });
-
-           var tt =  from c in orders
-            group c by c.name;
-
-            //grouping and projectons
-            var res1 = from o in orders
-                from l in o.OrderLines
-                group l by l.Product
-                into p
-                select new
-                {
-                    Product = p.Key,
-                    Amount = p.Sum(x => x.Amount)
-                };
-
-
-            var regroupres = from ordine in orders
-            group ordine by ordine.name into grouped
-                where grouped.Count() > 2
-                select new
-                {
-                    Country = grouped.Key,
-                    Conto = grouped.Count()
-                };
-
-
-            int[] datax = { 1, 2, 3, 4 };
-            int[] datay = { 1, 6, 3, 5 };
-
-            IEnumerable<int> rr = from x in datax
-                join s2 in datay
-                    on x equals s2
-                select x;
-
-            Console.WriteLine(string.Join(",", rr));// 1, 3
             #endregion
 
             #region file
@@ -289,20 +135,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             //string sourceDirectory = @"C:\current";
             //string archiveDirectory = @"C:\archive";
 
-            //try
-            //{
-            //    var txtFiles = Directory.EnumerateFiles(sourceDirectory, "*.txt");
-
-            //    foreach (string currentFile in txtFiles)
-            //    {
-            //        string fileName = currentFile.Substring(sourceDirectory.Length + 1);
-            //        Directory.Move(currentFile, Path.Combine(archiveDirectory, fileName));
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+           
 
             string path = @"C:\Users\rob\Documents\temp\ciccio.txt";
 
@@ -362,7 +195,127 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             Console.WriteLine(ReadAll(path));
             #endregion
 
-            #region xml
+            #region linq
+            int[] data1 = { 1, 2, 3, 4 };
+            IEnumerable<int> res = from d in data1
+                                   select d;
+            Console.WriteLine(string.Join(",", res));
+
+
+
+            //Cross - Join
+            int[] data2 = { 1, 2, 3, 4 };
+            int[] data3 = { 1, 2, 3, 4 };
+
+            var joinres = from c in data2
+                          join o in data3 on c equals o
+                          where c == 2
+                          select new
+                          {
+                              c,
+                              o
+                          };
+
+            //var rtt =  data2
+            //     .Where(c => c == 2)
+            //     .Join(data3,
+            //         c => new { c },
+            //         o => new { o },
+            //         (c, o) => new { c, o  });
+
+
+            var qCross1 = from em in data2
+                          from sh in data3
+                          select new { em, sh };
+
+            var qCross2 = data2.Join(
+                data3,
+                em => true,
+                sh => true,
+                (em, sh) => new { em, sh }
+            );
+
+            var qCross3 = data2.Join(
+                data3,
+                em => new { Dummy = 1 },
+                sh => new { Dummy = 1 },
+                (em, sh) => new { em, sh }
+            );
+
+
+            List<Order> orders = new List<Order>();
+            orders.Add(new Order()
+            {
+                OrderLines = new List<OrderLine>()
+                {
+                   new OrderLine()
+                   {
+                       Amount = 1,
+                       Product = new Product()
+                       {
+                           Des = "pippo",
+                           Price = 10
+
+                       }
+                   }
+                }
+            });
+            orders.Add(new Order()
+            {
+
+                OrderLines = new List<OrderLine>()
+                {
+                    new OrderLine()
+                    {
+                        Amount = 2,
+                        Product = new Product()
+                        {
+                            Des = "pluto",
+                            Price = 20
+
+                        }
+                    }
+                }
+            });
+
+            var tt = from c in orders
+                     group c by c.name;
+
+            //grouping and projectons
+            var res1 = from o in orders
+                       from l in o.OrderLines
+                       group l by l.Product
+                into p
+                       select new
+                       {
+                           Product = p.Key,
+                           Amount = p.Sum(x => x.Amount)
+                       };
+
+
+            var regroupres = from ordine in orders
+                             group ordine by ordine.name into grouped
+                             where grouped.Count() > 2
+                             select new
+                             {
+                                 Country = grouped.Key,
+                                 Conto = grouped.Count()
+                             };
+
+
+            int[] datax = { 1, 2, 3, 4 };
+            int[] datay = { 1, 6, 3, 5 };
+
+            IEnumerable<int> rr = from x in datax
+                                  join s2 in datay
+                                      on x equals s2
+                                  select x;
+
+            Console.WriteLine(string.Join(",", rr));// 1, 3
+            #endregion
+
+
+            //xml valiate
 
             string xsdPath = "pippo.xsd";
             string xmlPath = "test.xml";
@@ -372,7 +325,10 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             document.Load(reader);
             var eventHandler = new ValidationEventHandler(ValidationEventHandler);
             document.Validate(eventHandler);
+            //ml valiate
 
+
+            #region xml XmlWriter XmlReader
             /*
              * <?xml version="1.0" encoding="utf-16"?>
               <People>
@@ -492,6 +448,30 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
 
             #endregion
 
+            //XmlSerializer xmlignore serialize  StreamWriter, StringWriter
+            /*
+             * Ricorda che non riesce a serializzare i campi privati. 
+             * Ma neanche le proprietà pubbliche, se manca un setter 
+             * (non riusciresti a deserializzare il membro).
+             */
+            //DataContractSerializer  WriteObject  (File)Stream
+            /*
+             * Si usa in WCF. Ha un approccio opt-in: nulla viene serializzato a meno che non decori 
+             * la classe con DataContract e i membri con DataMember.
+             * 
+             * 
+            //BYnaryFormatter   NonSerialized serialize   (File)Stream
+            /*
+             * Il BinaryFormatter riesce a serializzare tutto lo stato interno dell'oggetto, 
+             * compresi i campi privati (è sostanzialmente un dump della memoria con dei metadati).
+             * E' veloce e produce un file piccolo.
+             * 
+             * 
+             //JavascriptSerializer
+                Serialize
+            string, StringBuilder
+             * 
+             */
             #region serialization
             PersonSer obj = new PersonSer();
 
@@ -617,35 +597,25 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             #endregion
 
             #region xmlserialize override XmlAttributeAttribute
-            XmlSerializer mySerializer1;
-            TextWriter writer1;
 
             XmlAttributeOverrides myXmlAttributeOverrides1 =
                 new XmlAttributeOverrides();
             XmlAttributes myXmlAttributes1 = new XmlAttributes();
-
           
             XmlAttributeAttribute myXmlAttributeAttribute1 =
                 new XmlAttributeAttribute();
             myXmlAttributeAttribute1.AttributeName = "Name";
             myXmlAttributes1.XmlAttribute = myXmlAttributeAttribute1;
 
-            myXmlAttributeOverrides1.Add(typeof(Student), "StudentName",
-                myXmlAttributes1);
+            myXmlAttributeOverrides1.Add(typeof(Student), "StudentName", myXmlAttributes1);
 
-            // Create the XmlSerializer.
-            mySerializer1 = new XmlSerializer(typeof(Student),
+            var mySerializer1 = new XmlSerializer(typeof(Student),
                 myXmlAttributeOverrides1);
+            TextWriter writer1 = new StreamWriter("student.xml");
 
-            writer1 = new StreamWriter("student.xml");
-
-            // Create an instance of the class that will be serialized.
             Student myStudent = new Student();
-
-            // Set the Name property, which will be generated as an XML attribute. 
             myStudent.StudentName = "James";
             myStudent.StudentNumber = 1;
-            // Serialize the class, and close the TextWriter.
             mySerializer1.Serialize(writer1, myStudent);
             writer1.Close();
 

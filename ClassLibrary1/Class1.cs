@@ -132,7 +132,7 @@ namespace ClassLibrary1
     }
 
     //C#7 expression body per metodi
-    public class Miaclasse : MiaclasseStatic
+    public class Constructor : ConstructorStaticClass
     {
         /*memebri :
         * field
@@ -158,13 +158,13 @@ namespace ClassLibrary1
             set { pluto = value; }
         }
 
-        public Miaclasse()
+        public Constructor()
         {
             datanascrita = DateTime.Now;
         }
 
         //expression body
-        public Miaclasse(string nome) => _nome = nome;
+        public Constructor(string nome) => _nome = nome;
 
         //expression body C#7
         public string papaperino
@@ -225,11 +225,11 @@ namespace ClassLibrary1
     {
     }
 
-    public class MiaclasseStatic : Imiainterfaccia
+    public class ConstructorStaticClass : Imiainterfaccia
     {
         public static int contatore { get; internal set; }
 
-        static MiaclasseStatic()
+        static ConstructorStaticClass()
         {
             contatore++;
         }

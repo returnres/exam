@@ -21,6 +21,7 @@ namespace ConsoleApp3
            
             Console.WriteLine(String.Format(cultureInfo, "{0:C} Euro", value));//12.345,68 € Euro
             Console.WriteLine($"€{value:N2} Euro");//€12.345,68 Euro
+            Console.WriteLine($"{value:C}");//€12.345,68 Euro
             Console.WriteLine(value.ToString("C", CultureInfo.CurrentCulture));//12.345,68 €
 
             var res =  String.Format("{0:dd/MM/yyyy}", DateTime.Now);
@@ -60,9 +61,5 @@ namespace ConsoleApp3
         {
             // Method body
         }
-
-       
-
-
     }
 }
