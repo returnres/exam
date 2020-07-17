@@ -1,22 +1,37 @@
-﻿using System;
+﻿#define PIPPO
+
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
-
 namespace Freedom
 {
+
     class Program
     {
         private static Mutex _Mutex = new Mutex(false, "DarksideErrorLog");
+
+        // Use DllImport to import the Win32 MessageBox function.
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
         static void Main(string[] args)
         {
+//#if PIPPO  
+//#error DEBUG is defined  
+//#endif
+
+            MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 0);
+
             #region altro
             CancellationToken myCancellationToken = new CancellationToken();
             Task mytask = Task.Run(() => { });
@@ -26,8 +41,17 @@ namespace Freedom
             mytask1.Wait();
             var i = mytask1.Result;
             Task[] tasks = new Task[3];
-            Task.WaitAll(tasks);
-            Task.WaitAny(tasks);
+            try
+            {
+                Task.WaitAll(tasks);
+                Task.WaitAny(tasks);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                
+            }
+           
 
             var task = Task.Run(() => {
                 Thread.Sleep(5000);
@@ -83,7 +107,7 @@ namespace Freedom
             Animal cat = new Animal();
             cat.Fai();
             ((IAnimal) cat).Fai();
-            #endregion
+        
 
             List<int> numbers = new List<int> { 1, 2, 3, 5, 7, 9 };
             using (var enumerator = numbers.GetEnumerator())
@@ -92,6 +116,14 @@ namespace Freedom
                     Console.WriteLine(enumerator.Current);
             }
 
+            using (var ss = new SecureString())
+            {
+                ss.AppendChar('a'); //magari il char viene da console
+                ss.AppendChar('b'); //magari il char viene da console
+                ss.AppendChar('c'); //magari il char viene da console
+            }
+
+            #endregion
         }
 
         static void SampleHandler(object sender, EventArgs e)

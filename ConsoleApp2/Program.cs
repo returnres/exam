@@ -29,44 +29,20 @@ namespace ConsoleApp2
         {
             /*TextReader
              * Stringreader
-             * StreamReade
+             * StreamReader
              * 
              * FileStream => Encoding usa File
              * StreamReader => no encoding usa FileInfo
              * 
-             * XmlDocument
-             * XmlReader => StringReader
-             * XmlSerialize => StringWriter, xmlignore, no priv, setter
+             * XmlDocument => lento facile non lettua sequanzaile
+             * XmlReader => StringReader  veloce lettura sequnziale
+             * XDocument => linq to xml per leggere, editare
              * 
-             * DataContract =>FileStream Datamember  
+             * XmlSerialize => StringWriter/StreamWriter, xmlignore, no priv, setter,serialize
+             * DataContractSerializer  =>FileStream DataContract Datamember  obbligatori (wcf)
              * BynaryFormatter => FileStream, noserialize, priv si
              * DataConntractJsonSerializer => MemoryStream
              * javascriptserializer
-             */
-
-            //XmlSerializer xmlignore serialize  StreamWriter, StringWriter
-            /*
-             * Ricorda che non riesce a serializzare i campi privati. 
-             * Ma neanche le proprietà pubbliche, se manca un setter 
-             * (non riusciresti a deserializzare il membro).
-             */
-            //DataContractSerializer  WriteObject  (File)Stream
-            /*
-             * Si usa in WCF. Ha un approccio opt-in: nulla viene serializzato a meno che non decori 
-             * la classe con DataContract e i membri con DataMember.
-             * 
-             * 
-            //BYnaryFormatter   NonSerialized serialize   (File)Stream
-            /*
-             * Il BinaryFormatter riesce a serializzare tutto lo stato interno dell'oggetto, 
-             * compresi i campi privati (è sostanzialmente un dump della memoria con dei metadati).
-             * E' veloce e produce un file piccolo.
-             * 
-             * 
-             //JavascriptSerializer
-                Serialize
-            string, StringBuilder
-             * 
              */
 
             #region STREAM 

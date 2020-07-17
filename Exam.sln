@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trans", "Trans\Trans.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freedom", "Freedom\Freedom.csproj", "{167666CC-1A08-4C9E-9480-5439E19E498F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp4", "ConsoleApp4\ConsoleApp4.csproj", "{082383AF-E244-417E-9AB5-AA7DBA61AA7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{167666CC-1A08-4C9E-9480-5439E19E498F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167666CC-1A08-4C9E-9480-5439E19E498F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167666CC-1A08-4C9E-9480-5439E19E498F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{082383AF-E244-417E-9AB5-AA7DBA61AA7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{082383AF-E244-417E-9AB5-AA7DBA61AA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{082383AF-E244-417E-9AB5-AA7DBA61AA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{082383AF-E244-417E-9AB5-AA7DBA61AA7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
