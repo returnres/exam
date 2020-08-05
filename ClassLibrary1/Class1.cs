@@ -147,7 +147,7 @@ namespace ClassLibrary1
         */
         private const string pianeta = "terra";
         private readonly DateTime datanascrita;
-        protected string _nome { get; set; }
+        protected  string _nome { get; set; }
         protected internal int anni { get; set; }
         public string pippo { get; set; }
 
@@ -234,11 +234,7 @@ namespace ClassLibrary1
             contatore++;
         }
     }
-
-    //indicizzatori
-
    
-
     public class SmartPhone
     {
         public class Battery
@@ -336,7 +332,7 @@ namespace ClassLibrary1
             object a = null;
             object b = 123;
 
-            //miòò coalescing
+            // coalescing
             //se è null gli metto un altea cosa altrimenti lascio valore
             var x = a ?? 1;//1 perchè a è null
             var y = b ?? 1;//123 perchè b non è null

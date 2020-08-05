@@ -25,6 +25,7 @@ namespace ConsoleApp1
     /// C#6
     /// c#7
     /// C#8 (è supportato in .NET Core 3.x e .NET standard 2.1)
+    /// C#9 ? 
     /// </summary>
     class Program
     {
@@ -343,7 +344,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             }
             #endregion
 
-            #region IComparable eccezioni
+            #region IComparable 
             //confrontare oggetti
             ComparableMoto comparableMoto = new ComparableMoto();
             comparableMoto.Targa = "pippo";
