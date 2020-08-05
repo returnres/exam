@@ -1,6 +1,7 @@
 ﻿#define PIPPO
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
@@ -26,9 +27,37 @@ namespace Freedom
 
         static void Main(string[] args)
         {
-//#if PIPPO  
-//#error DEBUG is defined  
-//#endif
+
+            /*                      class
+             * ArrayList
+             * BitArray
+             * Comparer confronyo ta stringhe casesensituve
+             * Hshtable chiave valore
+             * Queue
+             * Sortedlist
+             * Stack
+             * 
+             * 
+             *                    interface
+             * ICOllection
+             * IComparer
+             * IDictionary
+             * IEnumerble
+             * Ienumerator
+             * IEqualityCompare
+             * Ilist
+             */
+            //Rappresenta una raccolta di coppie chiave/valore,
+            //ordinate in base alle chiavi e accessibili per chiave e per indice.
+            SortedList mySL = new SortedList();
+            mySL.Add("Third", "!");
+            mySL.Add("Second", "World");
+            mySL.Add("First", "Hello");
+
+
+            //#if PIPPO  
+            //#error DEBUG is defined  
+            //#endif
 
             MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 0);
 
