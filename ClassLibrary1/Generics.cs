@@ -7,8 +7,23 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
-    //constraeint : class, class?, struct,new(), U,notnull
-
+    //constraeint 
+    /*
+     *
+where T : struct	The type argument must be a non-nullable value type. For information about nullable value types, see Nullable value types. Because all value types have an accessible parameterless constructor, the struct constraint implies the new() constraint and can't be combined with the new() constraint. You can't combine the struct constraint with the unmanaged constraint.
+where T : class	The type argument must be a reference type. This constraint applies also to any class, interface, delegate, or array type. In a nullable context in C# 8.0 or later, T must be a non-nullable reference type.
+where T : class?	The type argument must be a reference type, either nullable or non-nullable. This constraint applies also to any class, interface, delegate, or array type.
+where T : notnull	The type argument must be a non-nullable type. The argument can be a non-nullable reference type in C# 8.0 or later, or a non-nullable value type.
+where T : unmanaged	The type argument must be a non-nullable unmanaged type. The unmanaged constraint implies the struct constraint and can't be combined with either the struct or new() constraints.
+where T : new()	The type argument must have a public parameterless constructor. When used together with other constraints, the new() constraint must be specified last. The new() constraint can't be combined with the struct and unmanaged constraints.
+where T : <base class name>	The type argument must be or derive from the specified base class. In a nullable context in C# 8.0 and later, T must be a non-nullable reference type derived from the specified base class.
+where T : <base class name>?	The type argument must be or derive from the specified base class. In a nullable context in C# 8.0 and later, T may be either a nullable or non-nullable type derived from the specified base class.
+where T : <interface name>	The type argument must be or implement the specified interface. Multiple interface constraints can be specified. The constraining interface can also be generic. In a nullable context in C# 8.0 and later, T must be a non-nullable type that implements the specified interface.
+where T : <interface name>?	The type argument must be or implement the specified interface. Multiple interface constraints can be specified. The constraining interface can also be generic. In a nullable context in C# 8.0, T may be a nullable reference type, a non-nullable reference type, or a value type. T may not be a nullable value type.
+where T : U	The type argument supplied for T must be or derive from the argument supplied for U. In a nullable context, if U is a non-nullable reference type, T must be non-nullable reference type. If U is a nullable reference type, T may be either nullable or non-nullable.
+     * 
+     * 
+     */
     public interface ITest<T>
     {
         T GetDefault(T param);
@@ -18,7 +33,7 @@ namespace ClassLibrary1
     {
         public T GetDefault(T param)
         {
-            throw new NotImplementedException();
+            return default(T);
         }
     }
 
@@ -26,7 +41,7 @@ namespace ClassLibrary1
     {
         public string GetDefault(string param)
         {
-            throw new NotImplementedException();
+            return "";
         }
     }
    
@@ -48,9 +63,12 @@ namespace ClassLibrary1
 
     }
 
+    public class Gen5<T, T1> where T : ConstructorStaticClass, Imiainterfaccia
+        where T1 : Task
+    {
+    }
 
-    public class Gen1<T, T1> where T : ConstructorStaticClass, Imiainterfaccia
-                            where T1 : Task
+    public class Gen1
     {
         public T2 ContinueTaskOrDefault<T2>(T2 param,Action callBack)
         {
