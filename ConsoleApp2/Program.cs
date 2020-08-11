@@ -27,17 +27,24 @@ namespace ConsoleApp2
     {
         public static void Main()
         {
-            /*TextReader
-             * Stringreader
-             * StreamReader
+            /*
+             * TextReader
+             * Stringreader/StringWriter (xmlreader)
+             * StreamReader/StreamWriter
              * 
-             * FileStream => Encoding usa File
-             * StreamReader => no encoding usa FileInfo
              * 
+             *                  LETTURA SCRITTURA FILE
+             * FileStream => Encoding usa File  che ritorna filestream
+             * StreamReader/StreamWriter => no encoding usa FileInfo
+             * 
+             * 
+             *                  LETTURA SCRITTURA XML
              * XmlDocument => lento facile non lettua sequanzaile
              * XmlReader => StringReader  veloce lettura sequnziale
              * XDocument => linq to xml per leggere, editare
              * 
+             * 
+             *                  SERIALIZZAZIONE
              * XmlSerialize => StringWriter/StreamWriter, xmlignore, no priv, setter,serialize
              * DataContractSerializer  =>FileStream DataContract Datamember  obbligatori (wcf)
              * BynaryFormatter => FileStream, noserialize, priv si
