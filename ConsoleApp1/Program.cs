@@ -41,6 +41,8 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            testa te = new testa();
+            te.faccio(3);
 
             #region opertori
             PippoTest pippoTest = new PippoTest(1);
@@ -596,9 +598,9 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             Task[] tasksarr = new Task[1];
             tasksarr[0] = tx1;
 
-            Gen1<ConstructorStaticClass, Task> gen1 = new Gen1<ConstructorStaticClass, Task>();
+            Gen1 gen1 = new Gen1();
 
-            if (gen1.GetDefault(tx1) != null)
+            if (gen1.GetDefault<ConstructorStaticClass,Task>(tx1) != null)
             {
                 gen1.ContinueTaskOrDefault(tx1, Console.WriteLine);
                 Console.WriteLine("start task generic");

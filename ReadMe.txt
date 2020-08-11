@@ -1,15 +1,15 @@
-	***	class library1 :
-class1 oop ref, struct
-class2 overload operatori
+	   ***	class library1 :
+class1  : oop ref, struct
+class2 : overload operatori
 generics
 exception
 delegate
 event
 
-	***	consoleapp1:
-miaclasse prova interface
-utility extension method
-program :operatori,tracesource,booleanswitch,trcaeswitch,eventlog,performanccounter,gene dinamica,
+	  ***	consoleapp1:
+miaclasse : prova interface
+utility : extension method
+program : operatori,tracesource,booleanswitch,trcaeswitch,eventlog,performanccounter,gene dinamica,
 	reflect,icomparable,ref,cast,type,array,patternmatchc#7,event,exptree,del,generics,tpl,async
 
 

@@ -9,7 +9,7 @@ namespace ConsoleApp1
 {
    public static class Utility
     {
-        public static T1 GetDefault<T, T1>(this Gen1<T,T1> obj, T1 param) where T : ConstructorStaticClass where T1 : Task
+        public static T1 GetDefault<T, T1>(this Gen1 obj, T1 param) where T : ConstructorStaticClass where T1 : Task
         {
             return default(T1);
         }
