@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
+    //contenitore dove metti funzione per passarla ad un metodo
+    //alla fine eseguirai il delegate e non la funzione
+    //1 crei delegat e gli dai un nome X
+    //2 crei una variabile di tipo X
+    //3 assegni a variabile una funzione
+    //4 esegui variabie
     public delegate int mydel();
     public delegate int mydel1(string str);
     public delegate string EmptyDel(string str);
@@ -98,7 +104,7 @@ namespace ClassLibrary1
             int x = 0;
             EmptyDel1 multicast1 = Add1;
             multicast1 += Add2;
-            multicast1(ref x);
+            multicast1(ref x);//ESEGUO LE FUNZIONI CHE SI SONO REGISTRATE A MULTICAST
 
             Console.WriteLine("RISULTATO = " +x);
             multicast -= ToUp;

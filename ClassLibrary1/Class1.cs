@@ -14,9 +14,9 @@ namespace ClassLibrary1
     //ereditarietà
     //polimorfismo
 
-    //tipi rif class int dele arr obj string dyna
-    //tipi val struct enum
-    //tipi primitivi sono struct byte short int long bool float double decimal
+    //tipi rif :classe ,interfaccia, delegate, array, string, dynamic
+    //tipi val :struct, enum
+    //tipi primitivi sono struct :  byte short int long bool float double decimal
 
     //INTERFACCIA DEFINISCE UN CONTRATTO
     public interface IInterface 
@@ -98,7 +98,7 @@ namespace ClassLibrary1
             vel = 1;
         }
 
-        protected void Accelera()
+        protected internal void Accelera()
         {
             
         }
@@ -120,7 +120,7 @@ namespace ClassLibrary1
         }
 
         //HIDING
-        protected void Accelera()
+        private  void Accelera()
         {
             base.Parti();
         }
@@ -163,10 +163,10 @@ namespace ClassLibrary1
             datanascrita = DateTime.Now;
         }
 
-        //expression body
+        //expression body COSTUTTORE
         public Constructor(string nome) => _nome = nome;
 
-        //expression body C#7
+        //expression body C#7 PROP
         public string papaperino
         {
             get => papaperino;
@@ -176,8 +176,7 @@ namespace ClassLibrary1
 
     public class ClassTest1
     {
-        //expression body
-        //
+        //expression body METODO
         public int Somma(int a, int b) => a + b;
 
         public void Stampa(string str) => Console.WriteLine(str);
@@ -198,6 +197,8 @@ namespace ClassLibrary1
             return a;
         }
 
+        //parametro ref ti permette di passare uno struct per riferimento
+        //parametro out ti permette di ritornate valori oltra al valore di ritorno del metodo
         //passare + parametri in uscita c#6
         public void potenza(int val, out double p2, out double p3)
         {
@@ -265,7 +266,8 @@ namespace ClassLibrary1
      *- Struct cannot have a default constructor (a constructor without parameters) or a destructor.
 -Structs are value types and are copied on assignment.
 -Structs can be instantiated without using a new operator.
--A struct cannot inherit from another struct or class, and it cannot be the base of a class. All structs inherit directly from System.ValueType, which inherits from System.Object.
+-A struct cannot inherit from another struct or class, and it cannot be the base of a class. All structs inherit directly 
+from System.ValueType, which inherits from System.Object.
 -Struct cannot be a base class. So, Struct types cannot abstract and are always implicitly sealed.
 -Abstract and sealed modifiers are not allowed and struct member cannot be protected or protected internals.
 --Function members in a struct cannot be abstract or virtual, and the override modifier is allowed only to the override methods inherited from System.ValueType.

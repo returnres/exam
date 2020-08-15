@@ -62,6 +62,13 @@ namespace Freedom
             MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 0);
 
             #region altro
+
+            testcons<Cicciolo> tc  = new testcons<Cicciolo>();
+
+
+
+
+
             CancellationToken myCancellationToken = new CancellationToken();
             Task mytask = Task.Run(() => { });
             Task<int> mytask1 = Task.Run(() => default(int));
@@ -161,6 +168,22 @@ namespace Freedom
         }
     }
 
+    /// <summary>
+    /// se metto un costruttore con parametri allora un eventuale constrain tnew() mi da errore di compilazioen
+    /// perchè devo mettere obbligatoriamente cotruttore senza parametro
+    /// </summary>
+    internal class Cicciolo
+    {
+        public Cicciolo()
+        {
+                
+        }
+        public Cicciolo(int a, int b)
+        {
+                
+        }
+    }
+
     internal class Animal : IAnimal
     {
         public void Fai()
@@ -180,6 +203,10 @@ namespace Freedom
         void Fai();
     }
 
+    public class testcons<T> where T : new()
+    {
+        
+    } 
 
     public class Publisher
     {

@@ -34,16 +34,6 @@ namespace ClassLibrary1
         }
     }
 
-    public class MyArgs : EventArgs
-    {
-        public MyArgs(int value)
-        {
-            Value = value;
-        }
-
-        public int Value { get; set; }
-    }
-
     public class Pub2
     {
         public event EventHandler<MyArgs> OnChange = delegate { };
@@ -70,5 +60,16 @@ namespace ClassLibrary1
         {
             OnChange();
         }
+    }
+
+
+    public class MyArgs : EventArgs
+    {
+        public MyArgs(int value)
+        {
+            Value = value;
+        }
+
+        public int Value { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace ClassLibrary1
         {
             _numerogiri = 50;
         }
+
         public void Decelerate()
         {
             _numerogiri -= 10;

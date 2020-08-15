@@ -50,19 +50,21 @@ namespace ConsoleApp1
             PippoTest pippoTest2 = new PippoTest(2);
             //implicit
             int testt = pippoTest2;
+            //explicit
+            PippoTest testtt = (PippoTest)3;
 
             //somma tra pippotest
             var rrrr = pippoTest1 + pippoTest;
-
-
-            //explicit
-            PippoTest testtt = (PippoTest)3;
+            var ssss = pippoTest2++;
+      
             //somma tra int e pippotest
             var ressss = 3 + testtt;
             #endregion
 
             #region TraceSource
             /*
+             * LISTNER
+             * 
              * ConsoleTraceListener	Standard output or error stream
 DelimitedListTraceListener	TextWriter
 EventLogTraceListener	EventLog
@@ -72,10 +74,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
              */
             //configuro da codice
             Stream outfile = File.Create("log.txt");
+            //creo listner
             TextWriterTraceListener textWriterTraceListener = new TextWriterTraceListener(outfile);
             TraceSource trace  = new TraceSource("myT",SourceLevels.All);
 
+            //cancello quello di default
             trace.Listeners.Clear();
+            //aggiungo mio
             trace.Listeners.Add(textWriterTraceListener);
 
             trace.TraceInformation("");
@@ -174,6 +179,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             #endregion
 
+            #region  OOP
             MyMethodCond();
 
             string main = "Main";
@@ -202,6 +208,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             //Pippo pippos = new Pippo();
             //pippos.DoSOmething();
 
+            #endregion 
 
             #region  GENERZIONE DINAMICA CODICE
             /*
@@ -531,14 +538,13 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             CarMonitor cm = new CarMonitor(car);
 
             car.Decelerate();
-            car.Decelerate();
 
             #endregion
 
             #region Expression Tree
             //Expression Tree
-            TestExpres testExpres = new TestExpres();
-            Func<int, bool> isPari = testExpres.exp1.Compile();
+            Expression<Func<int, bool>> exp1 = x => x % 2 == 0;
+            Func<int, bool> isPari = exp1.Compile();//dopo che l'ho compliat posso eseguirla, prima era solo un albero di espressopmo
             if (isPari(4))
                 Console.WriteLine("pari");
             #endregion
@@ -686,7 +692,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             //net 4.5
             //await salva lo stato del contesto del caller e quando il metodo await si conclude
             //il contesto ritorna allo stato del chimante che puo eseguire il codice successivo
-            //questo nel caso di ui permette di modiicare la ui che pè proprieta nella app gui del thread
+            //questo nel caso di ui permette di modiicare la ui che  proprieta nella app gui del thread
             //della ui e viene eseguito nel ui syncronization context (dispatchercontext nella ui)
             //DAL C#7 TUTTO PUO ESSERE AWAITABLE ED ESEGUITO AINCRONO E NON  SOLO ISTANZA DI TASK
             //QUALSIAIS OGGETTO CHE ESPONE METODO GETAWAITER INFATTI LA CLASSE TASK ESPONE METODO GETAWAITER

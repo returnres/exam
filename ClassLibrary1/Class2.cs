@@ -57,18 +57,28 @@ namespace ClassLibrary1
 
     public class Moto
     {
-        public string Targa { get; set; }
+       
     }
     public class ComparableMoto : Moto, IComparable
     {
+        public string Targa { get; set; }
         public int CompareTo(object obj)
         {
             if (obj is ComparableMoto)
             {
                 ComparableMoto other = obj as ComparableMoto;
-                return this.Targa.CompareTo(other.Targa);
+                return String.Compare(Targa, other.Targa, StringComparison.Ordinal);
             }
             return -1;
+
+            /*OPPURE CON PATTERN MATCHING
+             *  if (obj is ComparableMoto other)
+            {
+                return String.Compare(Targa, other.Targa, StringComparison.Ordinal);
+            }
+            return -1;
+             * 
+             */
         }
     }
     public struct PippoTest
@@ -77,13 +87,13 @@ namespace ClassLibrary1
 
         public PippoTest(int valore) { Valore = valore; }
 
-        //avanti
+        //avanti   int testt = pippoTest2;
         public static implicit operator int(PippoTest pippoTest)
         {
             return pippoTest.Valore;
         }
 
-        //indietro
+        //indietro  PippoTest testtt = (PippoTest)3; 
         public static explicit operator PippoTest(int i)
         {
             return new PippoTest(i);
