@@ -351,17 +351,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             #endregion
 
             #region xml XmlWriter XmlReader
-            /*
-             * <?xml version="1.0" encoding="utf-16"?>
-              <People>
-                <Person firstname="J0n" lastname="izzo">
-                  <Details>
-                   <EmailAddress>j0n@ciccio.it</EmailAddress>
-                  </Details>
-                </Person>
-             </People>
-             *
-             */
+           
             StringWriter mioxml = new StringWriter();
             using (XmlWriter xmlWriter = XmlWriter.Create(mioxml, new XmlWriterSettings() {Indent = true}))
             {
@@ -376,7 +366,17 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                 //xmlWriter.WriteEndElement();
                 xmlWriter.Flush();
             }
-
+            /*
+            * <?xml version="1.0" encoding="utf-16"?>
+             <People>
+               <Person firstname="J0n" lastname="izzo">
+                 <Details>
+                  <EmailAddress>j0n@ciccio.it</EmailAddress>
+                 </Details>
+               </Person>
+            </People>
+            *
+            */
             using (StringReader stringReader = new StringReader(mioxml.ToString()))
             {
                 using (XmlReader xmlReader =
@@ -399,6 +399,16 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             #endregion
 
             #region xmldocument
+            /*
+             * <?xml version="1.0" encoding="utf-16"?>
+<People>
+  <Person firstname="J0n" lastname="izzo">
+    <Details>
+      <EmailAddress>j0n@ciccio.it</EmailAddress>
+    </Details>
+  </Person>
+</People>
+             */
             XmlDocument doc = new XmlDocument();
             doc.Load("test.xml");
             //doc.Load(mioxml.ToString());
@@ -428,6 +438,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
             #endregion
 
             #region xdocument
+            //SCRIVO
             XDocument srcTree = new XDocument(
                 new XComment("This is a comment"),
                 new XElement("Root",
@@ -459,6 +470,7 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                   </Person>
                 </People>";
 
+            //LEGGO
             XDocument docxml = XDocument.Parse(strXML);
             var persons = from p in docxml.Descendants("Person")
                 select (string)p.Attribute("firstname") +

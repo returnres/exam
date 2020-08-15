@@ -184,6 +184,110 @@ Task tx1 = Task.Run(() =>
    interlocked
    mnitor
 
-   sono arrivato a consoleapp2
+   linq
 
+-----------------------
+
+
+ /*
+             * TextReader
+             * Stringreader/StringWriter (xmlreader)
+             * StreamReader/StreamWriter
+             * 
+             * 
+             *                  LETTURA SCRITTURA FILE
+             * FileStream => Encoding usa File  che ritorna filestream
+             * StreamReader/StreamWriter => no encoding usa FileInfo
+             * 
+             * 
+             *                  LETTURA SCRITTURA XML
+             * XmlDocument => lento facile non lettua sequanzaile
+             * XmlReader => StringReader  veloce lettura sequnziale(XmlWriter StringWriter )
+             * XDocument => linq to xml per leggere, editare
+             * 
+             * 
+             *                  SERIALIZZAZIONE
+             * XmlSerialize => StringWriter/StreamWriter, xmlignore, no priv, setter,serialize
+             * DataContractSerializer  =>FileStream DataContract Datamember  obbligatori (wcf)
+             * BynaryFormatter => FileStream, noserialize, priv si
+             * DataConntractJsonSerializer => MemoryStream
+             * javascriptserializer
+             */
+
+             ------------------------------
+
+   * TextReader
+             * Stringreader/StringWriter (xmlreader)
+             * StreamReader/StreamWriter
+             * 
+             * 
+             *                  LETTURA SCRITTURA FILE
+             * FileStream => Encoding usa File  che ritorna filestream
+               è quello che ti ritorna quando invochi File.Open o File.Create.
+il FileStream lavora solo con dati binari.ED è necessario usare 
+encoding 
+
+  using (FileStream fs1 = File.Create(path))
+            {
+                //byte che servono , da dove , lungo
+                byte[] info = new UTF8Encoding(true).GetBytes("This is some text");
+                fs1.Write(info, 0, info.Length);
+
+                byte[] info1 = new UTF8Encoding(true).GetBytes("This is some more text,");
+                fs1.Write(info1, 0, info1.Length);
+
+
+                byte[] info2 = new UTF8Encoding(true).GetBytes("\r\nand this is on a new line");
+                fs1.Write(info2, 0, info2.Length);
+            }
+
+  /// LEGGO FILE
+    ///  file  => array byte =>  encode => stringa
+            //Open the stream and read it back.
+            using (FileStream fs1 = File.OpenRead(path))
+            {
+                byte[] b1 = new byte[1024];
+                UTF8Encoding temp = new UTF8Encoding(true);
+
+                //byte che servono , da dove , lungo
+                while (fs1.Read(b1, 0, b1.Length) > 0)
+                {
+                    Console.WriteLine(temp.GetString(b1));
+                }
+            }
+
+ using (FileStream fileStream = File.Create("ciccio1.txt")) {
+	       // aggiungo la capacità di accumulare bytes in un buffer
+	             using (BufferedStream bufferedStream = new BufferedStream(fileStream)) {
+		   // creo un writer per scrivere (non è esso stesso uno stream)
+		    // magari potevo aggiungere un ulteriore Stream per zippare
+		            using (StreamWriter streamWriter = new StreamWriter(bufferedStream)) {
+			           streamWriter.WriteLine("A line of text.");
+
+
+             * StreamReader/StreamWriter => no encoding usa FileInfo
+             * Allora forse ti conviene usare File.OpenText o File.CreateText, che restituiscono uno StreamWriter,
+che ti permette di scrivere stringhe in formato UTF8.
+
+using (StreamWriter streamWriter = File.CreateText(path))
+{
+	string myValue = "MyValue";
+	streamWriter.Write(myValue);
+}
+             * 
+             *                  LETTURA SCRITTURA XML
+             * XmlDocument => lento facile non lettua sequanzaile
+             * XmlReader => StringReader  veloce lettura sequnziale
+             * XDocument => linq to xml per leggere, editare
+             * 
+             * 
+             *                  SERIALIZZAZIONE
+             * XmlSerialize => StringWriter/StreamWriter, xmlignore, no priv, setter,serialize
+             * DataContractSerializer  =>FileStream DataContract Datamember  obbligatori (wcf)
+             * BynaryFormatter => FileStream, noserialize, priv si
+             * DataConntractJsonSerializer => MemoryStream
+             * javascriptserializer
+
+(DA CONTROLLARE SERIALIZZAZIONE)
+sono arrivato a consoleapp2
 

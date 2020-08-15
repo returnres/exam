@@ -47,7 +47,7 @@ namespace Freedom
              * IEqualityCompare
              * Ilist
              */
-            //Rappresenta una raccolta di coppie chiave/valore,
+            //SortedList Rappresenta una raccolta di coppie chiave/valore,
             //ordinate in base alle chiavi e accessibili per chiave e per indice.
             SortedList mySL = new SortedList();
             mySL.Add("Third", "!");
@@ -64,10 +64,6 @@ namespace Freedom
             #region altro
 
             testcons<Cicciolo> tc  = new testcons<Cicciolo>();
-
-
-
-
 
             CancellationToken myCancellationToken = new CancellationToken();
             Task mytask = Task.Run(() => { });
