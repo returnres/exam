@@ -12,9 +12,9 @@ namespace Crypto
     class Program
     {
         /*
-         * -For data privacy, use Aes.
+         * -For data privacy, use Aes. symmetric  (detta anche RijndaelManaged)
 – For data integrity, use HMACSHA256 or HMACSHA512.
-– For digital signatures, use RSA or ECDsa.
+– For digital signatures, use RSA or ECDsa. asymmetric
 – For key exchange, use RSA or ECDiffieHellman.
 – For random number generation, use RNGCryptoServiceProvider.
 – For generating a key from a password, use Rfc2898DeriveBytes.

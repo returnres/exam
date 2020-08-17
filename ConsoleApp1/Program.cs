@@ -298,7 +298,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             //PLUGIN
             //caricamento dinamico  assembly da path
-            var assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
+            Assembly assm = Assembly.LoadFrom(@"C:\Users\rob\source\repos\Exam\Plugin1\bin\Debug\Plugin1.dll");
             Type[] tips = assm.GetTypes();
             foreach (var item in tips)
             {
@@ -306,18 +306,16 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
                 Type objectType = assm.GetType(item.FullName);
                 var instantiatedObject = Activator.CreateInstance(objectType);
             }
-            //PLUGIN
-
             //carica solo metadati dei tipi SENZA instanziare i tipi
-            var ass2 = Assembly.ReflectionOnlyLoadFrom("ClassLibrary1.dll");
+            Assembly ass2 = Assembly.ReflectionOnlyLoadFrom("ClassLibrary1.dll");
 
             //var instantiatedObject1 = Activator.CreateInstance(typeof(Tipo));
             //var instantiatedObject2 = Activator.CreateInstance<Tipo>;
             string sss = new String(new char[3]);
             //assembly attualmente in esecuzione
-            var ass = Assembly.GetExecutingAssembly();
-            var ass1 = Assembly.GetAssembly(typeof(string));
-            var ass12 = Assembly.GetAssembly(sss.GetType());
+            Assembly ass = Assembly.GetExecutingAssembly();
+            Assembly ass1 = Assembly.GetAssembly(typeof(string));
+            Assembly ass12 = Assembly.GetAssembly(sss.GetType());
             var mytype = ass.GetType("ConsoleApp1.Program");
             var fullname = ass.FullName;
             var nome = mytype.Name;

@@ -1,3 +1,9 @@
+1create 
+2manageprogramflow 
+3debug 
+4data 
+
+	   
 	   ***	class library1 :
 class1  : oop ref, struct
 class2 : overload operatori
@@ -288,6 +294,6 @@ using (StreamWriter streamWriter = File.CreateText(path))
              * DataConntractJsonSerializer => MemoryStream
              * javascriptserializer
 
-(DA CONTROLLARE SERIALIZZAZIONE)
-sono arrivato a consoleapp2
+
+
 
