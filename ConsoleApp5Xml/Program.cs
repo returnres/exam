@@ -11,32 +11,73 @@ namespace ConsoleApp5Xml
     {
         static void Main(string[] args)
         {
+            //MODO1
             XmlReader xmlReader = XmlReader.Create("test.xml");
             while (xmlReader.Read())
             {
-                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "Cube"))
+                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "book"))
                 {
                     if (xmlReader.HasAttributes)
-                        Console.WriteLine(xmlReader.GetAttribute("currency") + ": " + xmlReader.GetAttribute("rate"));
+                        Console.WriteLine(xmlReader.GetAttribute("genre"));
                 }
             }
 
+            //MODO2
+            var reader = XmlReader.Create("test1.xml");
+            reader.ReadToFollowing("book");
 
-
-            using (XmlReader xmlReader1 = XmlReader.Create("test.xml"))
+            do
             {
-                xmlReader1.MoveToContent();
-                xmlReader1.ReadStartElement("People");
+                reader.MoveToFirstAttribute();
+                Console.WriteLine($"genre: {reader.Value}");
 
-                string firstname = xmlReader1.GetAttribute("firstname");
-                string lastname = xmlReader1.GetAttribute("lastname");
-                Console.WriteLine($"{firstname}, {lastname}");
+                reader.ReadToFollowing("title");
+                Console.WriteLine($"title: {reader.ReadElementContentAsString()}");
 
-                xmlReader1.ReadStartElement("Person");
-                xmlReader1.ReadStartElement("Details");
+                reader.ReadToFollowing("author");
+                Console.WriteLine($"author: {reader.ReadElementContentAsString()}");
 
-                string email = xmlReader1.ReadString();
-                Console.WriteLine($"{email}");
+                reader.ReadToFollowing("price");
+                Console.WriteLine($"price: {reader.ReadElementContentAsString()}");
+
+                Console.WriteLine("-------------------------");
+
+            } while (reader.ReadToFollowing("book"));
+
+
+            //MODO3
+            using (XmlReader reader1 = XmlReader.Create("test3.xml"))
+            {
+                while (reader1.Read())
+                {
+                    // Only detect start elements.
+                    if (reader1.IsStartElement())
+                    {
+                        // Get element name and switch on it.
+                        switch (reader1.Name)
+                        {
+                            case "perls":
+                                // Detect this element.
+                                Console.WriteLine("Start <perls> element.");
+                                break;
+                            case "article":
+                                // Detect this article element.
+                                Console.WriteLine("Start <article> element.");
+                                // Search for the attribute name on this current node.
+                                string attribute = reader1["name"];
+                                if (attribute != null)
+                                {
+                                    Console.WriteLine("  Has attribute name: " + attribute);
+                                }
+                                // Next read will contain text.
+                                if (reader1.Read())
+                                {
+                                    Console.WriteLine("  Text node: " + reader1.Value.Trim());
+                                }
+                                break;
+                        }//fine switch
+                    }//fine if
+                }
             }
         }
     }

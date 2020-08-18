@@ -297,3 +297,9 @@ using (StreamWriter streamWriter = File.CreateText(path))
 
 
 
+<?xml version="1.0" encoding="utf-16"?>
+<elemento>
+  <elemento attributo='Science Fiction'>
+    <elemento>testo del nodo </elemento>
+  </elemento>
+</elemento>
