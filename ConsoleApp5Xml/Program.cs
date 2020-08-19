@@ -11,7 +11,7 @@ namespace ConsoleApp5Xml
     {
         static void Main(string[] args)
         {
-            //MODO1
+            //MODO1 
             XmlReader xmlReader = XmlReader.Create("test.xml");
             while (xmlReader.Read())
             {
@@ -20,9 +20,14 @@ namespace ConsoleApp5Xml
                     if (xmlReader.HasAttributes)
                         Console.WriteLine(xmlReader.GetAttribute("genre"));
                 }
+
+                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "title"))
+                {
+                    Console.WriteLine($"title: {xmlReader.ReadElementContentAsString()}");
+                }
             }
 
-            //MODO2
+            //MODO2 
             var reader = XmlReader.Create("test1.xml");
             reader.ReadToFollowing("book");
 
@@ -45,7 +50,7 @@ namespace ConsoleApp5Xml
             } while (reader.ReadToFollowing("book"));
 
 
-            //MODO3
+            //MODO3 
             using (XmlReader reader1 = XmlReader.Create("test3.xml"))
             {
                 while (reader1.Read())
