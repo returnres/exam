@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,21 @@ namespace ConsoleApp5Xml
     {
         static void Main(string[] args)
         {
+            /*
+             * Linq to xml
+             */
+            #region xdocumnt linq to xml => navighi ,crei , edito  
 
-            #region xdocumnt linq to xml
-            
             //creation
+
+            //v0
+
+            XDocument docx = new XDocument(new XElement("body",
+                new XElement("level1",
+                    new XElement("level2", "text"),
+                    new XElement("level2", "other text"))));
+            docx.Save("testx0.xml");
+
             //v1
             XDocument srcTree = new XDocument(
                 new XComment("This is a comment"),
@@ -29,7 +41,7 @@ namespace ConsoleApp5Xml
                     new XElement("Info7", "info7"),
                     new XElement("Info8", "info8")
                 )
-                //,new XAttribute("MyAtt",42)
+            //,new XAttribute("MyAtt",42)
             );
             srcTree.Save("testx1.xml");
 
@@ -99,9 +111,9 @@ namespace ConsoleApp5Xml
             IEnumerable<string> names = from student in XDocument
                     .Load(@"testx2.xml")
                     .Descendants("Student")
-                where (int)student.Element("TotalMarks") > 800
-                orderby (int)student.Element("TotalMarks") descending
-                select student.Element("Name").Value;
+                                        where (int)student.Element("TotalMarks") > 800
+                                        orderby (int)student.Element("TotalMarks") descending
+                                        select student.Element("Name").Value;
 
             foreach (string name in names)
             {
@@ -109,13 +121,47 @@ namespace ConsoleApp5Xml
             }
             #endregion
 
-            #region xmldocumnt modifichi e navighi
+           /*
+            * meno performante
+            * read the whole thing into memory and build a DOM
+            */
+            #region xmldocumnt => navighi , crei, edito 
 
+
+            //v0
+            XmlDocument doc2 = new XmlDocument();
+
+            //(1) the xml declaration is recommended, but not mandatory
+            XmlDeclaration xmlDeclaration = doc2.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement root = doc2.DocumentElement;
+            doc2.InsertBefore(xmlDeclaration, root);
+
+            //(2) string.Empty makes cleaner code
+            XmlElement element1 = doc2.CreateElement(string.Empty, "body", string.Empty);
+            doc2.AppendChild(element1);
+
+            XmlElement element2 = doc2.CreateElement(string.Empty, "level1", string.Empty);
+            element1.AppendChild(element2);
+
+            XmlElement element3 = doc2.CreateElement(string.Empty, "level2", string.Empty);
+            XmlText text1 = doc2.CreateTextNode("text");
+            element3.AppendChild(text1);
+            element2.AppendChild(element3);
+
+            XmlElement element4 = doc2.CreateElement(string.Empty, "level2", string.Empty);
+            XmlText text2 = doc2.CreateTextNode("other text");
+            element4.AppendChild(text2);
+            element2.AppendChild(element4);
+
+            doc2.Save(@"testxmldocument.xml");
+
+
+            //v1
             XmlDocument doc = new XmlDocument();
             doc.Load("testxml.xml");
 
             XmlNodeList nodeList;
-            XmlNode root = doc.DocumentElement;
+            XmlNode root1 = doc.DocumentElement;
 
             nodeList = doc.GetElementsByTagName("Person", "");
 
@@ -124,11 +170,11 @@ namespace ConsoleApp5Xml
             {
                 var first = node.Attributes["firstname"].Value;
                 Console.WriteLine(first);
-                if (root.HasChildNodes)
+                if (root1.HasChildNodes)
                 {
-                    for (int i = 0; i < root.ChildNodes.Count; i++)
+                    for (int i = 0; i < root1.ChildNodes.Count; i++)
                     {
-                        Console.WriteLine(root.ChildNodes[i].InnerText);
+                        Console.WriteLine(root1.ChildNodes[i].InnerText);
                     }
                 }
             }
@@ -150,8 +196,29 @@ namespace ConsoleApp5Xml
             doc.Save(Console.Out);
             #endregion
 
-            #region xmlreader  crei / leggi xml
+
+            /*
+             * Fast way create read no cache
+             * Rappresenta un writer che fornisce un modo veloce, non in cache e di tipo forward-only 
+             * per generare flussi o i file contenenti dati XML.
+             * XmlReader/Writer are sequential access streams. You will have to read in on one end, 
+             * process the stream how you want, and write it out the other end. The advantage is that you don't need to read 
+             * the whole thing into memory and build a DOM, which is what you'd get with any XmlDocument-based approach.
+             * 
+             */
+            #region xmlreader =>  crei / navighi xml, NON POSSO EDITARE
+            //MODO0 leggo da uno scrivo da un altro 
+
+            using (FileStream readStream = new FileStream(@"xmlreadertest.xml", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Write))
+            {
+                using (FileStream writeStream = new FileStream(@"xmlreadertestNEW.xml", FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    PostProcess(readStream, writeStream);
+                }
+            }
+
             //MODO1 
+
             XmlReader xmlReader = XmlReader.Create("test.xml");
             while (xmlReader.Read())
             {
@@ -168,38 +235,38 @@ namespace ConsoleApp5Xml
             }
 
             //MODO2 
-            var reader = XmlReader.Create("test1.xml");
-            reader.ReadToFollowing("book");
+            var reader1 = XmlReader.Create("test1.xml");
+            reader1.ReadToFollowing("book");
 
             do
             {
-                reader.MoveToFirstAttribute();
-                Console.WriteLine($"genre: {reader.Value}");
+                reader1.MoveToFirstAttribute();
+                Console.WriteLine($"genre: {reader1.Value}");
 
-                reader.ReadToFollowing("title");
-                Console.WriteLine($"title: {reader.ReadElementContentAsString()}");
+                reader1.ReadToFollowing("title");
+                Console.WriteLine($"title: {reader1.ReadElementContentAsString()}");
 
-                reader.ReadToFollowing("author");
-                Console.WriteLine($"author: {reader.ReadElementContentAsString()}");
+                reader1.ReadToFollowing("author");
+                Console.WriteLine($"author: {reader1.ReadElementContentAsString()}");
 
-                reader.ReadToFollowing("price");
-                Console.WriteLine($"price: {reader.ReadElementContentAsString()}");
+                reader1.ReadToFollowing("price");
+                Console.WriteLine($"price: {reader1.ReadElementContentAsString()}");
 
                 Console.WriteLine("-------------------------");
 
-            } while (reader.ReadToFollowing("book"));
+            } while (reader1.ReadToFollowing("book"));
 
 
             //MODO3 
-            using (XmlReader reader1 = XmlReader.Create("test3.xml"))
+            using (XmlReader readertest = XmlReader.Create("test3.xml"))
             {
-                while (reader1.Read())
+                while (readertest.Read())
                 {
                     // Only detect start elements.
-                    if (reader1.IsStartElement())
+                    if (readertest.IsStartElement())
                     {
                         // Get element name and switch on it.
-                        switch (reader1.Name)
+                        switch (readertest.Name)
                         {
                             case "perls":
                                 // Detect this element.
@@ -209,15 +276,15 @@ namespace ConsoleApp5Xml
                                 // Detect this article element.
                                 Console.WriteLine("Start <article> element.");
                                 // Search for the attribute name on this current node.
-                                string attribute = reader1["name"];
+                                string attribute = readertest["name"];
                                 if (attribute != null)
                                 {
                                     Console.WriteLine("  Has attribute name: " + attribute);
                                 }
                                 // Next read will contain text.
-                                if (reader1.Read())
+                                if (readertest.Read())
                                 {
-                                    Console.WriteLine("  Text node: " + reader1.Value.Trim());
+                                    Console.WriteLine("  Text node: " + readertest.Value.Trim());
                                 }
                                 break;
                         }//fine switch
@@ -226,7 +293,55 @@ namespace ConsoleApp5Xml
             }
 
             #endregion
-           
+
+        }
+
+
+        public static void PostProcess(Stream inStream, Stream outStream)
+        {
+            var settings = new XmlWriterSettings() { Indent = true, IndentChars = " " };
+
+            using (var reader = XmlReader.Create(inStream))
+            using (var writer = XmlWriter.Create(outStream, settings))
+            {
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+
+                        //
+                        // check if this is the node you want, inject attributes here.
+                        //
+                        case XmlNodeType.Element:
+                            writer.WriteStartElement(reader.Prefix, reader.Name, reader.NamespaceURI);
+                            writer.WriteAttributes(reader, true);
+
+
+                            if (reader.IsEmptyElement)
+                            {
+                                writer.WriteEndElement();
+                            }
+                            break;
+
+                        case XmlNodeType.Text:
+                            writer.WriteString(reader.Value);
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            writer.WriteFullEndElement();
+                            break;
+
+                        case XmlNodeType.XmlDeclaration:
+                        case XmlNodeType.ProcessingInstruction:
+                            writer.WriteProcessingInstruction(reader.Name, reader.Value);
+                            break;
+
+                        case XmlNodeType.SignificantWhitespace:
+                            writer.WriteWhitespace(reader.Value);
+                            break;
+                    }
+                }
+            }
         }
     }
 
