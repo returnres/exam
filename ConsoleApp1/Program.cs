@@ -150,7 +150,11 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             #endregion
 
             #region PerformanceCounter
-
+            /*CounterCreationDataCollection
+             * CounterCreationData (PerformanceCounterType)
+             * PerformanceCounterCategory (si prende il collection che si prende il data) (PerformanceCounterCategoryType)
+             * PerformanceCounter
+             */
             if (!PerformanceCounterCategory.Exists("categoryname"))
             {
                 CounterCreationDataCollection datacollection = new CounterCreationDataCollection();
@@ -593,7 +597,6 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             d1.UseMulticast();
 
             #endregion
-
 
             #region generics
             Task tx1 = Task.Run(() =>
