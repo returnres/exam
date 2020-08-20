@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" ?>
+<People>
+  <Person firstname="J0n" lastname="izzo">
+    <Details>
+      <EmailAddress>j0n@ciccio.it</EmailAddress>
+      <phon>3333333</phon>
+    </Details>
+  </Person>
+  <Person firstname="pp" lastname="iii">
+    <Details>
+      <EmailAddress>pp@iii.it</EmailAddress>
+      <phon>222222</phon>
+    </Details>
+  </Person>
+</People>

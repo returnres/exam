@@ -480,6 +480,8 @@ un FileStream di base che usa internamente (o che passi nel costruttore).
                Console.WriteLine(item);
             }
 
+
+
             #endregion
             
             #region serialization
