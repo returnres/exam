@@ -153,32 +153,26 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             if (!PerformanceCounterCategory.Exists("categoryname"))
             {
-                CounterCreationDataCollection CCDC = new CounterCreationDataCollection();
+                CounterCreationDataCollection datacollection = new CounterCreationDataCollection();
 
-                // Add the counter.
-                CounterCreationData averageTimer32 = new CounterCreationData();
-                averageTimer32.CounterType = PerformanceCounterType.AverageTimer32;
-                averageTimer32.CounterName = "countername";
-                CCDC.Add(averageTimer32);
+                string counterName = "countername";
+                string categoryName = "categoryname";
 
-                // Add the base counter.
-                CounterCreationData averageTimer32Base = new CounterCreationData();
-                averageTimer32Base.CounterType = PerformanceCounterType.AverageBase;
-                averageTimer32Base.CounterName = "basecountername";
-                CCDC.Add(averageTimer32Base);
+                CounterCreationData numberOfItems = new CounterCreationData();
+                numberOfItems.CounterType = PerformanceCounterType.NumberOfItems32;
+                numberOfItems.CounterName = counterName;
+                datacollection.Add(numberOfItems);
 
                 // Create the category.
-                PerformanceCounterCategory.Create("categoryname",
+                PerformanceCounterCategory.Create(categoryName,
                     "Demonstrates usage of the AverageTimer32 performance counter type",
-                    PerformanceCounterCategoryType.SingleInstance, CCDC);
+                    PerformanceCounterCategoryType.SingleInstance, datacollection);
 
-                var PC = new PerformanceCounter("categoryname", "countername", false);
+                var counter = new PerformanceCounter(categoryName, counterName, false);
 
-                var BPC = new PerformanceCounter("categoryname", "basecountername", false);
 
-                PC.RawValue = 0;
-                BPC.RawValue = 0;
-                BPC.Increment();
+                counter.RawValue = 0;
+                counter.Increment();
             }
             using (var counter = new PerformanceCounter("categoryname", "Demonstrates usage of the AverageTimer32 performance counter type", false))
             {
