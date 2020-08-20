@@ -20,7 +20,7 @@ program : operatori,tracesource,booleanswitch,trcaeswitch,eventlog,performanccou
 
 
 	***	consoleapp2:
-progra: stream serializzaiozne
+progra: stream ,serializzaiozne,linq
 
 	***	consoleapp3:
 progr:stringformat e cas
@@ -39,6 +39,8 @@ progr:iserializable
 	***	semafore
 	***	strong
 	***	transaction
+
+	***	consoleapp4:linq
 
 
 	---------------------------------------------------------------------
