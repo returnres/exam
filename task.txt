@@ -1,0 +1,63 @@
+Task tx1 = Task.Run(() =>
+            {
+                Console.WriteLine("ciao");
+            });
+            Task[] tasksarr = new Task[1];
+            tasksarr[0] = tx1;
+
+   //all block
+      //.Wait() 
+       //.Result 
+        //.GetAwaiter()
+       //.GetResult()
+     //continuewheany
+   //Task.WaitAll blocks the current thread until everything has completed.
+   //Task.WhenAll returns a task which represents the action of waiting until everything has completed.
+   //That means that from an async method, you can use:
+            // A DIFFERENZA DI WAIT ALL TORNA SOLO LA PRIMA ECCEZIONE NON AGGREGATE
+
+  Task ty = Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+            });
+           
+            Task taskall = Task.WhenAll((new Task[] { tx, ty }));
+            
+            //Task taskall = Task.WhenAny((new Task[] { t1, t2 }));
+            taskall.Wait();
+
+              Task<String> webtask = Task.Run(() =>
+            {
+                string url = "http://www.google.it";
+                WebClient wc = new WebClient();
+                return wc.DownloadString(url);
+            });
+
+            Task<String> headhtml = webtask.ContinueWith<string>(x =>
+           {
+               var res2 = x.Result;
+               //fai qualcosa con res
+               return res2;
+           });
+
+  List<Task> tasks = new List<Task>();
+            for (int r = 0; r < 5; r++)
+            {
+                int number = r;
+                tasks.Add(
+                   Task.Run(() =>
+                    {
+                        Console.WriteLine(number);
+                        Thread.Sleep(1000);
+                    }));
+            }
+
+            //Task.WaitAll(tasks.ToArray());
+            Task.WaitAny(tasks.ToArray());
+
+           ThrowIfCancellationRequested
+
+
+ static async Task MyAsyncWhenAll(Task[] tasks)
+        {
+            await Task.WhenAll(tasks);

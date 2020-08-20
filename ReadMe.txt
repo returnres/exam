@@ -42,7 +42,7 @@ progr:iserializable
 
 
 	---------------------------------------------------------------------
-	PER CAPIRE PRENDI SPUNTO DAL CODICE MICROSOFT
+								PER CAPIRE PRENDI SPUNTO DAL CODICE MICROSOFT
 
 checked
 protected
@@ -84,7 +84,7 @@ PerformanceCounter
 
 emit generazione dinamica codice
 
-compare serve per sortare miei ogg in lista altrimenti list non sa come sortare
+CMPARE serve per sortare miei ogg in lista altrimenti list non sa come sortare
 
 dynamic
 cast
@@ -113,89 +113,22 @@ obj as string;////OTTENGO IL TIPO se obj non compatobole con string ritorna null
     //non è sequnziale
             List<string> list = new List<string>() { "ciao", "come", "va?" };
             Parallel.ForEach(list, word => Console.WriteLine("{0}", word, word.Length));
-
-Task tx1 = Task.Run(() =>
-            {
-                Console.WriteLine("ciao");
-            });
-            Task[] tasksarr = new Task[1];
-            tasksarr[0] = tx1;
-
-   //all block
-      //.Wait() 
-       //.Result 
-        //.GetAwaiter()
-       //.GetResult()
-     //continuewheany
-   //Task.WaitAll blocks the current thread until everything has completed.
-   //Task.WhenAll returns a task which represents the action of waiting until everything has completed.
-   //That means that from an async method, you can use:
-            // A DIFFERENZA DI WAIT ALL TORNA SOLO LA PRIMA ECCEZIONE NON AGGREGATE
-
-  Task ty = Task.Run(() =>
-            {
-                Thread.Sleep(1000);
-            });
-           
-            Task taskall = Task.WhenAll((new Task[] { tx, ty }));
-            
-            //Task taskall = Task.WhenAny((new Task[] { t1, t2 }));
-            taskall.Wait();
-
-              Task<String> webtask = Task.Run(() =>
-            {
-                string url = "http://www.google.it";
-                WebClient wc = new WebClient();
-                return wc.DownloadString(url);
-            });
-
-            Task<String> headhtml = webtask.ContinueWith<string>(x =>
-           {
-               var res2 = x.Result;
-               //fai qualcosa con res
-               return res2;
-           });
-
-  List<Task> tasks = new List<Task>();
-            for (int r = 0; r < 5; r++)
-            {
-                int number = r;
-                tasks.Add(
-                   Task.Run(() =>
-                    {
-                        Console.WriteLine(number);
-                        Thread.Sleep(1000);
-                    }));
-            }
-
-            //Task.WaitAll(tasks.ToArray());
-            Task.WaitAny(tasks.ToArray());
-
-           ThrowIfCancellationRequested
-
-
- static async Task MyAsyncWhenAll(Task[] tasks)
-        {
-            await Task.WhenAll(tasks);
-   
+  
 
 
    CSharpCodeProvider
 
    [Conditional("DEBUG")]
 
-   I/O bounded  async aw ait
-   CPU bounded   task
+   I/O bounded  async await
+   CPU bounded  programmazione parallela/concorrente/multitasking
 
    interlocked
-   mnitor
-
+   monitor
    linq
 
 -----------------------
 
-
- /*
              * TextReader
              * Stringreader/StringWriter (xmlreader)
              * StreamReader/StreamWriter
@@ -220,86 +153,8 @@ Task tx1 = Task.Run(() =>
              * javascriptserializer
              */
 
-             ------------------------------
-
-   * TextReader
-             * Stringreader/StringWriter (xmlreader)
-             * StreamReader/StreamWriter
-             * 
-             * 
-             *                  LETTURA SCRITTURA FILE
-             * FileStream => Encoding usa File  che ritorna filestream
-               è quello che ti ritorna quando invochi File.Open o File.Create.
-il FileStream lavora solo con dati binari.ED è necessario usare 
-encoding 
-
-  using (FileStream fs1 = File.Create(path))
-            {
-                //byte che servono , da dove , lungo
-                byte[] info = new UTF8Encoding(true).GetBytes("This is some text");
-                fs1.Write(info, 0, info.Length);
-
-                byte[] info1 = new UTF8Encoding(true).GetBytes("This is some more text,");
-                fs1.Write(info1, 0, info1.Length);
-
-
-                byte[] info2 = new UTF8Encoding(true).GetBytes("\r\nand this is on a new line");
-                fs1.Write(info2, 0, info2.Length);
-            }
-
-  /// LEGGO FILE
-    ///  file  => array byte =>  encode => stringa
-            //Open the stream and read it back.
-            using (FileStream fs1 = File.OpenRead(path))
-            {
-                byte[] b1 = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
-
-                //byte che servono , da dove , lungo
-                while (fs1.Read(b1, 0, b1.Length) > 0)
-                {
-                    Console.WriteLine(temp.GetString(b1));
-                }
-            }
-
- using (FileStream fileStream = File.Create("ciccio1.txt")) {
-	       // aggiungo la capacità di accumulare bytes in un buffer
-	             using (BufferedStream bufferedStream = new BufferedStream(fileStream)) {
-		   // creo un writer per scrivere (non è esso stesso uno stream)
-		    // magari potevo aggiungere un ulteriore Stream per zippare
-		            using (StreamWriter streamWriter = new StreamWriter(bufferedStream)) {
-			           streamWriter.WriteLine("A line of text.");
-
-
-             * StreamReader/StreamWriter => no encoding usa FileInfo
-             * Allora forse ti conviene usare File.OpenText o File.CreateText, che restituiscono uno StreamWriter,
-che ti permette di scrivere stringhe in formato UTF8.
-
-using (StreamWriter streamWriter = File.CreateText(path))
-{
-	string myValue = "MyValue";
-	streamWriter.Write(myValue);
-}
-             * 
-             *                  LETTURA SCRITTURA XML
-             * XmlDocument => lento facile non lettua sequanzaile
-             * XmlReader => StringReader  veloce lettura sequnziale
-             * XDocument => linq to xml per leggere, editare
-             * 
-             * 
-             *                  SERIALIZZAZIONE
-             * XmlSerialize => StringWriter/StreamWriter, xmlignore, no priv, setter,serialize
-             * DataContractSerializer  =>FileStream DataContract Datamember  obbligatori (wcf)
-             * BynaryFormatter => FileStream, noserialize, priv si
-             * DataConntractJsonSerializer => MemoryStream
-             * javascriptserializer
+           
 
 
 
 
-<?xml version="1.0" encoding="utf-16"?>
-<elemento>
-  <elemento attributo='Science Fiction'>
-    <elemento>testo del nodo </elemento>
-  </elemento>
-</elemento>

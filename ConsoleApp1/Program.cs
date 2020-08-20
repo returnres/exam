@@ -151,32 +151,39 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
             #region PerformanceCounter
 
-            //string cat = "Contatore";
-            //string catdsc = "Contatori vari";
-            //string cpnt = "Click";
-            //string contdesc = "Contatore Di Click";
-            //if (!PerformanceCounterCategory.Exists(cat))
-            //{
-            //    PerformanceCounterCategory.Create(
-            //        cat,
-            //        catdsc,
-            //        PerformanceCounterCategoryType.SingleInstance,
-            //        new CounterCreationDataCollection(
-            //            new[]
-            //            {
-            //                new CounterCreationData(
-            //                    cpnt,
-            //                    contdesc,
-            //                    PerformanceCounterType.NumberOfItems32)
-            //            })
-            //    );
-            //}
-            //using (var counter = new PerformanceCounter(cat, catdsc, false))
-            //    {
-            //        counter.IncrementBy(-25);
-            //    }
+            if (!PerformanceCounterCategory.Exists("categoryname"))
+            {
+                CounterCreationDataCollection CCDC = new CounterCreationDataCollection();
 
+                // Add the counter.
+                CounterCreationData averageTimer32 = new CounterCreationData();
+                averageTimer32.CounterType = PerformanceCounterType.AverageTimer32;
+                averageTimer32.CounterName = "countername";
+                CCDC.Add(averageTimer32);
 
+                // Add the base counter.
+                CounterCreationData averageTimer32Base = new CounterCreationData();
+                averageTimer32Base.CounterType = PerformanceCounterType.AverageBase;
+                averageTimer32Base.CounterName = "basecountername";
+                CCDC.Add(averageTimer32Base);
+
+                // Create the category.
+                PerformanceCounterCategory.Create("categoryname",
+                    "Demonstrates usage of the AverageTimer32 performance counter type",
+                    PerformanceCounterCategoryType.SingleInstance, CCDC);
+
+                var PC = new PerformanceCounter("categoryname", "countername", false);
+
+                var BPC = new PerformanceCounter("categoryname", "basecountername", false);
+
+                PC.RawValue = 0;
+                BPC.RawValue = 0;
+                BPC.Increment();
+            }
+            using (var counter = new PerformanceCounter("categoryname", "Demonstrates usage of the AverageTimer32 performance counter type", false))
+            {
+                counter.Increment();
+            }
             #endregion
 
             #region  OOP
