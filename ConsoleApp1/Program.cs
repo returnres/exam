@@ -155,12 +155,42 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
              * PerformanceCounterCategory (si prende il collection che si prende il data) (PerformanceCounterCategoryType)
              * PerformanceCounter
              */
+
+            var performanceCounterCategories = PerformanceCounterCategory.GetCategories();
+             var first = performanceCounterCategories.FirstOrDefault(category => category.CategoryName == "Processor");
+
+            var performanceCounters = first.GetCounters("_Total");
+
+            Console.WriteLine("Displaying performance counters for Processor category:--\n");
+
+            foreach (PerformanceCounter performanceCounter in performanceCounters)
+            {
+                Console.WriteLine(performanceCounter.CounterName);
+            }
+
+            //v2custom
+            String customCategoryName = "Custom Performance Counter Category";
+            string counterNameCustom = "pippo";
+            if (!PerformanceCounterCategory.Exists(customCategoryName))
+            {
+                CounterCreationDataCollection counterCreationDataCollection = new CounterCreationDataCollection();
+                counterCreationDataCollection.Add(new CounterCreationData(counterNameCustom, "Sample Counter 1", PerformanceCounterType.ElapsedTime));
+                //counterCreationDataCollection.Add(new CounterCreationData("Counter 2", "Sample Counter 2", PerformanceCounterType.SampleCounter));
+                PerformanceCounterCategory.Create(customCategoryName, "This is just an example", PerformanceCounterCategoryType.SingleInstance, counterCreationDataCollection);
+                var counter = new PerformanceCounter(customCategoryName, counterNameCustom, false);
+                counter.Increment();
+            }
+            using (var counter = new PerformanceCounter(customCategoryName, counterNameCustom, false))
+            {
+                counter.Increment();
+            }
+
+            //v2custom
+            string counterName = "countername";
+            string categoryName = "categoryname";
             if (!PerformanceCounterCategory.Exists("categoryname"))
             {
                 CounterCreationDataCollection datacollection = new CounterCreationDataCollection();
-
-                string counterName = "countername";
-                string categoryName = "categoryname";
 
                 CounterCreationData numberOfItems = new CounterCreationData();
                 numberOfItems.CounterType = PerformanceCounterType.NumberOfItems32;
@@ -174,11 +204,10 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
 
                 var counter = new PerformanceCounter(categoryName, counterName, false);
 
-
                 counter.RawValue = 0;
                 counter.Increment();
             }
-            using (var counter = new PerformanceCounter("categoryname", "Demonstrates usage of the AverageTimer32 performance counter type", false))
+            using (var counter = new PerformanceCounter(categoryName, counterName, false))
             {
                 counter.Increment();
             }
