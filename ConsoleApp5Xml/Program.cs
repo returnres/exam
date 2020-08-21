@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ConsoleApp5Xml
 {
@@ -14,7 +15,7 @@ namespace ConsoleApp5Xml
         static void Main(string[] args)
         {
             /*
-             * Linq to xml
+             * Linq to xml   xdoument, Xelement ,XAttribute
              */
             #region xdocumnt linq to xml => navighi ,crei , edito  
 
@@ -61,7 +62,6 @@ namespace ConsoleApp5Xml
                 ));
 
             xmlDocument.Save(@"testx2.xml");
-
 
 
             //add
@@ -121,10 +121,10 @@ namespace ConsoleApp5Xml
             }
             #endregion
 
-           /*
-            * meno performante
-            * read the whole thing into memory and build a DOM
-            */
+            /*
+             * meno performante   xmldocument , xmldocument ,  XmlElement
+             * read the whole thing into memory and build a DOM
+             */
             #region xmldocumnt => navighi , crei, edito 
 
 
@@ -207,8 +207,70 @@ namespace ConsoleApp5Xml
              * 
              */
             #region xmlreader =>  crei / navighi xml, NON POSSO EDITARE
-            //MODO0 leggo da uno scrivo da un altro 
 
+            //
+            var myreader = XmlReader.Create("products.xml");
+            myreader.MoveToContent();
+            while (myreader.Read())
+            {
+                var result = myreader.NodeType;
+                //{
+                //    XmlNodeType.Element when myreader.Name == "product" => $"{myreader.Name}\n",
+                //    XmlNodeType.Element => $"{myreader.Name}: ",
+                //    XmlNodeType.Text => $"{myreader.Value}\n",
+                //    XmlNodeType.EndElement when myreader.Name == "product" =>  "----------------------\n",
+                //    _ => ""
+                //};
+
+                Console.Write(result);
+            }
+
+            //
+            XmlReader readerexample = XmlReader.Create("products.xml");
+            readerexample.MoveToContent();
+
+            while (readerexample.MoveToContent() == XmlNodeType.Element && readerexample.LocalName == ChildXmlTag)
+            {
+                readerexample.ReadStartElement();
+                readerexample.MoveToContent();
+
+                //IilParameter p = IilParameter.fromString(readerexample.LocalName);
+                //p.ReadXml(readerexample);
+                //Parameters.Add(p);
+                //readerexample.ReadEndElement();
+            }
+            readerexample.ReadEndElement();
+
+            //
+            XmlReader reader5 = XmlReader.Create("products.xml");
+            reader5.MoveToContent();
+            var empty = reader5.IsEmptyElement;
+            reader5.ReadStartElement();
+            if (!empty)
+            {
+                while (reader5.MoveToContent() == XmlNodeType.Element)
+                {
+                    //if (reader5.Name == @"ProductName" && !reader5.IsEmptyElement)
+                    //{
+                    //    ProductName = reader5.ReadElementString();
+                    //}
+                    //else if (reader5.Name == @"GlyphColor" && !reader5.IsEmptyElement)
+                    //{
+                    //    GlyphColor = ParseColor(reader5.ReadElementString());
+                    //}
+                    //else
+                    //{
+                    //    // consume the bad element and skip to next sibling or the parent end element tag
+                    //    reader5.ReadOuterXml();
+                    //}
+                }
+                reader5.MoveToContent();
+                reader5.ReadEndElement();
+            }
+
+
+
+            //MODO0 leggo da uno scrivo da un altro 
             using (FileStream readStream = new FileStream(@"xmlreadertest.xml", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Write))
             {
                 using (FileStream writeStream = new FileStream(@"xmlreadertestNEW.xml", FileMode.OpenOrCreate, FileAccess.Write))
@@ -218,7 +280,6 @@ namespace ConsoleApp5Xml
             }
 
             //MODO1 
-
             XmlReader xmlReader = XmlReader.Create("test.xml");
             while (xmlReader.Read())
             {

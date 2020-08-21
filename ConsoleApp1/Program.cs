@@ -76,18 +76,18 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             Stream outfile = File.Create("log.txt");
             //creo listner
             TextWriterTraceListener textWriterTraceListener = new TextWriterTraceListener(outfile);
-            TraceSource trace  = new TraceSource("myT",SourceLevels.All);
+            TraceSource traceSource  = new TraceSource("myT",SourceLevels.All);
 
             //cancello quello di default
-            trace.Listeners.Clear();
+            traceSource.Listeners.Clear();
             //aggiungo mio
-            trace.Listeners.Add(textWriterTraceListener);
+            traceSource.Listeners.Add(textWriterTraceListener);
 
-            trace.TraceInformation("");
-            trace.TraceEvent(TraceEventType.Critical,0,"");
-            trace.TraceData(TraceEventType.Information,1,"");
-            trace.Flush();
-            trace.Close();
+            traceSource.TraceInformation("");
+            traceSource.TraceEvent(TraceEventType.Critical,0,"");
+            traceSource.TraceData(TraceEventType.Information,1,"");
+            traceSource.Flush();
+            traceSource.Close();
 
             //TraceSource configuro da appsetting
             mySource.TraceEvent(TraceEventType.Error, 1,
@@ -150,7 +150,7 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             #endregion
 
             #region PerformanceCounter
-            /*CounterCreationDataCollection
+            /* CounterCreationDataCollection
              * CounterCreationData (PerformanceCounterType)
              * PerformanceCounterCategory (si prende il collection che si prende il data) (PerformanceCounterCategoryType)
              * PerformanceCounter
@@ -555,8 +555,11 @@ XmlWriterTraceListener	XML-encoded data to a TextWriter or stream.
             #region  Event
             //Event
             Pub pub = new Pub();
+            //mi iscrivo e gli dico di fare questo quando viene sollevato evento evento
             pub.OnChange += () => Console.WriteLine("lambda");
             pub.OnChange += delegate { Console.WriteLine("delegate"); };
+
+            //sollevo evento
             pub.Raise();
 
             Pub1 p1 = new Pub1();

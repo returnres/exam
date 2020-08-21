@@ -20,7 +20,7 @@ program : operatori,tracesource,booleanswitch,trcaeswitch,eventlog,performanccou
 
 
 	***	consoleapp2:
-progra: stream ,serializzaiozne,linq
+progra: stream ,serializzaiozne,xml
 
 	***	consoleapp3:
 progr:stringformat e cas
@@ -86,7 +86,7 @@ PerformanceCounter
 
 emit generazione dinamica codice
 
-CMPARE serve per sortare miei ogg in lista altrimenti list non sa come sortare
+COMPARE serve per sortare miei ogg in lista altrimenti list non sa come sortare
 
 dynamic
 cast
@@ -95,13 +95,13 @@ if (obj is string)//CONTROLLO IL TIPO
 obj as string;////OTTENGO IL TIPO se obj non compatobole con string ritorna null
 
   
-
+  AsParallel (LINQ)
   //prende base dati la divide in segmenti e fa query in parallelo su questi segmentie  pio unisce iriaultati
             // se i lavori nonn sono complessi e la base dati è minima la programmazione parallela non da buoni risultati
             var qy = from num in Enumerable.Range(1, 8).AsParallel()
                      select Math.Pow(2, num);
 
-
+Parallel.For
      //iterazioni indipendenti l'una dall altra quindi per tutti e due ordine non è sequnziale
             Parallel.For(1, 10, g => Console.WriteLine("g-{0}", g));
             var result = Parallel.For(0, 50, (g, parallelLoopState) =>
