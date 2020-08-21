@@ -10,18 +10,33 @@ namespace ConsoleAppLinq
     {
         static void Main(string[] args)
         {
+            /*
+             * Quantifiers =>	All, Any, Contains
+             * Aggregation=>	Aggregate, Average, Count, LongCount, Max, Min, Sum
+             * Conversion=>	AsEnumerable, AsQueryable, Cast, ToArray, ToDictionary, ToList
+             * Elements=>	ElementAt, ElementAtOrDefault, First, FirstOrDefault, Last, LastOrDefault, Single, SingleOrDefault
+                 Set	Distinct, Except, Intersect, Union
+             * Grouping	=>GroupBy, ToLookup
+             * Join	=>GroupJoin, Join
+             * sorting	=>OrderBy, OrderByDescending, ThenBy, ThenByDescending, Reverse
+             * Projection	=>Select, SelectMany
+             * Partitioning=>	Skip, SkipWhile, Take, TakeWhile
+             * Filtering=>	Where, OfType
+             * Concatenation	=>Concat
+             * Equality	=>SequenceEqual
+             * Generation=>	DefaultEmpty, Empty, Range, Repeat
+             */
 
             int[] data1 = { 1, 2, 3, 4 };
             IEnumerable<int> res = from d in data1
                                    select d;
             Console.WriteLine(string.Join(",", res));
 
-
-
             //Cross - Join
             int[] data2 = { 1, 2, 3, 4 };
             int[] data3 = { 1, 2, 3, 4 };
 
+            //{ c = 2, o = 2 }
             var joinres = from c in data2
                           join o in data3 on c equals o
                           where c == 2
@@ -30,19 +45,12 @@ namespace ConsoleAppLinq
                               c,
                               o
                           };
-
-            //var rtt =  data2
-            //     .Where(c => c == 2)
-            //     .Join(data3,
-            //         c => new { c },
-            //         o => new { o },
-            //         (c, o) => new { c, o  });
-
-
+            //prodotto cartesiano
             var qCross1 = from em in data2
                           from sh in data3
                           select new { em, sh };
 
+            //prodotto cartesiano
             var qCross2 = data2.Join(
                 data3,
                 em => true,
@@ -50,6 +58,7 @@ namespace ConsoleAppLinq
                 (em, sh) => new { em, sh }
             );
 
+            //prodotto cartesiano
             var qCross3 = data2.Join(
                 data3,
                 em => new { Dummy = 1 },
@@ -58,34 +67,101 @@ namespace ConsoleAppLinq
             );
 
 
+            /*ordini[]
+             *   ordine
+             *       tipopagamento
+             *       nome
+             *       linee[]
+             *           linea
+             *               amount
+             *               prodotto
+             *                      des
+             *                      price
+             * 
+             * nome ordine1
+             * tipopag bo
+             * 2 giacca 10
+             * 1 pigiama 20
+             * 
+             * nome ordine2
+             * tipopag bo
+             * 1 giacca 30
+             * 
+             * nome ordine2
+             * tipopag bo
+             * 1 scarpa 10
+             * 1 cappello 10
+             */
+            #region ordini
             List<Order> orders = new List<Order>();
             orders.Add(new Order()
             {
+                name = "ordine1",
+                tipopagamento = "bo",
                 OrderLines = new List<OrderLine>()
                 {
                    new OrderLine()
                    {
-                       Amount = 1,
+                       Amount = 2,
                        Product = new Product()
                        {
-                           Des = "pippo",
+                           Des = "giacca",
                            Price = 10
 
                        }
-                   }
+                   },
+                    new OrderLine()
+                    {
+                        Amount = 1,
+                        Product = new Product()
+                        {
+                            Des = "pigiama",
+                            Price = 10
+
+                        }
+                    }
                 }
             });
             orders.Add(new Order()
             {
-
+                tipopagamento = "bo",
+                name = "ordine2",
                 OrderLines = new List<OrderLine>()
                 {
                     new OrderLine()
                     {
-                        Amount = 2,
+                        Amount = 1,
                         Product = new Product()
                         {
-                            Des = "pluto",
+                            Des = "giacca",
+                            Price = 30
+
+                        }
+                    }
+                }
+            });
+            orders.Add(new Order()
+            {
+                tipopagamento = "carta",
+                name = "ordine3",
+                OrderLines = new List<OrderLine>()
+                {
+                    new OrderLine()
+                    {
+                        Amount = 1,
+                        Product = new Product()
+                        {
+                            Des = "scarpa",
+                            Price = 20
+
+                        }
+                    },
+                    new OrderLine()
+                    {
+                        Amount = 1,
+                        Product = new Product()
+                        {
+                            Des = "cappello",
                             Price = 20
 
                         }
@@ -93,13 +169,15 @@ namespace ConsoleAppLinq
                 }
             });
 
+            #endregion
+
             var tt = from c in orders
-                     group c by c.name;
+                     group c by c.tipopagamento;
 
             //grouping and projectons
             var res1 = from o in orders
                        from l in o.OrderLines
-                       group l by l.Product
+                       group l by l.Product.Price
                 into p
                        select new
                        {
@@ -109,7 +187,7 @@ namespace ConsoleAppLinq
 
 
             var regroupres = from ordine in orders
-                             group ordine by ordine.name into grouped
+                             group ordine by ordine.tipopagamento into grouped
                              where grouped.Count() > 2
                              select new
                              {
@@ -132,7 +210,8 @@ namespace ConsoleAppLinq
 
     public class Order
     {
-        public string name { get; set; }
+        public string tipopagamento  { get; set; }
+    public string name { get; set; }
         public List<OrderLine> OrderLines { get; set; }
     }
 
@@ -152,5 +231,11 @@ namespace ConsoleAppLinq
     {
         public string BookName;
         public int BookNumber;
+    }
+
+    public class Product
+    {
+        public string Des { get; set; }
+        public decimal Price { get; set; }
     }
 }
